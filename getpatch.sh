@@ -1,5 +1,6 @@
 #!/bin/bash
-#set -e
+set -e
+
 export time_stamp=`date '+%Y_%m_%d_%H_%M_%S'`
 TMP=/tmp/patch`whoami`/${time_stamp}
 mkdir -p $TMP
@@ -16,7 +17,7 @@ otherparameter="--since 2015-1-1"
 mkdir -p $TOPDIR
 #TOPDIR=/root/patch/community/
 #communitylist="ltp libnetwork libcontainer"
-communitylist="kernel docker ltp libcontainer distribution libnetwork oe-core machine meta-oe kpatch logrus coder mcelog"
+communitylist="kernel docker libcontainer ltp distribution libnetwork oe-core machine meta-oe kpatch logrus coder mcelog"
 
 for i in $communitylist
 do
@@ -121,6 +122,30 @@ do
 	echo "  <th align=center><div style=\"width:${wid}px;\">$i</th>" >> ${REPORT}
 done
 echo "</tr>" >> ${REPORT}
+
+
+# total quantity
+allpatchquantity=`cat ${TMP}/*_authors | wc -l`
+echo "<tr>" >> ${REPORT}
+echo "<td align=center><b> </b></td>" >> ${REPORT}
+echo "<td align=center><b>all</b></td>" >> ${REPORT}
+echo "<td align=center><b>${allpatchquantity}</b></td>" >> ${REPORT}
+
+for j in $communitylist
+do
+	content=`cat ${TMP}/${j}_authors | wc -l`
+	if [ $content -eq 0 ];then
+		echo "<td align=center><b><tt><font color=gray>$content</tt></b></td>" >> ${REPORT}
+	else
+		echo "<td align=center><b><tt><font color=blue>$content</tt></b></td>" >> ${REPORT}
+	fi
+	k=`expr $k + 1`
+done
+echo "</tr>" >> ${REPORT}
+
+
+
+
 
 num=1
 #column_num=
