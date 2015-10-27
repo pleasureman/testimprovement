@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-
 export time_stamp=`date '+%Y_%m_%d_%H_%M_%S'`
 TMP=/tmp/patch`whoami`/${time_stamp}
 mkdir -p $TMP
@@ -17,7 +16,7 @@ otherparameter="--since 2015-1-1"
 mkdir -p $TOPDIR
 #TOPDIR=/root/patch/community/
 #communitylist="ltp libnetwork libcontainer"
-communitylist="kernel docker libcontainer ltp distribution libnetwork oe-core machine meta-oe kpatch logrus coder mcelog"
+communitylist="kernel docker runc ltp swarm distribution libnetwork machine kpatch logrus coder mcelog syslog-ng docker-bench-security notary"
 
 for i in $communitylist
 do
@@ -28,7 +27,7 @@ do
 		cd ${TOPDIR};
 		echo "start to clone $i community"
 		case $i in
-		"libcontainer" ) repo="https://github.com/docker/libcontainer.git";;
+		#"libcontainer" ) repo="https://github.com/docker/libcontainer.git";;
 		"docker" ) repo="https://github.com/docker/docker.git";;
 		"compose" ) repo="https://github.com/docker/compose.git";;
 		"docker-registry" ) repo="https://github.com/docker/docker-registry.git";;
@@ -40,6 +39,7 @@ do
 		"crash" ) repo="https://github.com/crash-utility/crash.git";;
 		"kexec-tools" ) repo="https://git.kernel.org/pub/scm/utils/kernel/kexec/kexec-tools.git";;
 		"kernel" ) repo="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git";;
+		#"kernel" ) repo="https://github.com/torvalds/linux.git";;
 		"distribution" ) repo="https://github.com/docker/distribution.git";;
 		"kpatch" ) repo="https://github.com/dynup/kpatch";;
 		"logrus" ) repo="https://github.com/Sirupsen/logrus.git";;
@@ -47,6 +47,14 @@ do
 		"rasdaemon" ) repo="https://git.fedorahosted.org/git/rasdaemon.git";;
 		"ltp" ) repo="https://github.com/linux-test-project/ltp";;
 		"mcelog" ) repo="https://git.kernel.org/pub/scm/utils/cpu/mce/mcelog.git";;
+		"runc" ) repo="https://github.com/opencontainers/runc.git";;
+		"swarm" ) repo="https://github.com/docker/swarm.git";;
+		"docker-bench-security" ) repo="https://github.com/docker/docker-bench-security.git";;
+		"notary" ) repo="https://github.com/docker/notary.git";;
+		"syslog-ng" ) repo="https://github.com/balabit/syslog-ng.git";;
+		#"swarm" ) repo="https://github.com/docker/swarm.git";;
+		#"swarm" ) repo="https://github.com/docker/swarm.git";;
+		#"swarm" ) repo="https://github.com/docker/swarm.git";;
 		#* ) echo "not exist $i repo";exit 1;;
 		esac
 		git clone ${repo}  $i
@@ -54,25 +62,28 @@ do
 	fi
 	#git log --since 2015-1-1 | grep ^Author: | grep "@huawei.com" | awk '{print $NF}' | sed 's/^<//g' | sed 's/>$//g' | grep -v ^$ | grep -v "\?" > ${TMP}/${i}_authors
 	echo "git pull $i repo"
-	git pull && git log ${otherparameter} | grep ^Author: | grep "@huawei.com" | awk '{print $NF}' | sed 's/^<//g' | sed 's/>$//g' | grep -v ^$ | grep -v "\?" > ${TMP}/${i}_authors
+	touch ${TMP}/${i}_authors
+	#git pull && git log ${otherparameter} | grep ^Author: | grep -e "@huawei.com" -e "@hisilicon.com" | awk '{print $NF}' | sed 's/^<//g' | sed 's/>$//g' | grep -v ^$ | grep -v "\?" > ${TMP}/${i}_authors
+	git pull 
+	git log ${otherparameter} | grep ^Author: | grep -e "@huawei.com" -e "@hisilicon.com" | awk '{print $NF}' | sed 's/^<//g' | sed 's/>$//g' | grep -v ^$ | grep -v "\?" > ${TMP}/${i}_authors || echo error1
 	echo "sort $i data"
 	sort ${TMP}/${i}_authors | uniq > ${TMP}/${i}_authorlist
 
 	while read line; 
 	do
-		echo -n "$line  " >> ${TMP}/${i}_authorinfo; 
-		echo `grep $line ${TMP}/${i}_authors | wc -l` >> ${TMP}/${i}_authorinfo; 
+		echo -n "$line  " >> ${TMP}/${i}_authorinfo || touch ${TMP}/${i}_authorinfo; 
+		echo `grep $line ${TMP}/${i}_authors | wc -l` >> ${TMP}/${i}_authorinfo || touch ${TMP}/${i}_authorinfo; 
 	done < ${TMP}/${i}_authorlist
 
 	#sort -n -r  -k2 ${TMP}/authorinfo > ${TMP}/authorinfo_sorted
-	sort -n -r  -k2 ${TMP}/${i}_authorinfo | grep "@huawei.com" > ${TMP}/${i}_authorinfosorted
+	sort -n -r  -k2 ${TMP}/${i}_authorinfo | grep -e "@huawei.com" -e "@hisilicon.com" > ${TMP}/${i}_authorinfosorted || touch ${TMP}/${i}_authorinfosorted 
 
 	echo "cd $TMP"
 	echo "cat ${TMP}/${i}_authorinfosorted"
 	echo "--------------------------------"
 done
 
-sort ${TMP}/*_authorlist | uniq > ${TMP}/all_authorlist
+sort ${TMP}/*_authorlist | uniq > ${TMP}/all_authorlist || touch ${TMP}/all_authorlist 
 
 while read line; 
 do
