@@ -7,3 +7,7 @@
 ###--memory-reservation=""
 ##参考资料：
 http://www.tuicool.com/articles/zIJrEjn
+http://www.cnblogs.com/hustcat/p/3980244.html
+http://www.lupaworld.com/article-250948-1.html
+http://www.litrin.net/2015/08/14/docker%E5%AE%B9%E5%99%A8%E7%9A%84%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6/
+http://www.tuicool.com/articles/Qrq2Ynz
