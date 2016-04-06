@@ -1,5 +1,5 @@
 #docker资源管理探秘
-##docker资源管理接口简洁
+##docker资源管理接口简介
 ##cgroups简洁
 ##docker资源管理接口详解
 ###-m, --memory=""
