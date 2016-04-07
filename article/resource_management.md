@@ -3,6 +3,11 @@
 ##cgroups简介
 ##docker资源管理接口详解
 ###-m, --memory=""
+可以限制容器使用的内存量，对应的cgroup文件是cgroup/memory/memory.limit_in_bytes。<br>
+
+    $ docker run -it --memory 100M ubuntu bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes"
+    104857600
+
 ###--memory-swap=""
 ###--memory-reservation=""
 ##参考资料：
