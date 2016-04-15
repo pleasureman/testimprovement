@@ -4,6 +4,8 @@
 ##3.docker资源管理接口详解
 ###(1)-m, --memory=""
 可以限制容器使用的内存量，对应的cgroup文件是cgroup/memory/memory.limit_in_bytes。<br>
+取值范围:大于等于4M<br>
+单位：b,k,m,g<br>
 
     $ docker run -it --memory 100M ubuntu bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes"
     104857600
