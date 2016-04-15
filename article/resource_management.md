@@ -21,6 +21,12 @@
 ###(10)--blkio-weight=0
 ###(11)--blkio-weight-device=""
 ###(12)--device-read-bps=""
+    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mB     rnd-dockerhub.huawei.com/official/ubuntu:stress bash
+    root@df1de679fae4:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=5M count=1
+    1+0 records in
+    1+0 records out
+    5242880 bytes (5.2 MB) copied, 5.00464 s, 1.0 MB/s
+    $root@df1de679fae4:/# 
 ###(13)--device-write-bps=""
 ###(14)--device-read-iops=""
 ###(15)--device-write-iops=""
@@ -38,4 +44,4 @@ http://www.tuicool.com/articles/Qrq2Ynz<br>
 https://github.com/docker/docker/blob/master/docs/reference/run.md<br>
 http://www.infoq.com/cn/articles/docker-kernel-knowledge-namespace-resource-isolation<br>
 https://github.com/torvalds/linux/tree/master/Documentation/cgroup-v1<br>
-
+http://www.361way.com/increase-swap/1957.html<br>
