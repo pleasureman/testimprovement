@@ -10,6 +10,24 @@
 
 ###(2)--memory-swap=""
 ###(3)--memory-reservation=""
+
+###(4)--kernel-memory=""
+
+###(5)-c, --cpu-shares=0
+###(6)--cpu-period=0
+###(7)--cpuset-cpus=""
+###(8)--cpuset-mems=""
+###(9)--cpu-quota=0
+###(10)--blkio-weight=0
+###(11)--blkio-weight-device=""
+###(12)--device-read-bps=""
+###(13)--device-write-bps=""
+###(14)--device-read-iops=""
+###(15)--device-write-iops=""
+###(16)--oom-kill-disable=false
+###(17)--memory-swappiness=""
+###(18)--shm-size=""
+
 ##参考资料：
 http://www.tuicool.com/articles/zIJrEjn<br>
 http://www.cnblogs.com/hustcat/p/3980244.html<br>
