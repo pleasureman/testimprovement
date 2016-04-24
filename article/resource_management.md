@@ -32,12 +32,34 @@
     104857600
 
 ###(2)--memory-swap=""
+对应的cgroup文件是cgroup/memory/memory.memsw.limit_in_bytes
+    [unicorn@unicorn ~]$ docker run -ti -m 300M --memory-swap 1G rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
+    1073741824
+
+
 ###(3)--memory-reservation=""
+对应的cgroup文件是cgroup/memory/memory.soft_limit_in_bytes
+
+    [unicorn@unicorn ~]$ docker run -ti --memory-reservation 50M rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.soft_limit_in_bytes"
+    52428800
 
 ###(4)--kernel-memory=""
+对应的cgroup文件cgroup/memory/memory.kmem.limit_in_bytes
+
+    [unicorn@unicorn ~]$ docker run -ti --kernel-memory 50M rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
+    52428800
 
 ###(5)-c, --cpu-shares=0
+对应的cgroup文件是cgroup/cpu/cpu.shares
+    [unicorn@unicorn docker_engine]$ docker run --rm --cpu-shares 1600 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.shares"
+    1600
+
 ###(6)--cpu-period=0
+对应的cgroup文件是cgroup/cpu/cpu.cfs_period_us
+
+    [unicorn@unicorn ~]$ docker run -ti --cpu-period 50000 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_period_us"
+    50000
+
 ###(7)--cpuset-cpus=""
 对应的cgroup文件是cgroup/cpuset/cpuset.cpus
 
