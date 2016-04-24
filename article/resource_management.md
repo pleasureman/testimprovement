@@ -87,6 +87,22 @@
     8:0 400
 
 ###(16)--oom-kill-disable=false
+对应的cgroup文件是cgroup/memory/memory.oom_control<br>
+
+    unicorn@unicorn:~$  docker run -m 20m --oom-kill-disable=true rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'cat /sys/fs/cgroup/memory/memory.oom_control'
+    oom_kill_disable 1
+    under_oom 0
+
+测试：<br>
+
+    unicorn@unicorn:~$ docker run -m 20m --oom-kill-disable=false rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'x=a; while true; do x=$x$x$x$x; done'
+    unicorn@unicorn:~$ echo $?
+    137
+    unicorn@unicorn:~$ docker run -m 20m --oom-kill-disable=true rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'x=a; while true; do x=$x$x$x$x; done'
+       
+    
+    
+
 ###(17)--memory-swappiness=""
 ###(18)--shm-size=""
 ##4.总结
