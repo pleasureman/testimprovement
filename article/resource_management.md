@@ -44,6 +44,13 @@
 ###(10)--blkio-weight=0
 ###(11)--blkio-weight-device=""
 ###(12)--device-read-bps=""
+对应的cgroup文件是cgroup/blkio/blkio.throttle.read_bps_device<br>
+
+    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mB     rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_bps_device"
+    8:0 1048576
+
+限速操作：<br>
+
     [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mB     rnd-dockerhub.huawei.com/official/ubuntu:stress bash
     root@df1de679fae4:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=5M count=1
     1+0 records in
@@ -52,10 +59,12 @@
     $root@df1de679fae4:/# 
 ###(13)--device-write-bps=""
 对应的cgroup文件是cgroup/blkio/blkio.throttle.write_bps_device<br>
+
     [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB         rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_bps_device"
     8:0 1048576
 
 限速操作：<br>
+
     [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB         rnd-dockerhub.huawei.com/official/ubuntu:stress bash
     root@bbf49f46f803:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/sda bs=5M count=1
     1+0 records in
