@@ -75,7 +75,17 @@
     1+0 records out
     5242880 bytes (5.2 MB) copied, 5.00427 s, 1.0 MB/s
 ###(14)--device-read-iops=""
+对应的cgroup文件是cgroup/blkio/blkio.throttle.read_iops_device<br>
+
+    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-read-iops /dev/sda:400 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_iops_device"
+    8:0 400
+
 ###(15)--device-write-iops=""
+对应的cgroup文件是cgroup/blkio/blkio.throttle.write_iops_device<br>
+
+    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_iops_device"
+    8:0 400
+
 ###(16)--oom-kill-disable=false
 ###(17)--memory-swappiness=""
 ###(18)--shm-size=""
