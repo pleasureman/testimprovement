@@ -104,7 +104,12 @@
     
 
 ###(17)--memory-swappiness=""
-###(18)--shm-size=""
+对应的cgroup文件是cgroup/memory/memory.swappiness
+
+    unicorn@unicorn:/sys/fs/cgroup/memory$ docker run --memory-swappiness=100 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
+    100
+    
+###(18)--shm-size=""  Size of /dev/shm. 
 ##4.总结
 ##5.作者简介
 ##参考资料：
