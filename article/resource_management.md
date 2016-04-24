@@ -51,6 +51,15 @@
     5242880 bytes (5.2 MB) copied, 5.00464 s, 1.0 MB/s
     $root@df1de679fae4:/# 
 ###(13)--device-write-bps=""
+    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB         rnd-dockerhub.huawei.com/official/ubuntu:stress bash
+    root@bbf49f46f803:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/sda bs=5M count=1
+    1+0 records in
+    1+0 records out
+    5242880 bytes (5.2 MB) copied, 0.00457201 s, 1.1 GB/s
+    root@bbf49f46f803:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/sda bs=5M count=1
+    1+0 records in
+    1+0 records out
+    5242880 bytes (5.2 MB) copied, 5.00427 s, 1.0 MB/s
 ###(14)--device-read-iops=""
 ###(15)--device-write-iops=""
 ###(16)--oom-kill-disable=false
