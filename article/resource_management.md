@@ -39,6 +39,11 @@
 ###(5)-c, --cpu-shares=0
 ###(6)--cpu-period=0
 ###(7)--cpuset-cpus=""
+对应的cgroup文件是cgroup/cpuset/cpuset.cpus
+
+    [unicorn@unicorn ~]$ docker run -ti --cpuset-cpus 1 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpuset/cpuset.cpus"
+    1
+
 ###(8)--cpuset-mems=""
 对应的cgroup文件是cgroup/cpuset/cpuset.mems
 
