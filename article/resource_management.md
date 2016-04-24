@@ -40,9 +40,22 @@
 ###(6)--cpu-period=0
 ###(7)--cpuset-cpus=""
 ###(8)--cpuset-mems=""
+对应的cgroup文件是cgroup/cpuset/cpuset.mems
+
+    [unicorn@unicorn ~]$ docker run -ti --cpuset-mems=0 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
+    0
+
 ###(9)--cpu-quota=0
+对应的cgroup文件是cgroup/cpu/cpu.cfs_quota_us
+
+    [unicorn@unicorn docker_engine]$ docker run --rm --cpu-quota 1600 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
+    1600
+
+
 ###(10)--blkio-weight=0
+对应的cgroup文件cgroup/blkio/blkio.weight<br>
 ###(11)--blkio-weight-device=""
+对应的cgroup文件cgroup/blkio/blkio.weight_device<br>
 ###(12)--device-read-bps=""
 对应的cgroup文件是cgroup/blkio/blkio.throttle.read_bps_device<br>
 
