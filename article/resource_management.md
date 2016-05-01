@@ -40,10 +40,21 @@
 
 值得注意的是本机目前没有配置交换分区(swap)。
 
-我们使用stress工具来证明内存限定已经生效。stress是一个压力测试套，如下命令将要在容器内创建一个进程，在该进程中不断的执行占用内存(malloc)和释放内存(free)的操作。
+我们使用stress工具来证明内存限定已经生效。stress是一个压力测试套，如下命令将要在容器内创建一个进程，在该进程中不断的执行占用内存(malloc)和释放内存(free)的操作。在理论上如果占用的内存少于限定值，容器会工作正常。注意，如果试图使用边界值，即试图在容器中使用stress工具占用100M内存，这个操作通常会失败，因为容器中还有其他进程在运行。
 
     [unicorn@unicorn ~]$ docker run -ti -m 100m ubuntu:memory stress --vm 1 --vm-bytes 50M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
+
+而试图占用超过100M内存时，必然导致容器异常。
+
+    [unicorn@unicorn ~]$ docker run -ti -m 100m ubuntu:memory stress --vm 1 --vm-bytes 101M
+    stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
+    stress: FAIL: [1] (416) <-- worker 6 got signal 9
+    stress: WARN: [1] (418) now reaping child worker processes
+    stress: FAIL: [1] (422) kill error: No such process
+    stress: FAIL: [1] (452) failed run completed in 0s
+
+注意这种情况是在系统无交换分区(swap)的情况下出现的，如果我们添加了交换分区，情况又会怎样？
 
 ###(2)--memory-swap=""
 对应的cgroup文件是cgroup/memory/memory.memsw.limit_in_bytes<br>
