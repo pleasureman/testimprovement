@@ -54,7 +54,29 @@
     stress: FAIL: [1] (422) kill error: No such process
     stress: FAIL: [1] (452) failed run completed in 0s
 
-注意这种情况是在系统无交换分区(swap)的情况下出现的，如果我们添加了交换分区，情况又会怎样？
+注意这种情况是在系统无交换分区(swap)的情况下出现的，如果我们添加了交换分区，情况又会怎样？首先通过如下命令来添加交换分区(swap)。
+
+    $ dd if=/dev/zero of=/tmp/mem.swap bs=1M count=8192
+    8192+0 records in
+    8192+0 records out
+    8589934592 bytes (8.6 GB) copied, 35.2693 s, 244 MB/s
+    $ mkswap /tmp/mem.swap
+    Setting up swapspace version 1, size = 8388604 KiB
+    no label, UUID=55ea48e9-553d-4013-a2ae-df194f7941ed
+    $ sudo swapon /tmp/mem.swap 
+    swapon: /tmp/mem.swap: insecure permissions 0664, 0600 suggested.
+    swapon: /tmp/mem.swap: insecure file owner 1100, 0 (root) suggested.
+    $ free -m
+                  total        used        free      shared  buff/cache   available
+    Mem:           3955         262          28         176        3665        3463
+    Swap:          8191           0        8191
+
+之后再次尝试占用大于限定的内存。
+
+    [unicorn@unicorn ~]$ docker run -ti -m 100m ubuntu:memory stress --vm 1 --vm-bytes 101M
+    stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
+
+我们发现容器工作正常，这意味着有部分存储在内存中的信息被转移到了交换分区中了。
 
 ###(2)--memory-swap=""
 对应的cgroup文件是cgroup/memory/memory.memsw.limit_in_bytes<br>
