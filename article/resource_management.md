@@ -31,6 +31,20 @@
     $ docker run -it --memory 100M ubuntu bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes"
     104857600
 
+本机内存环境为：
+
+    free
+              total        used        free      shared  buff/cache   available
+    Mem:        4050284      254668     3007564      180484      788052     3560532
+    Swap:             0           0           0
+
+值得注意的是本机目前没有配置交换分区(swap)。
+
+我们使用stress工具来证明内存限定已经生效。stress是一个压力测试套，如下命令将要在容器内创建一个进程，在该进程中不断的执行占用内存(malloc)和释放内存(free)的操作。
+
+    [unicorn@unicorn ~]$ docker run -ti -m 100m ubuntu:memory stress --vm 1 --vm-bytes 50M
+    stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
+
 ###(2)--memory-swap=""
 对应的cgroup文件是cgroup/memory/memory.memsw.limit_in_bytes<br>
 
