@@ -137,6 +137,24 @@
   </tbody>
 </table>
 
+列子：
+以下命令没有对内存和交换分区进行限制，这意味着容器可以使用无限多的内存和交换分区。
+
+    $ docker run -it ubuntu:latest bash
+    
+以下命令只限定了内存使用量300M，而没有限制交换分区使用量(-1意味着不做限制)。
+
+    $ docker run -it -m 300M --memory-swap -1 ubuntu:latest bash
+    
+以下命令仅仅限定了内存使用量，这意味着容器能够使用300M的内存和300M的交换分区。在默认情况下，总的内存限定值(内存+交换分区)被设置为了内存限定值的两倍。
+
+    $ docker run -it -m 300M ubuntu:14.04 /bin/bash
+
+以下命令限定了内存和交换分区的使用量，容器可以使用300M的内存和700M的交换分区。
+
+    $ docker run -it -m 300M --memory-swap 1G ubuntu:14.04 /bin/bash
+
+
 ###(3)--memory-reservation=""
 对应的cgroup文件是cgroup/memory/memory.soft_limit_in_bytes
 
