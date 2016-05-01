@@ -86,11 +86,56 @@
 注意，在实际容器使用场景中，如果我不不对容器使用内存量加以限制的话，可以能导致一个容器会耗尽整个主机内存，从而导致系统不稳定。所以在使用容器时务必对容器内存加以限制。
 
 ###(2)--memory-swap=""
-对应的cgroup文件是cgroup/memory/memory.memsw.limit_in_bytes<br>
+可以限制容器使用交换分区和内存的总和，对应的cgroup文件是cgroup/memory/memory.memsw.limit_in_bytes。<br>
+取值范围:大于内存限定值<br>
+单位：b,k,m,g<br>
 
-    [unicorn@unicorn ~]$ docker run -ti -m 300M --memory-swap 1G rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
+运行如下命令来确认容器交换分区的资源管理对应的cgroup文件。
+
+    $ docker run -ti -m 300M --memory-swap 1G ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     1073741824
 
+可以看到，当memory-swap限定为1G时，对应的cgroup文件数值为1073741824，该数值的单位为kB，即1073741824kB等于1G。
+
+
+<table>
+  <thead>
+    <tr>
+      <th>条件</th>
+      <th>结果</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="no-wrap">
+          <strong>memory=无穷大, memory-swap=无穷大</strong> (默认条件下)
+      </td>
+      <td>
+        系统不限定容器对内存和交换分区的使用量，容器能够使用主机所能提供的所有内存。
+      </td>
+    </tr>
+    <tr>
+      <td class="no-wrap"><strong>memory=L&lt;无穷大, memory-swap=无穷大</strong></td>
+      <td>
+        (设定memory限定值同时将memory-swap设置为<code>-1</code>) 容器的内存使用量不能超过L，但是交换分区的使用量不受限制(前提是主机支持交换分区)。
+      </td>
+    </tr>
+    <tr>
+      <td class="no-wrap"><strong>memory=L&lt;无穷大, memory-swap=2*L</strong></td>
+      <td>
+        (设定memory限定值而不设置memory-swap值) 容器的内存使用量不能超过L，而内存使用量和交换分区的使用量不能超过两倍的L。
+      </td>
+    </tr>
+    <tr>
+      <td class="no-wrap">
+          <strong>memory=L&lt;无穷大, memory-swap=S&lt;无穷大, L&lt;=S</strong>
+      </td>
+      <td>
+        (设定了memory和memory-swap的限定值) 容器的内存使用量不能超过L，而内存使用量和交换分区的使用量不能超过两倍的S。
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ###(3)--memory-reservation=""
 对应的cgroup文件是cgroup/memory/memory.soft_limit_in_bytes
