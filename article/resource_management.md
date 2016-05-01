@@ -140,21 +140,45 @@
 列子：
 以下命令没有对内存和交换分区进行限制，这意味着容器可以使用无限多的内存和交换分区。
 
-    $ docker run -it ubuntu:latest bash
+    $ docker run -it ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes" 
+    9223372036854771712
+    9223372036854771712
     
 以下命令只限定了内存使用量300M，而没有限制交换分区使用量(-1意味着不做限制)。
 
-    $ docker run -it -m 300M --memory-swap -1 ubuntu:latest bash
+    $ docker run -it -m 300M --memory-swap -1 ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
+    314572800
+    9223372036854771712
     
 以下命令仅仅限定了内存使用量，这意味着容器能够使用300M的内存和300M的交换分区。在默认情况下，总的内存限定值(内存+交换分区)被设置为了内存限定值的两倍。
 
-    $ docker run -it -m 300M ubuntu:14.04 /bin/bash
+    $ docker run -it -m 300M ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
+    314572800
+    629145600
 
 以下命令限定了内存和交换分区的使用量，容器可以使用300M的内存和700M的交换分区。
 
-    $ docker run -it -m 300M --memory-swap 1G ubuntu:14.04 /bin/bash
+    $ docker run -it -m 300M --memory-swap 1G ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
+    314572800
+    1073741824
 
+当memory-swap限定值低于memory限定值时，系统提示"Minimum memoryswap limit should be larger than memory limit"错误。
 
+    $ docker run -it -m 300M --memory-swap 200M ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat     /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
+    docker: Error response from daemon: Minimum memoryswap limit should be larger than memory limit, see usage..
+    See 'docker run --help'.
+
+如下所示，当尝试占用的内存数量超过memory-swap值时，容器出现异常；当占用内存值大于memory限定值但小于memory-swap时，容器运行正常。
+
+    [unicorn@unicorn ~]$ docker run -ti -m 100m --memory-swap 200m ubuntu:memory stress --vm 1 --vm-bytes 201M
+    stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
+    stress: FAIL: [1] (416) <-- worker 7 got signal 9
+    stress: WARN: [1] (418) now reaping child worker processes
+    stress: FAIL: [1] (422) kill error: No such process
+    stress: FAIL: [1] (452) failed run completed in 0s
+    [unicorn@unicorn ~]$ docker run -ti -m 100m --memory-swap 200m ubuntu:memory stress --vm 1 --vm-bytes 180M
+    stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
+    
 ###(3)--memory-reservation=""
 对应的cgroup文件是cgroup/memory/memory.soft_limit_in_bytes
 
