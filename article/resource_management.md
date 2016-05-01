@@ -275,6 +275,12 @@
     [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_iops_device"
     8:0 400
 
+    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:100 --device-read-iops /dev/sda:100 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=1b count=1000"
+    1000+0 records in
+    1000+0 records out
+    512000 bytes (512 kB) copied, 9.89291 s, 51.8 kB/s
+    [unicorn@unicorn ~]$
+
 ###(16)--oom-kill-disable=false
 对应的cgroup文件是cgroup/memory/memory.oom_control<br>
 
