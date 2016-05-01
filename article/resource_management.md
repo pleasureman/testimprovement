@@ -164,3 +164,4 @@ https://github.com/docker/docker/blob/master/docs/reference/run.md<br>
 http://www.infoq.com/cn/articles/docker-kernel-knowledge-namespace-resource-isolation<br>
 https://github.com/torvalds/linux/tree/master/Documentation/cgroup-v1<br>
 http://www.361way.com/increase-swap/1957.html<br>
+https://goldmann.pl/blog/2014/09/11/resource-management-in-docker/<br>
