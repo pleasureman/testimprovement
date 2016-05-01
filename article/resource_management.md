@@ -28,6 +28,8 @@
 取值范围:大于等于4M<br>
 单位：b,k,m,g<br>
 
+在默认情况下，容器可以占用无限量的内存，直至主机内存资源耗尽。
+
     $ docker run -it --memory 100M ubuntu bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes"
     104857600
 
@@ -77,6 +79,7 @@
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
 我们发现容器工作正常，这意味着有部分存储在内存中的信息被转移到了交换分区中了。
+注意，在实际容器使用场景中，如果我不不对容器使用内存量加以限制的话，可以能导致一个容器会耗尽整个主机内存，从而导致系统不稳定。所以在使用容器时务必对容器内存加以限制。
 
 ###(2)--memory-swap=""
 对应的cgroup文件是cgroup/memory/memory.memsw.limit_in_bytes<br>
