@@ -180,12 +180,18 @@
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
     
 ###(3)--memory-reservation=""
+取值范围:大于等于0的整数<br>
+单位：b,k,m,g<br>
 对应的cgroup文件是cgroup/memory/memory.soft_limit_in_bytes
 
     [unicorn@unicorn ~]$ docker run -ti --memory-reservation 50M rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.soft_limit_in_bytes"
     52428800
 
-###(4)--kernel-memory=""
+这个限制并不会阻止进程使用超过限额的内存，只是在系统内存不足时，会优先回收超过限额的进程占用的内存，使之向限定值靠拢。
+
+
+
+###(4)--kernel-memory="" ????????????
 对应的cgroup文件cgroup/memory/memory.kmem.limit_in_bytes
 
     [unicorn@unicorn ~]$ docker run -ti --kernel-memory 50M rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
@@ -257,13 +263,13 @@
     1+0 records in
     1+0 records out
     5242880 bytes (5.2 MB) copied, 5.00427 s, 1.0 MB/s
-###(14)--device-read-iops=""
+###(14)--device-read-iops=""  ??????
 对应的cgroup文件是cgroup/blkio/blkio.throttle.read_iops_device<br>
 
     [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-read-iops /dev/sda:400 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_iops_device"
     8:0 400
 
-###(15)--device-write-iops=""
+###(15)--device-write-iops="" ??????
 对应的cgroup文件是cgroup/blkio/blkio.throttle.write_iops_device<br>
 
     [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_iops_device"
