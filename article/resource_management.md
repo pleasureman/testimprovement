@@ -187,8 +187,15 @@
     [unicorn@unicorn ~]$ docker run -ti --memory-reservation 50M rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.soft_limit_in_bytes"
     52428800
 
+通常情况下，容器能够使用的内存量仅仅由-m/--memory选项限定。如果设置了--memory-reservation选项，当内存使用量超过--memory-reservation选项所设定的值时，系统会强制容器执行回收内存的操作，使得容器内存消耗不会长时间超过--memory-reservation限定值。
+
 这个限制并不会阻止进程使用超过限额的内存，只是在系统内存不足时，会优先回收超过限额的进程占用的内存，使之向限定值靠拢。
 
+    $ docker run -it -m 500M --memory-reservation 200M ubuntu:14.04 /bin/bash
+    
+
+    $ docker run -it --memory-reservation 1G ubuntu:14.04 /bin/bash
+    
 
 
 ###(4)--kernel-memory="" ????????????
