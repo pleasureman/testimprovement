@@ -286,6 +286,10 @@
 
 ###(10)--blkio-weight=0
 对应的cgroup文件cgroup/blkio/blkio.weight<br>
+
+    root@p1:/tmp/root/2016_05_04_11_36_21# docker run -ti --privileged --device=/dev/sda:/dev/sda --device=/dev/sdb:/dev/sdb --rm --blkio-weight 100 rnd-dockerhub.huawei.com/official/ubuntu bash
+    root@7f9a9701459c:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/sdb bs=5M count=1000
+
 ###(11)--blkio-weight-device=""
 对应的cgroup文件cgroup/blkio/blkio.weight_device<br>
 ###(12)--device-read-bps=""
@@ -302,6 +306,8 @@
     1+0 records out
     5242880 bytes (5.2 MB) copied, 5.00464 s, 1.0 MB/s
     $root@df1de679fae4:/# 
+    
+
 ###(13)--device-write-bps=""
 对应的cgroup文件是cgroup/blkio/blkio.throttle.write_bps_device<br>
 
@@ -319,6 +325,8 @@
     1+0 records in
     1+0 records out
     5242880 bytes (5.2 MB) copied, 5.00427 s, 1.0 MB/s
+    
+    
 ###(14)--device-read-iops=""  ??????
 对应的cgroup文件是cgroup/blkio/blkio.throttle.read_iops_device<br>
 
