@@ -270,7 +270,7 @@
     10380 root      20   0    7312     96      0 R 100.0  0.0   0:27.16 stress
 
 
-###(8)--cpuset-mems=""
+###(8)--cpuset-mems="" ????与贾鹏讨论
 对应的cgroup文件是cgroup/cpuset/cpuset.mems
 
     [unicorn@unicorn ~]$ docker run -ti --cpuset-mems=0 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
@@ -282,6 +282,7 @@
     [unicorn@unicorn docker_engine]$ docker run --rm --cpu-quota 1600 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
     1600
 
+请参考--cpu-period选项。
 
 ###(10)--blkio-weight=0
 对应的cgroup文件cgroup/blkio/blkio.weight<br>
