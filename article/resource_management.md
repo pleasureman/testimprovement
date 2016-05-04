@@ -284,7 +284,7 @@
 
 请参考--cpu-period选项。
 
-###(10)--blkio-weight=0
+###(10)--blkio-weight=0 ???
 对应的cgroup文件cgroup/blkio/blkio.weight<br>
 
     root@p1:/tmp/root/2016_05_04_11_36_21# docker run -ti --privileged --device=/dev/sda:/dev/sda --device=/dev/sdb:/dev/sdb --rm --blkio-weight 100 rnd-dockerhub.huawei.com/official/ubuntu bash
