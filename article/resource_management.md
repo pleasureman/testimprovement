@@ -184,7 +184,7 @@
 单位：b,k,m,g<br>
 对应的cgroup文件是cgroup/memory/memory.soft_limit_in_bytes
 
-    [unicorn@unicorn ~]$ docker run -ti --memory-reservation 50M rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.soft_limit_in_bytes"
+    $ docker run -ti --memory-reservation 50M rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.soft_limit_in_bytes"
     52428800
 
 通常情况下，容器能够使用的内存量仅仅由-m/--memory选项限定。如果设置了--memory-reservation选项，当内存使用量超过--memory-reservation选项所设定的值时，系统会强制容器执行回收内存的操作，使得容器内存消耗不会长时间超过--memory-reservation限定值。
@@ -209,8 +209,30 @@
 ###(5)-c, --cpu-shares=0
 对应的cgroup文件是cgroup/cpu/cpu.shares<br>
 
-    [unicorn@unicorn docker_engine]$ docker run --rm --cpu-shares 1600 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.shares"
+    $ docker run --rm --cpu-shares 1600 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.shares"
     1600
+
+通过--cpu-shares可以设置容器使用CPU的权重，这个权重设置是针对cpu密集型的进程的。如果某个容器中的进程是空闲状态，那么其他容器就能够使用本该由空闲容器占用的cpu资源。也就是说，只有当两个或多个容器都试图占用整个cpu资源时，--cpu-shares设置才会有效。
+我们使用如下命令来创建两个容器，它们的权重分别为1024和512。
+
+    [unicorn@unicorn ~]$ docker run -ti --cpu-shares 1024 ubuntu:memory stress -c 2
+    stress: info: [1] dispatching hogs: 2 cpu, 0 io, 0 vm, 0 hdd
+
+    [unicorn@unicorn ~]$ docker run -ti --cpu-shares 512 ubuntu:memory stress -c 2
+    stress: info: [1] dispatching hogs: 2 cpu, 0 io, 0 vm, 0 hdd
+
+从如下log可以看到，两个容器占用cpu的比例为2:1的关系。
+
+    top - 07:46:43 up 2 days, 23:44,  1 user,  load average: 3.84, 1.95, 0.83
+    Tasks: 119 total,   5 running, 114 sleeping,   0 stopped,   0 zombie
+    %Cpu(s): 98.3 us,  0.8 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.8 si,  0.0 st
+    KiB Mem :  4050284 total,   500276 free,   480636 used,  3069372 buff/cache
+    KiB Swap:  8388604 total,  8246648 free,   141956 used.  3400212 avail Mem 
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND                                          
+    25534 root      20   0    7312     92      0 R  66.7  0.0   1:46.55 stress                                           
+    25533 root      20   0    7312     92      0 R  66.3  0.0   1:46.04 stress                                           
+    25496 root      20   0    7312     96      0 R  33.3  0.0   0:56.42 stress                                           
+    25497 root      20   0    7312     96      0 R  33.3  0.0   0:56.67 stress
 
 ###(6)--cpu-period=0
 对应的cgroup文件是cgroup/cpu/cpu.cfs_period_us
