@@ -260,6 +260,16 @@
     [unicorn@unicorn ~]$ docker run -ti --cpuset-cpus 1 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpuset/cpuset.cpus"
     1
 
+    top - 10:39:54 up 6 min,  0 users,  load average: 0.43, 0.54, 0.35
+    Tasks:  98 total,   2 running,  96 sleeping,   0 stopped,   0 zombie
+    %Cpu0  :  0.3 us,  0.3 sy,  0.0 ni, 99.3 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+    %Cpu1  :100.0 us,  0.0 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+    KiB Mem :  4050284 total,  3095568 free,   279064 used,   675652 buff/cache
+    KiB Swap:        0 total,        0 free,        0 used.  3517736 avail Mem 
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND                                          
+    10380 root      20   0    7312     96      0 R 100.0  0.0   0:27.16 stress
+
+
 ###(8)--cpuset-mems=""
 对应的cgroup文件是cgroup/cpuset/cpuset.mems
 
