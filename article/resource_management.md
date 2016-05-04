@@ -237,9 +237,23 @@
 ###(6)--cpu-period=0
 对应的cgroup文件是cgroup/cpu/cpu.cfs_period_us
 
-    [unicorn@unicorn ~]$ docker run -ti --cpu-period 50000 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_period_us"
+    $ docker run -ti --cpu-period 50000 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_period_us"
     50000
 
+
+    $ docker run -ti --cpu-period=50000 --cpu-quota=25000 ubuntu:memory stress -c 1
+    stress: info: [1] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
+
+
+    top - 10:36:55 up 6 min,  0 users,  load average: 0.49, 0.21, 0.10
+    Tasks:  68 total,   2 running,  66 sleeping,   0 stopped,   0 zombie
+    %Cpu(s): 49.3 us,  0.0 sy,  0.0 ni, 50.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+    KiB Mem :  4050748 total,  3063952 free,   124280 used,   862516 buff/cache
+    KiB Swap:        0 total,        0 free,        0 used.  3728860 avail Mem 
+    PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                                           
+    770 root      20   0    7312     96      0 R 50.0  0.0   0:38.06 stress
+
+  
 ###(7)--cpuset-cpus=""
 对应的cgroup文件是cgroup/cpuset/cpuset.cpus
 
