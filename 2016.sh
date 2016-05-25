@@ -20,7 +20,7 @@ otherparameter="--since 2016-1-1 --pretty=format:%ae"
 mkdir -p $TOPDIR
 #TOPDIR=/root/patch/community/
 #communitylist="ltp libnetwork libcontainer"
-communitylist="kernel docker runc ltp swarm distribution libnetwork machine kpatch logrus coder mcelog syslog-ng notary rancheros rancheros-kernel rancheros-images rancher-docker-from-scratch rancher-os-base containerd"
+communitylist="kernel docker runc runtime-spec ltp swarm distribution libnetwork machine kpatch logrus coder mcelog syslog-ng notary rancheros rancheros-kernel rancheros-images rancher-docker-from-scratch rancher-os-base containerd"
 
 for i in $communitylist
 do
@@ -52,6 +52,7 @@ do
 		"ltp" ) repo="https://github.com/linux-test-project/ltp";;
 		"mcelog" ) repo="https://git.kernel.org/pub/scm/utils/cpu/mce/mcelog.git";;
 		"runc" ) repo="https://github.com/opencontainers/runc.git";;
+		"runtime-spec" ) repo="https://github.com/opencontainers/runtime-spec.git";;
 		"swarm" ) repo="https://github.com/docker/swarm.git";;
 		"docker-bench-security" ) repo="https://github.com/docker/docker-bench-security.git";;
 		"notary" ) repo="https://github.com/docker/notary.git";;
