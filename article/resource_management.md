@@ -13,8 +13,8 @@
 | `--cpuset-cpus=""`         | 限制容器使用的cpu核(0-3, 0,1)                                                                                                     |
 | `--cpuset-mems=""`         | 限制容器使用的内存节点，该限制仅仅在NUMA系统中生效。                                                     |
 | `--cpu-quota=0`            | 完全公平算法中的quota值                                                                                             |
-| `--blkio-weight=0`         | Block IO weight (relative weight) accepts a weight value between 10 and 1000.                                                                   |
-| `--blkio-weight-device=""` | Block IO weight (relative device weight, format: `DEVICE_NAME:WEIGHT`)                                                                          |
+| `--blkio-weight=0`         | 块设备IO相对权重，取值在10值1000之间的整数（包含10和1000）                                                                   |
+| `--blkio-weight-device=""` | 指定的块设备的IO相对权重(格式: `设备名称:权重值`)                                                                          |
 | `--device-read-bps=""`     | Limit read rate from a device (format: `<device-path>:<number>[<unit>]`). Number is a positive integer. Unit can be one of `kb`, `mb`, or `gb`. |
 | `--device-write-bps=""`    | Limit write rate to a device (format: `<device-path>:<number>[<unit>]`). Number is a positive integer. Unit can be one of `kb`, `mb`, or `gb`.  |
 | `--device-read-iops="" `   | Limit read rate (IO per second) from a device (format: `<device-path>:<number>`). Number is a positive integer.                                 |
