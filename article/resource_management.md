@@ -6,9 +6,9 @@
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `-m`, `--memory=""`        | 内存使用限制 (格式: `<数字>[<单位>]`)。 需要使用整数，对应的单位是`b`, `k`, `m`, `g`中的一个。最小取值是4M。              |
 | `--memory-swap=""`         | 总内存使用限制 (物理内存 + 交换分区, 格式: `<数字>[<单位>]`)需要使用整数，对应的单位是`b`, `k`, `m`, `g`中的一个。         |
-| `--memory-reservation=""`  | 内存软限制(格式: `<数字>[<单位>]`)。 需要使用正整数，对应的单位是`b`, `k`, `m`, `g`中的一个。                         |
-| `--kernel-memory=""`       | Kernel memory limit (format: `<number>[<unit>]`). Number is a positive integer. Unit can be one of `b`, `k`, `m`, or `g`. Minimum is 4M.        |
-| `-c`, `--cpu-shares=0`     | CPU shares (relative weight)                                                                                                                    |
+| `--memory-reservation=""`  | 内存软限制 (格式: `<数字>[<单位>]`)。 需要使用正整数，对应的单位是`b`, `k`, `m`, `g`中的一个。                         |
+| `--kernel-memory=""`       | 内核内存限制 (格式: `<数字>[<单位>]`)。 需要使用正整数，对应的单位是`b`, `k`, `m`, `g`中的一个。最小取值是4M。       |
+| `-c`, `--cpu-shares=0`     | CPU份额 (相对权重)                                                                                                                    |
 | `--cpu-period=0`           | Limit the CPU CFS (Completely Fair Scheduler) period                                                                                            |
 | `--cpuset-cpus=""`         | CPUs in which to allow execution (0-3, 0,1)                                                                                                     |
 | `--cpuset-mems=""`         | Memory nodes (MEMs) in which to allow execution (0-3, 0,1). Only effective on NUMA systems.                                                     |
@@ -21,7 +21,7 @@
 | `--device-write-iops="" `  | Limit write rate (IO per second) to a device (format: `<device-path>:<number>`). Number is a positive integer.                                  |
 | `--oom-kill-disable=false` | Whether to disable OOM Killer for the container or not.                                                                                         |
 | `--memory-swappiness=""`   | Tune a container's memory swappiness behavior. Accepts an integer between 0 and 100.                                                            |
-| `--shm-size=""`            | Size of `/dev/shm`. The format is `<number><unit>`. `number` must be greater than `0`. Unit is optional and can be `b` (bytes), `k` (kilobytes), `m` (megabytes), or `g` (gigabytes). If you omit the unit, the system uses bytes. If you omit the size entirely, the system uses `64m`. |
+
 
 ##4.docker资源管理接口详解
 ###(1)-m, --memory=""
