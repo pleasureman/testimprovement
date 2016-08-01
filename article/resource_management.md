@@ -6,7 +6,7 @@
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `-m`, `--memory=""`        | 内存使用限制 (格式: `<数字>[<单位>]`)。 需要使用整数，对应的单位是`b`, `k`, `m`, `g`中的一个。最小取值是4M。              |
 | `--memory-swap=""`         | 总内存使用限制 (物理内存 + 交换分区, 格式: `<数字>[<单位>]`)需要使用整数，对应的单位是`b`, `k`, `m`, `g`中的一个。         |
-| `--memory-reservation=""`  | Memory soft limit (format: `<number>[<unit>]`). Number is a positive integer. Unit can be one of `b`, `k`, `m`, or `g`.                         |
+| `--memory-reservation=""`  | 内存软限制(格式: `<数字>[<单位>]`)。 需要使用正整数，对应的单位是`b`, `k`, `m`, `g`中的一个。                         |
 | `--kernel-memory=""`       | Kernel memory limit (format: `<number>[<unit>]`). Number is a positive integer. Unit can be one of `b`, `k`, `m`, or `g`. Minimum is 4M.        |
 | `-c`, `--cpu-shares=0`     | CPU shares (relative weight)                                                                                                                    |
 | `--cpu-period=0`           | Limit the CPU CFS (Completely Fair Scheduler) period                                                                                            |
