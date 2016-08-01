@@ -1,5 +1,7 @@
 #docker资源管理探秘
-##1.docker资源管理接口简介
+##1.docker资源管理简介
+##2.cgroup子系统介绍
+##3.docker资源管理接口简介
 | 选项                     |  描述                                                                                                                                    |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `-m`, `--memory=""`        | 内存使用限制 (格式: `<数字>[<单位>]`)。 需要使用整数，对应的单位是`b`, `k`, `m`, `g`中的一个。最小取值是4M。              |
@@ -21,8 +23,7 @@
 | `--memory-swappiness=""`   | Tune a container's memory swappiness behavior. Accepts an integer between 0 and 100.                                                            |
 | `--shm-size=""`            | Size of `/dev/shm`. The format is `<number><unit>`. `number` must be greater than `0`. Unit is optional and can be `b` (bytes), `k` (kilobytes), `m` (megabytes), or `g` (gigabytes). If you omit the unit, the system uses bytes. If you omit the size entirely, the system uses `64m`. |
 
-##2.cgroups简介
-##3.docker资源管理接口详解
+##4.docker资源管理接口详解
 ###(1)-m, --memory=""
 可以限制容器使用的内存量，对应的cgroup文件是cgroup/memory/memory.limit_in_bytes。<br>
 取值范围:大于等于4M<br>
@@ -368,8 +369,8 @@
     unicorn@unicorn:/sys/fs/cgroup/memory$ docker run --memory-swappiness=100 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
     100
     
-##4.总结
-##5.作者简介
+##5.总结
+##6.作者简介
 ##参考资料：
 http://www.tuicool.com/articles/zIJrEjn<br>
 http://www.cnblogs.com/hustcat/p/3980244.html<br>
