@@ -4,10 +4,10 @@
 ##3.docker资源管理接口简介
 | 选项                     |  描述                                                                                                                                    |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `-m`, `--memory=""`        | 内存使用限制 (格式: `<数字>[<单位>]`)。 需要使用整数，对应的单位是`b`, `k`, `m`, `g`中的一个。最小取值是4M。              |
-| `--memory-swap=""`         | 总内存使用限制 (物理内存 + 交换分区, 格式: `<数字>[<单位>]`)需要使用整数，对应的单位是`b`, `k`, `m`, `g`中的一个。         |
-| `--memory-reservation=""`  | 内存软限制 (格式: `<数字>[<单位>]`)。 需要使用正整数，对应的单位是`b`, `k`, `m`, `g`中的一个。                         |
-| `--kernel-memory=""`       | 内核内存限制 (格式: `<数字>[<单位>]`)。 需要使用正整数，对应的单位是`b`, `k`, `m`, `g`中的一个。最小取值是4M。       |
+| `-m`, `--memory=""`        | 内存使用限制 (格式: `<数字>[<单位>]`)。 数字需要使用整数，对应的单位是`b`, `k`, `m`, `g`中的一个。最小取值是4M。              |
+| `--memory-swap=""`         | 总内存使用限制 (物理内存 + 交换分区, 格式: `<数字>[<单位>]`)数字需要使用整数，对应的单位是`b`, `k`, `m`, `g`中的一个。         |
+| `--memory-reservation=""`  | 内存软限制 (格式: `<数字>[<单位>]`)。 数字需要使用正整数，对应的单位是`b`, `k`, `m`, `g`中的一个。                         |
+| `--kernel-memory=""`       | 内核内存限制 (格式: `<数字>[<单位>]`)。 数字需要使用正整数，对应的单位是`b`, `k`, `m`, `g`中的一个。最小取值是4M。       |
 | `-c`, `--cpu-shares=0`     | CPU份额 (相对权重)                                                                                                                    |
 | `--cpu-period=0`           | 完全公平算法中的period值                                                                                            |
 | `--cpuset-cpus=""`         | 限制容器使用的cpu核(0-3, 0,1)                                                                                                     |
@@ -15,10 +15,10 @@
 | `--cpu-quota=0`            | 完全公平算法中的quota值                                                                                             |
 | `--blkio-weight=0`         | 块设备IO相对权重，取值在10值1000之间的整数（包含10和1000）                                                                   |
 | `--blkio-weight-device=""` | 指定的块设备的IO相对权重(格式: `设备名称:权重值`)                                                                          |
-| `--device-read-bps=""`     | Limit read rate from a device (format: `<device-path>:<number>[<unit>]`). Number is a positive integer. Unit can be one of `kb`, `mb`, or `gb`. |
-| `--device-write-bps=""`    | Limit write rate to a device (format: `<device-path>:<number>[<unit>]`). Number is a positive integer. Unit can be one of `kb`, `mb`, or `gb`.  |
-| `--device-read-iops="" `   | Limit read rate (IO per second) from a device (format: `<device-path>:<number>`). Number is a positive integer.                                 |
-| `--device-write-iops="" `  | Limit write rate (IO per second) to a device (format: `<device-path>:<number>`). Number is a positive integer.                                  |
+| `--device-read-bps=""`     | 限制对某个设备的读取速率 (格式: `<设备路径>:<数字>[<单位>]`)，数字需要使用正整数，单位是`kb`, `mb`, or `gb`中的一个。 |
+| `--device-write-bps=""`    | 限制对某个设备的写速率 (格式: `<设备路径>:<数字>[<单位>]`)，数字需要使用正整数，单位是`kb`, `mb`, or `gb`中的一个。 |
+| `--device-read-iops="" `   | 限制对某个设备每秒IO的读取速率(格式: `<设备路径>:<数字>`)，数字需要使用正整数。                                 |
+| `--device-write-iops="" `  | 限制对某个设备每秒IO的写速率(格式: `<设备路径>:<数字>`)，数字需要使用正整数。                                  |
 | `--oom-kill-disable=false` | Whether to disable OOM Killer for the container or not.                                                                                         |
 | `--memory-swappiness=""`   | Tune a container's memory swappiness behavior. Accepts an integer between 0 and 100.                                                            |
 
