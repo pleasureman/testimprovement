@@ -20,7 +20,7 @@
 | `--device-read-iops="" `   | 限制对某个设备每秒IO的读取速率(格式: `<设备路径>:<数字>`)，数字需要使用正整数。                                 |
 | `--device-write-iops="" `  | 限制对某个设备每秒IO的写速率(格式: `<设备路径>:<数字>`)，数字需要使用正整数。                                  |
 | `--oom-kill-disable=false` | 内存耗尽时是否杀掉容器                                                                                         |
-| `--memory-swappiness=""`   | Tune a container's memory swappiness behavior. Accepts an integer between 0 and 100.                                                            |
+| `--memory-swappiness=""`   | 调节容器内存使用交换分区的选项，取值为0和100之间的整数(含0和100)。                                                            |
 
 
 ##4.docker资源管理接口详解
