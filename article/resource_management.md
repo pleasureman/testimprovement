@@ -19,7 +19,7 @@
 | `--device-write-bps=""`    | 限制对某个设备的写速率 (格式: `<设备路径>:<数字>[<单位>]`)，数字需要使用正整数，单位是`kb`, `mb`, or `gb`中的一个。 |
 | `--device-read-iops="" `   | 限制对某个设备每秒IO的读取速率(格式: `<设备路径>:<数字>`)，数字需要使用正整数。                                 |
 | `--device-write-iops="" `  | 限制对某个设备每秒IO的写速率(格式: `<设备路径>:<数字>`)，数字需要使用正整数。                                  |
-| `--oom-kill-disable=false` | Whether to disable OOM Killer for the container or not.                                                                                         |
+| `--oom-kill-disable=false` | 内存耗尽时是否杀掉容器                                                                                         |
 | `--memory-swappiness=""`   | Tune a container's memory swappiness behavior. Accepts an integer between 0 and 100.                                                            |
 
 
