@@ -243,10 +243,12 @@
     $ docker run -ti --cpu-period 50000 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_period_us"
     50000
 
+--cpu-period和--cpu-quota两个接口需要一起使用，以下容器设置了--cpu-period值为50000,--cpu-quota的值为25000。该容器在运行时可以获取50%的cpu资源。
 
     $ docker run -ti --cpu-period=50000 --cpu-quota=25000 ubuntu:memory stress -c 1
     stress: info: [1] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
 
+从log的最后一行中可以看出，该容器的cpu使用率为50.0%。
 
     top - 10:36:55 up 6 min,  0 users,  load average: 0.49, 0.21, 0.10
     Tasks:  68 total,   2 running,  66 sleeping,   0 stopped,   0 zombie
