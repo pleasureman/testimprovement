@@ -236,7 +236,9 @@
     25497 root      20   0    7312     96      0 R  33.3  0.0   0:56.67 stress
 
 ###(6)--cpu-period=0
-对应的cgroup文件是cgroup/cpu/cpu.cfs_period_us
+内核默认的linux 调度CFS（完全公平调度器）周期为100ms,我们通过--cpu-period来设置容器对CPU的使用周期，同时--cpu-period接口需要和--cpu-quota接口一起来使用。--cpu-quota接口设置了CPU的使用值。当--cpu-quota的值为0，容器对cpu的使用率为100%，CFS(完全公平调度器) 是内核默认使用的调度方式，为运行的进程分配CPU资源。对于多核CPU，根据需要调整--cpu-quota。
+
+对应的cgroup文件是cgroup/cpu/cpu.cfs_period_us。以下命令创建了一个容器，同时设置了该容器对cpu的使用时间为50000（单位为微秒），并验证了该接口对应的cgroup文件对应的值。
 
     $ docker run -ti --cpu-period 50000 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_period_us"
     50000
