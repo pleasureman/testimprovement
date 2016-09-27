@@ -222,7 +222,7 @@
     [unicorn@unicorn ~]$ docker run -ti --cpu-shares 512 ubuntu:memory stress -c 2
     stress: info: [1] dispatching hogs: 2 cpu, 0 io, 0 vm, 0 hdd
 
-从如下log可以看到，两个容器占用cpu的比例为2:1的关系。
+从如下log可以看到，每个容器会产生两个相关的进程，第一个容器产生的两个进程PID分别为25534和25533。CPU占用率分别是66.7%和66.3%，第二个容器产生的两个进程PID分别为25496和25497，两个进程的CPU占用率均为33.3%。第一个容器产生的两个进程CPU的占用率和第二个容器产生的两个进程CPU的占用率约为2:1的关系，测试结果与预期结果相符。
 
     top - 07:46:43 up 2 days, 23:44,  1 user,  load average: 3.84, 1.95, 0.83
     Tasks: 119 total,   5 running, 114 sleeping,   0 stopped,   0 zombie
