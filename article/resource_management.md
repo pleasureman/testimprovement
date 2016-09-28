@@ -39,7 +39,7 @@
 
 本机内存环境为：
 
-    free
+    $ free
               total        used        free      shared  buff/cache   available
     Mem:        4050284      254668     3007564      180484      788052     3560532
     Swap:             0           0           0
@@ -48,13 +48,13 @@
 
 我们使用stress工具来证明内存限定已经生效。stress是一个压力测试套，如下命令将要在容器内创建一个进程，在该进程中不断的执行占用内存(malloc)和释放内存(free)的操作。在理论上如果占用的内存少于限定值，容器会工作正常。注意，如果试图使用边界值，即试图在容器中使用stress工具占用100M内存，这个操作通常会失败，因为容器中还有其他进程在运行。
 
-    [unicorn@unicorn ~]$ docker run -ti -m 100M ubuntu:memory stress --vm 1 --vm-bytes 50M
+    $ docker run -ti -m 100M ubuntu:memory stress --vm 1 --vm-bytes 50M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
 当在限定内存为100M的容器中，试图占用50M的内存时，容器工作正常。
 如下所示，当试图占用超过100M内存时，必然导致容器异常。
 
-    [unicorn@unicorn ~]$ docker run -ti -m 100m ubuntu:memory stress --vm 1 --vm-bytes 101M
+    $ docker run -ti -m 100m ubuntu:memory stress --vm 1 --vm-bytes 101M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
     stress: FAIL: [1] (416) <-- worker 6 got signal 9
     stress: WARN: [1] (418) now reaping child worker processes
@@ -80,7 +80,7 @@
 
 之后再次尝试占用大于限定的内存。
 
-    [unicorn@unicorn ~]$ docker run -ti -m 100m ubuntu:memory stress --vm 1 --vm-bytes 101M
+    $ docker run -ti -m 100m ubuntu:memory stress --vm 1 --vm-bytes 101M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
 在加入交换分区后容器工作正常，这意味着有部分存储在内存中的信息被转移到了交换分区中了。
@@ -171,7 +171,7 @@
 
 如下所示，当尝试占用的内存数量超过memory-swap值时，容器出现异常；当占用内存值大于memory限定值但小于memory-swap时，容器运行正常。
 
-    [unicorn@unicorn ~]$ docker run -ti -m 100m --memory-swap 200m ubuntu:memory stress --vm 1 --vm-bytes 201M
+    $ docker run -ti -m 100m --memory-swap 200m ubuntu:memory stress --vm 1 --vm-bytes 201M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
     stress: FAIL: [1] (416) <-- worker 7 got signal 9
     stress: WARN: [1] (418) now reaping child worker processes
@@ -204,7 +204,7 @@
 ###(4)--kernel-memory="" ????????????
 对应的cgroup文件cgroup/memory/memory.kmem.limit_in_bytes
 
-    [unicorn@unicorn ~]$ docker run -ti --kernel-memory 50M rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
+    $ docker run -ti --kernel-memory 50M rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
     52428800
 
 ###(5)-c, --cpu-shares=0
@@ -216,10 +216,10 @@
 通过--cpu-shares可以设置容器使用CPU的权重，这个权重设置是针对cpu密集型的进程的。如果某个容器中的进程是空闲状态，那么其他容器就能够使用本该由空闲容器占用的cpu资源。也就是说，只有当两个或多个容器都试图占用整个cpu资源时，--cpu-shares设置才会有效。
 我们使用如下命令来创建两个容器，它们的权重分别为1024和512。
 
-    [unicorn@unicorn ~]$ docker run -ti --cpu-shares 1024 ubuntu:memory stress -c 2
+    $ docker run -ti --cpu-shares 1024 ubuntu:memory stress -c 2
     stress: info: [1] dispatching hogs: 2 cpu, 0 io, 0 vm, 0 hdd
 
-    [unicorn@unicorn ~]$ docker run -ti --cpu-shares 512 ubuntu:memory stress -c 2
+    $ docker run -ti --cpu-shares 512 ubuntu:memory stress -c 2
     stress: info: [1] dispatching hogs: 2 cpu, 0 io, 0 vm, 0 hdd
 
 从如下log可以看到，每个容器会产生两个相关的进程，第一个容器产生的两个进程PID分别为25534和25533。CPU占用率分别是66.7%和66.3%，第二个容器产生的两个进程PID分别为25496和25497，两个进程的CPU占用率均为33.3%。第一个容器产生的两个进程CPU的占用率和第二个容器产生的两个进程CPU的占用率约为2:1的关系，测试结果与预期结果相符。
@@ -264,7 +264,7 @@
 
 在多核CPU的虚拟机中，启动一个容器，设置容器只使用cpu核1，并查看该接口对应的cgroup文件会被修改为1，log如下所示。
 
-    [unicorn@unicorn ~]$ docker run -ti --cpuset-cpus 1 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpuset/cpuset.cpus"
+    $ docker run -ti --cpuset-cpus 1 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpuset/cpuset.cpus"
     1
 
     top - 10:39:54 up 6 min,  0 users,  load average: 0.43, 0.54, 0.35
@@ -280,21 +280,21 @@
 ###(8)--cpuset-mems="" ????与贾鹏讨论
 对应的cgroup文件是cgroup/cpuset/cpuset.mems
 
-    [unicorn@unicorn ~]$ docker run -ti --cpuset-mems=0 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
+    $ docker run -ti --cpuset-mems=0 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
     0
 
 ###(9)--cpu-quota=0
 对应的cgroup文件是cgroup/cpu/cpu.cfs_quota_us
 
-    [unicorn@unicorn docker_engine]$ docker run --rm --cpu-quota 1600 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
+    $ docker run --rm --cpu-quota 1600 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
     1600
 
-请参考--cpu-period选项。
+--cpu-quota接口设置了CPU的使用值，通常情况下它需要和--cpu-period接口一起来使用。具体使用方法请参考--cpu-period选项。
 
 ###(10)--blkio-weight=0 ???
 对应的cgroup文件cgroup/blkio/blkio.weight<br>
 
-    root@p1:/tmp/root/2016_05_04_11_36_21# docker run -ti --privileged --device=/dev/sda:/dev/sda --device=/dev/sdb:/dev/sdb --rm --blkio-weight 100 rnd-dockerhub.huawei.com/official/ubuntu bash
+    $ docker run -ti --privileged --device=/dev/sda:/dev/sda --device=/dev/sdb:/dev/sdb --rm --blkio-weight 100 rnd-dockerhub.huawei.com/official/ubuntu bash
     root@7f9a9701459c:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/sdb bs=5M count=1000
 
 ###(11)--blkio-weight-device=""
@@ -302,12 +302,12 @@
 ###(12)--device-read-bps=""
 对应的cgroup文件是cgroup/blkio/blkio.throttle.read_bps_device<br>
 
-    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mB     rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_bps_device"
+    $ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mB     rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_bps_device"
     8:0 1048576
 
 限速操作：<br>
 
-    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mB     rnd-dockerhub.huawei.com/official/ubuntu:stress bash
+    $ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mB     rnd-dockerhub.huawei.com/official/ubuntu:stress bash
     root@df1de679fae4:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=5M count=1
     1+0 records in
     1+0 records out
@@ -318,12 +318,12 @@
 ###(13)--device-write-bps=""
 对应的cgroup文件是cgroup/blkio/blkio.throttle.write_bps_device<br>
 
-    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB         rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_bps_device"
+    $ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB         rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_bps_device"
     8:0 1048576
 
 限速操作：<br>
 
-    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB         rnd-dockerhub.huawei.com/official/ubuntu:stress bash
+    $ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB         rnd-dockerhub.huawei.com/official/ubuntu:stress bash
     root@bbf49f46f803:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/sda bs=5M count=1
     1+0 records in
     1+0 records out
@@ -337,34 +337,33 @@
 ###(14)--device-read-iops=""  ??????
 对应的cgroup文件是cgroup/blkio/blkio.throttle.read_iops_device<br>
 
-    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-read-iops /dev/sda:400 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_iops_device"
+    $ docker run -it --device /dev/sda:/dev/sda --device-read-iops /dev/sda:400 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_iops_device"
     8:0 400
 
 ###(15)--device-write-iops="" ??????
 对应的cgroup文件是cgroup/blkio/blkio.throttle.write_iops_device<br>
 
-    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_iops_device"
+    $ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_iops_device"
     8:0 400
 
-    [unicorn@unicorn ~]$ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:100 --device-read-iops /dev/sda:100 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=1b count=1000"
+    $ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:100 --device-read-iops /dev/sda:100 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=1b count=1000"
     1000+0 records in
     1000+0 records out
     512000 bytes (512 kB) copied, 9.89291 s, 51.8 kB/s
-    [unicorn@unicorn ~]$
 
 ###(16)--oom-kill-disable=false
 对应的cgroup文件是cgroup/memory/memory.oom_control<br>
 
-    unicorn@unicorn:~$  docker run -m 20m --oom-kill-disable=true rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'cat /sys/fs/cgroup/memory/memory.oom_control'
+    $  docker run -m 20m --oom-kill-disable=true rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'cat /sys/fs/cgroup/memory/memory.oom_control'
     oom_kill_disable 1
     under_oom 0
 
 测试：<br>
 
-    unicorn@unicorn:~$ docker run -m 20m --oom-kill-disable=false rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'x=a; while true; do x=$x$x$x$x; done'
-    unicorn@unicorn:~$ echo $?
+    $ docker run -m 20m --oom-kill-disable=false rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'x=a; while true; do x=$x$x$x$x; done'
+    $ echo $?
     137
-    unicorn@unicorn:~$ docker run -m 20m --oom-kill-disable=true rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'x=a; while true; do x=$x$x$x$x; done'
+    $ docker run -m 20m --oom-kill-disable=true rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'x=a; while true; do x=$x$x$x$x; done'
        
     
     
@@ -372,7 +371,7 @@
 ###(17)--memory-swappiness=""
 对应的cgroup文件是cgroup/memory/memory.swappiness
 
-    unicorn@unicorn:/sys/fs/cgroup/memory$ docker run --memory-swappiness=100 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
+    $ docker run --memory-swappiness=100 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
     100
     
 ##5.总结
