@@ -292,10 +292,19 @@
 --cpu-quota接口设置了CPU的使用值，通常情况下它需要和--cpu-period接口一起来使用。具体使用方法请参考--cpu-period选项。
 
 ###(10)--blkio-weight=0 ???
-对应的cgroup文件cgroup/blkio/blkio.weight<br>
+通过--blkio-weight接口可以设置容器块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。默认情况下，所有容器都会得到相同的权重值(500)。对应的cgroup文件为cgroup/blkio/blkio.weight。以下命令设置了容器块设备IO权重设置为10，在log中可以看到对应的cgroup文件的值为10。
 
-    $ docker run -ti --privileged --device=/dev/sda:/dev/sda --device=/dev/sdb:/dev/sdb --rm --blkio-weight 100 rnd-dockerhub.huawei.com/official/ubuntu bash
-    root@7f9a9701459c:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/sdb bs=5M count=1000
+    $ docker run -ti --rm --blkio-weight 10 rnd-dockerhub.huawei.com/official/ubuntu bash -c "cat /sys/fs/cgroup/blkio/blkio.weight"
+    10
+
+通过以下两个命令来创建不同块设备IO权重值的容器。
+
+    $ docker run -it --name c1 --blkio-weight 300 ubuntu:14.04 /bin/bash
+    $ docker run -it --name c2 --blkio-weight 600 ubuntu:14.04 /bin/bash
+
+如果在两个容器中同时进行块设备操作（例如以下命令）的话，你会发现所花费的时间和容器所拥有的块设备IO权重成正比。
+
+    $ time dd if=/mnt/zerofile of=test.out bs=1M count=1024 oflag=direct
 
 ###(11)--blkio-weight-device=""
 对应的cgroup文件cgroup/blkio/blkio.weight_device<br>
