@@ -282,12 +282,19 @@
     10380 root      20   0    7312     96      0 R 100.0  0.0   0:27.16 stress
 
 
-###(8)--cpuset-mems="" ????与贾鹏讨论
-待补充
-对应的cgroup文件是cgroup/cpuset/cpuset.mems
+###(8)--cpuset-mems=""
+该接口对应的cgroup文件是cgroup/cpuset/cpuset.mems
 
     $ docker run -ti --cpuset-mems=0 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
     0
+
+以下命令将限制容器进程使用内存节点1、3的内存。
+
+    $ docker run -it --cpuset-mems="1,3" ubuntu:14.04 bash
+    
+以下命令将限制容器进程使用内存节点0、1、2的内存。
+
+    $ docker run -it --cpuset-mems="0-2" ubuntu:14.04 bash
 
 ###(9)--cpu-quota=0
 对应的cgroup文件是cgroup/cpu/cpu.cfs_quota_us
