@@ -204,7 +204,7 @@
 ###(4)--kernel-memory="" ????????????
 对应的cgroup文件cgroup/memory/memory.kmem.limit_in_bytes
 
-    $ docker run -ti --kernel-memory 50M rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
+    $ docker run -ti --kernel-memory 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
     52428800
 
 ###(5)-c, --cpu-shares=0
