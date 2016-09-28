@@ -318,7 +318,7 @@
     $ stat -c %t:%T /dev/sda
     8:0
 
-如果--blkio-weight-device接口和--blkio-weight接口一起使用，那么docker会使用--blkio-weight作为默认的权重值，然后使用--blkio-weight-device值来设定指定设备的权重值，而早先设置的默认权重值将不在这个特定设备中生效。
+如果--blkio-weight-device接口和--blkio-weight接口一起使用，那么docker会使用--blkio-weight值作为默认的权重值，然后使用--blkio-weight-device值来设定指定设备的权重值，而早先设置的默认权重值将不在这个特定设备中生效。
 
     $ docker run --rm --blkio-weight 300 --blkio-weight-device "/dev/sda:500" ubuntu bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
     8:0 500
@@ -326,20 +326,20 @@
 通过以上log可以看出，当--blkio-weight接口和--blkio-weight-device接口一起使用的时候，/dev/sda设备的权重值由--blkio-weight-device设定的值来决定。
 
 ###(12)--device-read-bps=""
-对应的cgroup文件是cgroup/blkio/blkio.throttle.read_bps_device<br>
+该接口用来限制指定设备的读取速率，对应的cgroup文件是cgroup/blkio/blkio.throttle.read_bps_device<br>
 
     $ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mB     rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_bps_device"
     8:0 1048576
 
-限速操作：<br>
+以上log中显示8:0 1000,8:0表示/dev/sda, 该接口对应的cgroup文件的值为1048576，是1MB所对应的字节数，即1024的平方。
 
-    $ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mB     rnd-dockerhub.huawei.com/official/ubuntu:stress bash
+创建容器时通过--device-read-pbs接口设置设备读取速度为1MB/s。从以下log中可以看出,读取速度被限定为1.0MB/s,与预期结果相符合。
+
+    $ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mB ubuntu:14.04 bash
     root@df1de679fae4:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=5M count=1
     1+0 records in
     1+0 records out
     5242880 bytes (5.2 MB) copied, 5.00464 s, 1.0 MB/s
-    $root@df1de679fae4:/# 
-    
 
 ###(13)--device-write-bps=""
 对应的cgroup文件是cgroup/blkio/blkio.throttle.write_bps_device<br>
