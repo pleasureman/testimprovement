@@ -80,7 +80,7 @@
 
 之后再次尝试占用大于限定的内存。
 
-    $ docker run -ti -m 100m ubuntu:memory stress --vm 1 --vm-bytes 101M
+    $ docker run -ti -m 100m ubuntu:14.04 stress --vm 1 --vm-bytes 101M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
 在加入交换分区后容器工作正常，这意味着有部分存储在内存中的信息被转移到了交换分区中了。
@@ -93,7 +93,7 @@
 
 运行如下命令来确认容器交换分区的资源管理对应的cgroup文件。
 
-    $ docker run -ti -m 300M --memory-swap 1G ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
+    $ docker run -ti -m 300M --memory-swap 1G ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     1073741824
 
 可以看到，当memory-swap限定为1G时，对应的cgroup文件数值为1073741824，该数值的单位为kB，即1073741824kB等于1G。
@@ -141,37 +141,37 @@
 列子：
 以下命令没有对内存和交换分区进行限制，这意味着容器可以使用无限多的内存和交换分区。
 
-    $ docker run -it ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes" 
+    $ docker run -it ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes" 
     9223372036854771712
     9223372036854771712
     
 以下命令只限定了内存使用量300M，而没有限制交换分区使用量(-1意味着不做限制)。
 
-    $ docker run -it -m 300M --memory-swap -1 ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
+    $ docker run -it -m 300M --memory-swap -1 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     314572800
     9223372036854771712
     
 以下命令仅仅限定了内存使用量，这意味着容器能够使用300M的内存和300M的交换分区。在默认情况下，总的内存限定值(内存+交换分区)被设置为了内存限定值的两倍。
 
-    $ docker run -it -m 300M ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
+    $ docker run -it -m 300M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     314572800
     629145600
 
 以下命令限定了内存和交换分区的使用量，容器可以使用300M的内存和700M的交换分区。
 
-    $ docker run -it -m 300M --memory-swap 1G ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
+    $ docker run -it -m 300M --memory-swap 1G ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     314572800
     1073741824
 
 当memory-swap限定值低于memory限定值时，系统提示"Minimum memoryswap limit should be larger than memory limit"错误。
 
-    $ docker run -it -m 300M --memory-swap 200M ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat     /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
+    $ docker run -it -m 300M --memory-swap 200M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat     /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     docker: Error response from daemon: Minimum memoryswap limit should be larger than memory limit, see usage..
     See 'docker run --help'.
 
 如下所示，当尝试占用的内存数量超过memory-swap值时，容器出现异常；当占用内存值大于memory限定值但小于memory-swap时，容器运行正常。
 
-    $ docker run -ti -m 100m --memory-swap 200m ubuntu:memory stress --vm 1 --vm-bytes 201M
+    $ docker run -ti -m 100m --memory-swap 200m ubuntu:14.04 stress --vm 1 --vm-bytes 201M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
     stress: FAIL: [1] (416) <-- worker 7 got signal 9
     stress: WARN: [1] (418) now reaping child worker processes
@@ -185,7 +185,7 @@
 单位：b,k,m,g<br>
 对应的cgroup文件是cgroup/memory/memory.soft_limit_in_bytes
 
-    $ docker run -ti --memory-reservation 50M rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/memory/memory.soft_limit_in_bytes"
+    $ docker run -ti --memory-reservation 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.soft_limit_in_bytes"
     52428800
 
 通常情况下，容器能够使用的内存量仅仅由-m/--memory选项限定。如果设置了--memory-reservation选项，当内存使用量超过--memory-reservation选项所设定的值时，系统会强制容器执行回收内存的操作，使得容器内存消耗不会长时间超过--memory-reservation限定值。
@@ -193,11 +193,11 @@
 这个限制并不会阻止进程使用超过限额的内存，只是在系统内存不足时，会回收部分内存，使内存使用量向限定值靠拢。
 在以下命令中，容器对内存的使用量不会超过500M，这是硬性限制。当内存使用量大于200M而小于500M时，系统会尝试回收部分内存，使得内存使用量低于200M。
 
-    $ docker run -it -m 500M --memory-reservation 200M ubuntu:14.04 /bin/bash
+    $ docker run -it -m 500M --memory-reservation 200M ubuntu:14.04 bash
     
 在如下命令中，容器使用的内存量不受限制，但容器消耗的内存量不会长时间超过1G，因为当容器使用量超过1G时，系统会尝试回收内存使内存使用量低于1G。
 
-    $ docker run -it --memory-reservation 1G ubuntu:14.04 /bin/bash
+    $ docker run -it --memory-reservation 1G ubuntu:14.04 bash
     
 
 
@@ -210,16 +210,16 @@
 ###(5)-c, --cpu-shares=0
 对应的cgroup文件是cgroup/cpu/cpu.shares<br>
 
-    $ docker run --rm --cpu-shares 1600 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.shares"
+    $ docker run --rm --cpu-shares 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.shares"
     1600
 
 通过--cpu-shares可以设置容器使用CPU的权重，这个权重设置是针对cpu密集型的进程的。如果某个容器中的进程是空闲状态，那么其他容器就能够使用本该由空闲容器占用的cpu资源。也就是说，只有当两个或多个容器都试图占用整个cpu资源时，--cpu-shares设置才会有效。
 我们使用如下命令来创建两个容器，它们的权重分别为1024和512。
 
-    $ docker run -ti --cpu-shares 1024 ubuntu:memory stress -c 2
+    $ docker run -ti --cpu-shares 1024 ubuntu:14.04 stress -c 2
     stress: info: [1] dispatching hogs: 2 cpu, 0 io, 0 vm, 0 hdd
 
-    $ docker run -ti --cpu-shares 512 ubuntu:memory stress -c 2
+    $ docker run -ti --cpu-shares 512 ubuntu:14.04 stress -c 2
     stress: info: [1] dispatching hogs: 2 cpu, 0 io, 0 vm, 0 hdd
 
 从如下log可以看到，每个容器会产生两个相关的进程，第一个容器产生的两个进程PID分别为25534和25533。CPU占用率分别是66.7%和66.3%，第二个容器产生的两个进程PID分别为25496和25497，两个进程的CPU占用率均为33.3%。第一个容器产生的两个进程CPU的占用率和第二个容器产生的两个进程CPU的占用率约为2:1的关系，测试结果与预期结果相符。
@@ -240,12 +240,12 @@
 
 对应的cgroup文件是cgroup/cpu/cpu.cfs_period_us。以下命令创建了一个容器，同时设置了该容器对cpu的使用时间为50000（单位为微秒），并验证了该接口对应的cgroup文件对应的值。
 
-    $ docker run -ti --cpu-period 50000 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_period_us"
+    $ docker run -ti --cpu-period 50000 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_period_us"
     50000
 
 --cpu-period和--cpu-quota两个接口需要一起使用，以下容器设置了--cpu-period值为50000,--cpu-quota的值为25000。该容器在运行时可以获取50%的cpu资源。
 
-    $ docker run -ti --cpu-period=50000 --cpu-quota=25000 ubuntu:memory stress -c 1
+    $ docker run -ti --cpu-period=50000 --cpu-quota=25000 ubuntu:14.04 stress -c 1
     stress: info: [1] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
 
 从log的最后一行中可以看出，该容器的cpu使用率为50.0%。
@@ -264,7 +264,7 @@
 
 在多核CPU的虚拟机中，启动一个容器，设置容器只使用cpu核1，并查看该接口对应的cgroup文件会被修改为1，log如下所示。
 
-    $ docker run -ti --cpuset-cpus 1 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpuset/cpuset.cpus"
+    $ docker run -ti --cpuset-cpus 1 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpuset/cpuset.cpus"
     1
 
     top - 10:39:54 up 6 min,  0 users,  load average: 0.43, 0.54, 0.35
@@ -280,13 +280,13 @@
 ###(8)--cpuset-mems="" ????与贾鹏讨论
 对应的cgroup文件是cgroup/cpuset/cpuset.mems
 
-    $ docker run -ti --cpuset-mems=0 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
+    $ docker run -ti --cpuset-mems=0 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
     0
 
 ###(9)--cpu-quota=0
 对应的cgroup文件是cgroup/cpu/cpu.cfs_quota_us
 
-    $ docker run --rm --cpu-quota 1600 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
+    $ docker run --rm --cpu-quota 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
     1600
 
 --cpu-quota接口设置了CPU的使用值，通常情况下它需要和--cpu-period接口一起来使用。具体使用方法请参考--cpu-period选项。
@@ -294,7 +294,7 @@
 ###(10)--blkio-weight=0 ???
 通过--blkio-weight接口可以设置容器块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。默认情况下，所有容器都会得到相同的权重值(500)。对应的cgroup文件为cgroup/blkio/blkio.weight。以下命令设置了容器块设备IO权重设置为10，在log中可以看到对应的cgroup文件的值为10。
 
-    $ docker run -ti --rm --blkio-weight 10 rnd-dockerhub.huawei.com/official/ubuntu bash -c "cat /sys/fs/cgroup/blkio/blkio.weight"
+    $ docker run -ti --rm --blkio-weight 10 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight"
     10
 
 通过以下两个命令来创建不同块设备IO权重值的容器。
@@ -310,7 +310,7 @@
 通过--blkio-weight-device="设备名:权重"接口可以设置容器对特定块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。
 对应的cgroup文件为cgroup/blkio/blkio.weight_device。
 
-    $ docker run --rm --blkio-weight-device "/dev/sda:1000" ubuntu bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
+    $ docker run --rm --blkio-weight-device "/dev/sda:1000" ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
     8:0 1000
 
 以上log中的"8:0"表示sda的设备号，可以通过stat命令来获取某个设备的设备号。从以下log中的显示可以查看到/dev/sda对应的主机设备号为8，次设备号为0。
@@ -320,7 +320,7 @@
 
 如果--blkio-weight-device接口和--blkio-weight接口一起使用，那么docker会使用--blkio-weight值作为默认的权重值，然后使用--blkio-weight-device值来设定指定设备的权重值，而早先设置的默认权重值将不在这个特定设备中生效。
 
-    $ docker run --rm --blkio-weight 300 --blkio-weight-device "/dev/sda:500" ubuntu bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
+    $ docker run --rm --blkio-weight 300 --blkio-weight-device "/dev/sda:500" ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
     8:0 500
 
 通过以上log可以看出，当--blkio-weight接口和--blkio-weight-device接口一起使用的时候，/dev/sda设备的权重值由--blkio-weight-device设定的值来决定。
@@ -363,16 +363,16 @@
 ###(14)--device-read-iops=""  ??????
 对应的cgroup文件是cgroup/blkio/blkio.throttle.read_iops_device<br>
 
-    $ docker run -it --device /dev/sda:/dev/sda --device-read-iops /dev/sda:400 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_iops_device"
+    $ docker run -it --device /dev/sda:/dev/sda --device-read-iops /dev/sda:400 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_iops_device"
     8:0 400
 
 ###(15)--device-write-iops="" ??????
 对应的cgroup文件是cgroup/blkio/blkio.throttle.write_iops_device<br>
 
-    $ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_iops_device"
+    $ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_iops_device"
     8:0 400
 
-    $ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:100 --device-read-iops /dev/sda:100 rnd-dockerhub.huawei.com/official/ubuntu:stress bash -c "dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=1b count=1000"
+    $ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:100 --device-read-iops /dev/sda:100 ubuntu:14.04 bash -c "dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=1b count=1000"
     1000+0 records in
     1000+0 records out
     512000 bytes (512 kB) copied, 9.89291 s, 51.8 kB/s
@@ -380,16 +380,16 @@
 ###(16)--oom-kill-disable=false
 对应的cgroup文件是cgroup/memory/memory.oom_control<br>
 
-    $  docker run -m 20m --oom-kill-disable=true rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'cat /sys/fs/cgroup/memory/memory.oom_control'
+    $  docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.oom_control'
     oom_kill_disable 1
     under_oom 0
 
 测试：<br>
 
-    $ docker run -m 20m --oom-kill-disable=false rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'x=a; while true; do x=$x$x$x$x; done'
+    $ docker run -m 20m --oom-kill-disable=false ubuntu:14.04 bash -c 'x=a; while true; do x=$x$x$x$x; done'
     $ echo $?
     137
-    $ docker run -m 20m --oom-kill-disable=true rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'x=a; while true; do x=$x$x$x$x; done'
+    $ docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'x=a; while true; do x=$x$x$x$x; done'
        
     
     
@@ -397,7 +397,7 @@
 ###(17)--memory-swappiness=""
 对应的cgroup文件是cgroup/memory/memory.swappiness
 
-    $ docker run --memory-swappiness=100 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
+    $ docker run --memory-swappiness=100 ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
     100
     
 ##5.总结
