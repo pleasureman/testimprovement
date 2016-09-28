@@ -262,6 +262,8 @@
 ###(7)--cpuset-cpus=""
 对应的cgroup文件是cgroup/cpuset/cpuset.cpus
 
+在多核CPU的虚拟机中，启动一个容器，设置容器只使用cpu核1，并查看该接口对应的cgroup文件会被修改为1，log如下所示。
+
     [unicorn@unicorn ~]$ docker run -ti --cpuset-cpus 1 rnd-dockerhub.huawei.com/official/ubuntu:latest bash -c "cat /sys/fs/cgroup/cpuset/cpuset.cpus"
     1
 
