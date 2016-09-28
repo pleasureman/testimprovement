@@ -204,11 +204,18 @@
 
 
 ###(4)--kernel-memory=""
-待补充
-对应的cgroup文件cgroup/memory/memory.kmem.limit_in_bytes
+该接口限制了容器对内核内存的使用，对应的cgroup文件cgroup/memory/memory.kmem.limit_in_bytes
 
     $ docker run -ti --kernel-memory 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
     52428800
+
+如下命令可以限定容器最多可以使用500M的内存。在500M内存中，内核内存最多可以使用50M。
+
+    $ docker run -it -m 500M --kernel-memory 50M ubuntu:14.04 bash
+    
+如下命令可以限定容器最多可以使用50M的内核内存，而用户空间的内存使用量不受限制。
+
+    $ docker run -it --kernel-memory 50M ubuntu:14.04 bash
 
 ###(5)-c, --cpu-shares=0
 对应的cgroup文件是cgroup/cpu/cpu.shares<br>
