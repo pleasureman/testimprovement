@@ -1,6 +1,8 @@
 #docker资源管理探秘--docker背后的内核cgroup机制
 ##1.docker资源管理简介
+待补充
 ##2.cgroup子系统介绍
+待补充
 ##3.docker资源管理接口简介
 | 选项                     |  描述                                                                                                                                    |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -201,7 +203,8 @@
     
 
 
-###(4)--kernel-memory="" ????????????
+###(4)--kernel-memory=""
+待补充
 对应的cgroup文件cgroup/memory/memory.kmem.limit_in_bytes
 
     $ docker run -ti --kernel-memory 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
@@ -222,6 +225,7 @@
     $ docker run -ti --cpu-shares 512 ubuntu:14.04 stress -c 2
     stress: info: [1] dispatching hogs: 2 cpu, 0 io, 0 vm, 0 hdd
 
+待补充：需要将 -c 2改为 -c 1
 从如下log可以看到，每个容器会产生两个相关的进程，第一个容器产生的两个进程PID分别为25534和25533。CPU占用率分别是66.7%和66.3%，第二个容器产生的两个进程PID分别为25496和25497，两个进程的CPU占用率均为33.3%。第一个容器产生的两个进程CPU的占用率和第二个容器产生的两个进程CPU的占用率约为2:1的关系，测试结果与预期结果相符。
 
     top - 07:46:43 up 2 days, 23:44,  1 user,  load average: 3.84, 1.95, 0.83
@@ -235,7 +239,7 @@
     25496 root      20   0    7312     96      0 R  33.3  0.0   0:56.42 stress                                           
     25497 root      20   0    7312     96      0 R  33.3  0.0   0:56.67 stress
 
-###(6)--cpu-period=0
+###(6)--cpu-period=""
 内核默认的linux 调度CFS（完全公平调度器）周期为100ms,我们通过--cpu-period来设置容器对CPU的使用周期，同时--cpu-period接口需要和--cpu-quota接口一起来使用。--cpu-quota接口设置了CPU的使用值。当--cpu-quota的值为0，容器对cpu的使用率为100%，CFS(完全公平调度器) 是内核默认使用的调度方式，为运行的进程分配CPU资源。对于多核CPU，根据需要调整--cpu-quota。
 
 对应的cgroup文件是cgroup/cpu/cpu.cfs_period_us。以下命令创建了一个容器，同时设置了该容器对cpu的使用时间为50000（单位为微秒），并验证了该接口对应的cgroup文件对应的值。
@@ -260,6 +264,7 @@
 
   
 ###(7)--cpuset-cpus=""
+待补充，补充步骤并注明执行top命令后按数字键1
 对应的cgroup文件是cgroup/cpuset/cpuset.cpus
 
 在多核CPU的虚拟机中，启动一个容器，设置容器只使用cpu核1，并查看该接口对应的cgroup文件会被修改为1，log如下所示。
@@ -278,6 +283,7 @@
 
 
 ###(8)--cpuset-mems="" ????与贾鹏讨论
+待补充
 对应的cgroup文件是cgroup/cpuset/cpuset.mems
 
     $ docker run -ti --cpuset-mems=0 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
@@ -291,7 +297,7 @@
 
 --cpu-quota接口设置了CPU的使用值，通常情况下它需要和--cpu-period接口一起来使用。具体使用方法请参考--cpu-period选项。
 
-###(10)--blkio-weight=0 ???
+###(10)--blkio-weight=0
 通过--blkio-weight接口可以设置容器块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。默认情况下，所有容器都会得到相同的权重值(500)。对应的cgroup文件为cgroup/blkio/blkio.weight。以下命令设置了容器块设备IO权重设置为10，在log中可以看到对应的cgroup文件的值为10。
 
     $ docker run -ti --rm --blkio-weight 10 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight"
@@ -359,14 +365,17 @@
     1+0 records out
     5242880 bytes (5.2 MB) copied, 5.00427 s, 1.0 MB/s
     
-    
-###(14)--device-read-iops=""  ??????
+待补充，需要使用if=/dev/urandom of=/dev/sda，不要使用sdb
+
+###(14)--device-read-iops=""
+待补充
 对应的cgroup文件是cgroup/blkio/blkio.throttle.read_iops_device<br>
 
     $ docker run -it --device /dev/sda:/dev/sda --device-read-iops /dev/sda:400 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_iops_device"
     8:0 400
 
-###(15)--device-write-iops="" ??????
+###(15)--device-write-iops=""
+待补充
 对应的cgroup文件是cgroup/blkio/blkio.throttle.write_iops_device<br>
 
     $ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_iops_device"
@@ -378,6 +387,7 @@
     512000 bytes (512 kB) copied, 9.89291 s, 51.8 kB/s
 
 ###(16)--oom-kill-disable=false
+待补充
 对应的cgroup文件是cgroup/memory/memory.oom_control<br>
 
     $  docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.oom_control'
@@ -395,13 +405,16 @@
     
 
 ###(17)--memory-swappiness=""
+待补充
 对应的cgroup文件是cgroup/memory/memory.swappiness
 
     $ docker run --memory-swappiness=100 ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
     100
     
 ##5.总结
+待补充
 ##6.作者简介
+待补充
 ##参考资料：
 http://www.tuicool.com/articles/zIJrEjn<br>
 http://www.cnblogs.com/hustcat/p/3980244.html<br>
