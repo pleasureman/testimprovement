@@ -307,7 +307,24 @@
     $ time dd if=/mnt/zerofile of=test.out bs=1M count=1024 oflag=direct
 
 ###(11)--blkio-weight-device=""
-对应的cgroup文件cgroup/blkio/blkio.weight_device<br>
+通过--blkio-weight-device="设备名:权重"接口可以设置容器对特定块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。
+对应的cgroup文件为cgroup/blkio/blkio.weight_device。
+
+    $ docker run --rm --blkio-weight-device "/dev/sda:1000" ubuntu bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
+    8:0 1000
+
+以上log中的"8:0"表示sda的设备号，可以通过stat命令来获取某个设备的设备号。从以下log中的显示可以查看到/dev/sda对应的主机设备号为8，次设备号为0。
+
+    $ stat -c %t:%T /dev/sda
+    8:0
+
+如果--blkio-weight-device接口和--blkio-weight接口一起使用，那么docker会使用--blkio-weight作为默认的权重值，然后使用--blkio-weight-device值来设定指定设备的权重值，而早先设置的默认权重值将不在这个特定设备中生效。
+
+    $ docker run --rm --blkio-weight 300 --blkio-weight-device "/dev/sda:500" ubuntu bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
+    8:0 500
+
+通过以上log可以看出，当--blkio-weight接口和--blkio-weight-device接口一起使用的时候，/dev/sda设备的权重值由--blkio-weight-device设定的值来决定。
+
 ###(12)--device-read-bps=""
 对应的cgroup文件是cgroup/blkio/blkio.throttle.read_bps_device<br>
 
