@@ -407,16 +407,20 @@
 通过上面的log信息可以看出，容器每秒IO的读取次数为400，共需要读取1000次（log第二行：count=1000），测试结果显示执行时间为2.42874秒，约为2.5(1000/400)秒， 与预期结果相符。
 
 ###(15)--device-write-iops=""
-待补充
-对应的cgroup文件是cgroup/blkio/blkio.throttle.write_iops_device<br>
+该接口设置了设备的IO写速率，对应的cgroup文件是cgroup/blkio/blkio.throttle.write_iops_device。
 
     $ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_iops_device"
     8:0 400
 
-    $ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:100 --device-read-iops /dev/sda:100 ubuntu:14.04 bash -c "dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=1b count=1000"
+可以通过"--device-write-iops /dev/sda:400"来限定sda的IO读取速率(400次/秒)，log如下所示。
+
+    $ docker run -ti --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 ubuntu:14.04
+    root@ef88a516d6ed:/# dd oflag=direct,nonblock of=/dev/sda if= /dev/urandom bs=1K count=1000
     1000+0 records in
     1000+0 records out
-    512000 bytes (512 kB) copied, 9.89291 s, 51.8 kB/s
+    1024000 bytes (1.0 MB) copied, 2.4584 s, 417 kB/s
+
+通过上面的log信息可以看出，容器每秒IO的写入次数为400，共需要读取1000次（log第二行：count=1000），测试结果显示执行时间为2.4584秒，约为2.5(1000/400)秒， 与预期结果相符。
 
 ###(16)--oom-kill-disable=false
 待补充
