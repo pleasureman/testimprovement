@@ -65,6 +65,8 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
 
 
 ##4.docker资源管理接口详解
+以下内容针对各资源管理接口做了详尽的说明。为了加深读者理解，部分接口附有测试用例。用例中的docker版本为1.11.0。如果在你的镜像中stress命令不可用，你可以通过sudo apt-get install stress来安装stress工具。
+
 ###(1)-m, --memory=""
 可以限制容器使用的内存量，对应的cgroup文件是cgroup/memory/memory.limit_in_bytes。<br>
 取值范围:大于等于4M<br>
