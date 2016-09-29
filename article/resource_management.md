@@ -423,22 +423,30 @@
 通过上面的log信息可以看出，容器每秒IO的写入次数为400，共需要读取1000次（log第二行：count=1000），测试结果显示执行时间为2.4584秒，约为2.5(1000/400)秒， 与预期结果相符。
 
 ###(16)--oom-kill-disable=false
-待补充
-对应的cgroup文件是cgroup/memory/memory.oom_control<br>
+当out-of-memory (OOM)发生时，系统会默认杀掉容器进程，如果你不想让容器进程被杀掉，可以使用该接口。接口对应的cgroup文件是cgroup/memory/memory.oom_control。
+
+当容器试图使用超过限定大小的内存值时，就会触发OOM。此时会有两种情况，第一种情况是当接口--oom-kill-disable=false的时候，容器会被杀掉；第二种情况是当接口--oom-kill-disable=true的时候，容器会被挂起。
+
+以下命令设置了容器的的内存使用限制为20M，将--oom-kill-disable接口的值设置为true。查看该接口对应的cgroup文件，通过log显示oom_kill_disable的值为1。
+
+oom_kill_disable：取值为0或1，当值为1的时候表示当容器试图使用超出内存限制时（即20M），容器会挂起。
+under_oom：取值为0或1，当值为1的时候，OOM已经出现在容器中。
 
     $  docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.oom_control'
     oom_kill_disable 1
     under_oom 0
 
-测试：<br>
+通过x=a; while true; do x=$x$x$x$x; done命令来耗尽内存并强制触发OOM，log如下所示。
 
     $ docker run -m 20m --oom-kill-disable=false ubuntu:14.04 bash -c 'x=a; while true; do x=$x$x$x$x; done'
     $ echo $?
     137
+    
+通过上面的log可以看出,当容器的内存耗尽的时候，容器退出，退出码为137。因为容器试图使用超出限定的内存量，系统此时触发OOM，容器会被杀掉，此时under_oom的值为1。我们可以通过系统中cgroup文件(/sys/fs/cgroup/memory/docker/${container_id}/memory.oom_control)查看under_oom的值（oom_kill_disable 1，under_oom 1）
+
+当--oom-kill-disable=true的时候，容器不会被杀掉，而是被系统挂起。
+
     $ docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'x=a; while true; do x=$x$x$x$x; done'
-       
-    
-    
 
 ###(17)--memory-swappiness=""
 待补充
