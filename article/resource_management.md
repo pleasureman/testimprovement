@@ -335,7 +335,7 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
     PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
     10266 root      20   0    7312     96      0 R 100.0  0.0   0:11.92 stress
 
-从以上log得知，只有cpu核1的负载为100%，而其它cpu核处于空闲状态，结果与预期结果相符。
+从以上log得知，只有CPU核1的负载为100%，而其它CPU核处于空闲状态，结果与预期结果相符。
 
 ###(8)--cpuset-mems=""
 该接口对应的cgroup文件是cgroup/cpuset/cpuset.mems
@@ -360,7 +360,7 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
 --cpu-quota接口设置了CPU的使用值，通常情况下它需要和--cpu-period接口一起来使用。具体使用方法请参考--cpu-period选项。
 
 ###(10)--blkio-weight=0
-通过--blkio-weight接口可以设置容器块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。默认情况下，所有容器都会得到相同的权重值(500)。对应的cgroup文件为cgroup/blkio/blkio.weight。以下命令设置了容器块设备IO权重设置为10，在log中可以看到对应的cgroup文件的值为10。
+通过--blkio-weight接口可以设置容器块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。默认情况下，所有容器都会得到相同的权重值(500)。对应的cgroup文件为cgroup/blkio/blkio.weight。以下命令设置了容器块设备IO权重为10，在log中可以看到对应的cgroup文件的值为10。
 
     $ docker run -ti --rm --blkio-weight 10 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight"
     10
@@ -370,7 +370,7 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
     $ docker run -it --name c1 --blkio-weight 300 ubuntu:14.04 /bin/bash
     $ docker run -it --name c2 --blkio-weight 600 ubuntu:14.04 /bin/bash
 
-如果在两个容器中同时进行块设备操作（例如以下命令）的话，你会发现所花费的时间和容器所拥有的块设备IO权重成正比。
+如果在两个容器中同时进行块设备操作（例如以下命令）的话，你会发现所花费的时间和容器所拥有的块设备IO权重成反比。
 
     $ time dd if=/mnt/zerofile of=test.out bs=1M count=1024 oflag=direct
 
@@ -381,7 +381,7 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
     $ docker run --rm --blkio-weight-device "/dev/sda:1000" ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
     8:0 1000
 
-以上log中的"8:0"表示sda的设备号，可以通过stat命令来获取某个设备的设备号。从以下log中的显示可以查看到/dev/sda对应的主机设备号为8，次设备号为0。
+以上log中的"8:0"表示sda的设备号，可以通过stat命令来获取某个设备的设备号。从以下log中可以查看到/dev/sda对应的主设备号为8，次设备号为0。
 
     $ stat -c %t:%T /dev/sda
     8:0
@@ -394,7 +394,7 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
 通过以上log可以看出，当--blkio-weight接口和--blkio-weight-device接口一起使用的时候，/dev/sda设备的权重值由--blkio-weight-device设定的值来决定。
 
 ###(12)--device-read-bps=""
-该接口用来限制指定设备的读取速率，对应的cgroup文件是cgroup/blkio/blkio.throttle.read_bps_device。
+该接口用来限制指定设备的读取速率，单位可以是kb、mb或者gb。对应的cgroup文件是cgroup/blkio/blkio.throttle.read_bps_device。
 
     $ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mb ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_bps_device"
     8:0 1048576
