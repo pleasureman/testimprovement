@@ -494,9 +494,16 @@ under_oom：取值为0或1，当值为1的时候，OOM已经出现在容器中�
     100
     
 ##5.总结
-待补充
+docker的资源管理依赖于linux内核cgroups机制。理解docker资源管理的原理并不难，读者可以根据自己兴趣补充一些有针对性的测试。关于cgroups的实现机制已经远超本文的范畴。感兴趣的读者可以自行查看相关文章和内核手册。
+
 ##6.作者简介
-待补充
+孙远，华为中央软件研究院资深工程师，硕士毕业，9年软件行业经验。目前在华为从事容器docker项目的测试工作。工作涉及到功能测试、性能测试、压力测试、稳定性测试、安全测试、测试管理、工程能力构建等内容。参与编写了《docker进阶与实战》的docker测试章节。先前曾经就职于美国风河系统公司，作为team lead从事风河linux产品测试工作。活跃于docker社区和内核测试ltp社区，目前有大量测试用例被开源社区接收。<br>
+研究方向：容器技术、docker、linux内核、软件测试、自动化测试、测试过程改进<br>
+公司邮箱：sunyuan3@huawei.com<br>
+个人邮箱：yuan.sun82@gmail.com<br>
+
+薛婉菊：待补充<br>
+
 ##参考资料：
 http://www.tuicool.com/articles/zIJrEjn<br>
 http://www.cnblogs.com/hustcat/p/3980244.html<br>
