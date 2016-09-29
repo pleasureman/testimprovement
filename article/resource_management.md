@@ -34,7 +34,7 @@
 在默认情况下，容器可以占用无限量的内存，直至主机内存资源耗尽。
 运行如下命令来确认容器内存的资源管理对应的cgroup文件。
 
-    $ docker run -it --memory 100M ubuntu bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes"
+    $ docker run -it --memory 100M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes"
     104857600
 
 可以看到，当内存限定为100M时，对应的cgroup文件数值为104857600，该数值的单位为kB，即104857600kB等于100M。
@@ -371,7 +371,7 @@
     5242880 bytes (5.2 MB) copied, 5.00464 s, 1.0 MB/s
 
 ###(13)--device-write-bps=""
-该接口用来限制指定设备的写速率，对应的cgroup文件是cgroup/blkio/blkio.throttle.write_bps_device。
+该接口用来限制指定设备的写速率，单位可以是kb、mb或者gb。对应的cgroup文件是cgroup/blkio/blkio.throttle.write_bps_device。
 
     $ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_bps_device"
     8:0 1048576
@@ -388,14 +388,23 @@
     1+0 records out
     5242880 bytes (5.2 MB) copied, 5.00427 s, 1.0 MB/s
     
-待补充，需要使用if=/dev/urandom of=/dev/sda，不要使用sdb
+待补充(薛婉菊)，需要使用if=/dev/urandom of=/dev/sda，不要使用sdb
 
 ###(14)--device-read-iops=""
-待补充
-对应的cgroup文件是cgroup/blkio/blkio.throttle.read_iops_device<br>
+该接口设置了设备的IO读取速率，对应的cgroup文件是cgroup/blkio/blkio.throttle.read_iops_device。
 
     $ docker run -it --device /dev/sda:/dev/sda --device-read-iops /dev/sda:400 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_iops_device"
     8:0 400
+
+可以通过"--device-read-iops /dev/sda:400"来限定sda的IO读取速率(400次/秒)，log如下所示。
+
+    $ docker run -ti --device /dev/sda:/dev/sda  --device-read-iops	/dev/sda:400 ubuntu:14.04
+    root@71910742c445:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=1k count=1000
+    1000+0 records in
+    1000+0 records out
+    1024000 bytes (1.0 MB) copied, 2.42874 s, 422 kB/s
+    
+通过上面的log信息可以看出，容器每秒IO的读取次数为400，共需要读取1000次（log第二行：count=1000），测试结果显示执行时间为2.42874秒，约为2.5(1000/400)秒， 与预期结果相符。
 
 ###(15)--device-write-iops=""
 待补充
