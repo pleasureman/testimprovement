@@ -279,15 +279,24 @@
     $ docker run -ti --cpuset-cpus 1 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpuset/cpuset.cpus"
     1
 
-    top - 10:39:54 up 6 min,  0 users,  load average: 0.43, 0.54, 0.35
-    Tasks:  98 total,   2 running,  96 sleeping,   0 stopped,   0 zombie
-    %Cpu0  :  0.3 us,  0.3 sy,  0.0 ni, 99.3 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-    %Cpu1  :100.0 us,  0.0 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-    KiB Mem :  4050284 total,  3095568 free,   279064 used,   675652 buff/cache
-    KiB Swap:        0 total,        0 free,        0 used.  3517736 avail Mem 
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND                                          
-    10380 root      20   0    7312     96      0 R 100.0  0.0   0:27.16 stress
+通过以下命令指定容器使用cpu核1，并通过stress命令加压。
 
+    $ docker run -tid --name cpu2 --cpuset-cpus 1 ubuntu:14.04 stress -c 1
+
+    $ top
+    top - 11:31:47 up 5 days, 21:00,  0 users,  load average: 0.62, 0.82, 0.77
+    Tasks: 104 total,   3 running, 101 sleeping,   0 stopped,   0 zombie
+    %Cpu0  :  0.0 us,  0.0 sy,  0.0 ni, 99.6 id,  0.0 wa,  0.0 hi,  0.4 si,  0.0 st
+    %Cpu1  :100.0 us,  0.0 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+    %Cpu2  :  0.3 us,  0.3 sy,  0.0 ni, 99.3 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+    %Cpu3  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+    KiB Mem :  2051888 total,  1130220 free,   127972 used,   793696 buff/cache
+    KiB Swap: 33554416 total, 33351848 free,   202568 used.  1739888 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+    10266 root      20   0    7312     96      0 R 100.0  0.0   0:11.92 stress
+
+从以上log得知，只有cpu核1的负载为100%，而其它cpu核处于空闲状态，结果与预期结果相符。
 
 ###(8)--cpuset-mems=""
 该接口对应的cgroup文件是cgroup/cpuset/cpuset.mems
