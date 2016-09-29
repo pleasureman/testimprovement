@@ -1,9 +1,9 @@
-#docker资源管理探秘-docker背后的内核cgroup机制
+#docker资源管理探秘-docker背后的内核cgroups机制
 ##1.docker资源管理简介
-随着docker技术被越来越多的个人、企业所接受，其用途也越来越广泛。docker资源管理包含对CPU、内存、IO等资源的限制，但大部分docker使用者在使用资源管理接口时往往只知其然而不知其所以然。本文将介绍docker资源管理背后的cgroup机制，并且列举每一个资源管理接口对应的cgroup接口，让docker使用者对资源管理知其然并且知其所以然。
+随着docker技术被越来越多的个人、企业所接受，其用途也越来越广泛。docker资源管理包含对CPU、内存、IO等资源的限制，但大部分docker使用者在使用资源管理接口时往往只知其然而不知其所以然。本文将介绍docker资源管理背后的cgroups机制，并且列举每一个资源管理接口对应的cgroups接口，让docker使用者对资源管理知其然并且知其所以然。
 
-##2.cgroup子系统介绍
-Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、记录、隔离进程组（process groups）所使用的物理资源（如：CPU、内存、IO等等）的机制。最初由google的工程师提出，后来被整合进Linux内核。对资源的分配和管理是由各个cgroup子系统完成的。下面介绍几个主要的子系统。
+##2.cgroups子系统介绍
+Cgroups是control groups的缩写，是linux内核提供的一种可以限制、记录、隔离进程组（process groups）所使用的物理资源（如：CPU、内存、IO等）的机制。最初由google的工程师提出，后来被整合进linux内核。对资源的分配和管理是由各个cgroup子系统完成的。下面介绍几个主要的子系统。
 
 2.1 cpuset -- 这个子系统为 cgroup 中的任务分配独立 CPU（在多核系统）和内存节点。<br>
 主要接口：<br>
@@ -19,9 +19,9 @@ cpu.cfs_period_us和cpu.cfs_quota_us:CPU带宽限制<br>
 
 2.3 cpuacct -- 这个子系统自动生成 cgroup 中任务所使用的 CPU 报告。
 
-2.4 blkio -- 这个子系统为块设备设定输入/输出限制，比如物理设备（磁盘，固态硬盘，USB 等等）。<br>
+2.4 blkio -- 这个子系统为块设备设定输入/输出限制，比如物理设备（磁盘、固态硬盘、USB等）。<br>
 主要接口：<br>
-blkio.weight：设置权重值，范围在100到1000之间。这跟cpu.shares类似，是比重分配，而不是绝对带宽的限制，因此只有当不同的cgroup在争用同一个块设备的带宽时，才会起作用。<br>
+blkio.weight：设置权重值，取值范围是10至1000之间的整数（包含10和1000）。这跟cpu.shares类似，是比重分配，而不是绝对带宽的限制，因此只有当不同的cgroup在争用同一个块设备的带宽时，才会起作用。<br>
 blkio.weight_device：对具体的设备设置权重值，这个值会覆盖上述的blkio.weight。<br>
 blkio.throttle.read_bps_device：对具体的设备，设置每秒读磁盘的带宽上限。<br>
 blkio.throttle.write_bps_device：设置每秒写磁盘的带宽上限。同样需要指定设备。<br>
@@ -33,7 +33,7 @@ blkio.throttle.write_iops_device：设置每秒写磁盘的IOPS上限。同样�
 
 2.6 freezer -- 这个子系统挂起或者恢复 cgroup 中的任务。
 
-2.7 memory -- 这个子系统设定 cgroup 中任务使用的内存限制，并自动生成由那些任务使用的内存资源报告。<br>
+2.7 memory -- 这个子系统用来限制cgroup所能使用的内存上限。<br>
 主要接口：<br>
 memory.limit_in_bytes：设定内存上限，单位是字节，也可以使用k/K、m/M或者g/G表示要设置数值的单位。<br>
 memory.memsw.limit_in_bytes：设定内存加上交换分区的使用总量。通过设置这个值，可以防止进程把交换分区用光。<br>
