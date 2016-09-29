@@ -3,7 +3,43 @@
 随着docker技术被越来越多的个人、企业所接受，其用途也越来越广泛。docker资源管理包含对CPU、内存、IO等资源的限制，但大部分docker使用者在使用资源管理接口时往往只知其然而不知其所以然。本文将介绍docker资源管理背后的cgroup机制，并且列举每一个资源管理接口对应的cgroup接口，让docker使用者对资源管理知其然并且知其所以然。
 
 ##2.cgroup子系统介绍
-待补充
+Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、记录、隔离进程组（process groups）所使用的物理资源（如：CPU、内存、IO等等）的机制。最初由google的工程师提出，后来被整合进Linux内核。
+对资源的分配和管理是由各个cgroup子系统完成的。下面介绍几个主要的子系统。
+
+2.1 cpuset -- 这个子系统为 cgroup 中的任务分配独立 CPU（在多核系统）和内存节点。<br>
+主要接口：<br>
+cpuet.cpus：允许进程使用的cpu列表（例如：0-4,9）。<br>
+cpuset.mems：允许进程使用的内存节点列表（例如：0-1）。<br>
+
+2.2 cpu -- 这个子系统使用调度程序提供对 CPU 的 cgroup 任务访问。<br>
+主要接口：<br>
+cpu.shares: CPU比重分配<br>
+假设我们在cgroupfs的根目录下创建了两个cgroup（C1和C2），并且将cpu.shares分别配置为512和1024，那么当C1和C2争用CPU时，C2将会比C1得到多一倍的CPU占用率。要注意的是，只有当它们争用CPU时CPU share才会起作用，如果C2是空闲的，那么C1可以得到全部的CPU资源。<br>
+cpu.cfs_period_us和cpu.cfs_quota_us:CPU带宽限制<br>
+我们可以将period设置为1秒，将quota设置为0.5秒，那么cgroup中的进程在1秒内最多只能运行0.5秒，然后就会被强制睡眠，直到下一个1秒才能继续运行。<br>
+
+2.3 cpuacct -- 这个子系统自动生成 cgroup 中任务所使用的 CPU 报告。
+
+2.4 blkio -- 这个子系统为块设备设定输入/输出限制，比如物理设备（磁盘，固态硬盘，USB 等等）。
+主要接口：<br>
+blkio.weight：设置权重值，范围在100到1000之间。这跟cpu.shares类似，是比重分配，而不是绝对带宽的限制，因此只有当不同的cgroup在争用同一个块设备的带宽时，才会起作用。<br>
+blkio.weight_device：对具体的设备设置权重值，这个值会覆盖上述的blkio.weight。<br>
+blkio.throttle.read_bps_device：对具体的设备，设置每秒读磁盘的带宽上限。<br>
+blkio.throttle.write_bps_device：设置每秒写磁盘的带宽上限。同样需要指定设备。<br>
+blkio.throttle.read_iops_device：设置每秒读磁盘的IOPS上限。同样需要指定设备。<br>
+blkio.throttle.write_iops_device：设置每秒写磁盘的IOPS上限。同样需要指定设备。<br>
+
+
+2.5 devices -- 这个子系统可允许或者拒绝 cgroup 中的任务访问设备。
+
+2.6 freezer -- 这个子系统挂起或者恢复 cgroup 中的任务。
+
+2.7 memory -- 这个子系统设定 cgroup 中任务使用的内存限制，并自动生成由那些任务使用的内存资源报告。
+主要接口：<br>
+memory.limit_in_bytes：设定内存上限，单位是字节，也可以使用k/K、m/M或者g/G表示要设置数值的单位。
+memory.memsw.limit_in_bytes：设定内存加上交换分区的使用总量。通过设置这个值，可以防止进程把交换分区用光。
+memory.oom_control：如果设置为0，那么在内存使用量超过上限时，系统不会杀死进程，而是阻塞进程直到有内存被释放可供使用时，另一方面，系统会向用户态发送事件通知，用户态的监控程序可以根据该事件来做相应的处理，例如提高内存上限等。
+
 ##3.docker资源管理接口简介
 | 选项                     |  描述                                                                                                                                    |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
