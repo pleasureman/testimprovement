@@ -212,7 +212,7 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
 
 如下所示，当尝试占用的内存数量超过memory-swap值时，容器出现异常；当占用内存值大于memory限定值但小于memory-swap时，容器运行正常。
 
-    $ docker run -ti -m 100m --memory-swap 200m ubuntu:14.04 stress --vm 1 --vm-bytes 201M
+    $ docker run -ti -m 100M --memory-swap 200M ubuntu:14.04 stress --vm 1 --vm-bytes 201M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
     stress: FAIL: [1] (416) <-- worker 7 got signal 9
     stress: WARN: [1] (418) now reaping child worker processes
@@ -229,7 +229,7 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
     $ docker run -ti --memory-reservation 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.soft_limit_in_bytes"
     52428800
 
-通常情况下，容器能够使用的内存量仅仅由-m/--memory选项限定。如果设置了--memory-reservation选项，当内存使用量超过--memory-reservation选项所设定的值时，系统会强制容器执行回收内存的操作，使得容器内存消耗不会长时间超过--memory-reservation限定值。
+通常情况下，容器能够使用的内存量仅仅由-m/--memory选项限定。如果设置了--memory-reservation选项，当内存使用量超过--memory-reservation选项所设定的值时，系统会强制容器执行回收内存的操作，使得容器内存消耗不会长时间超过--memory-reservation的限定值。
 
 这个限制并不会阻止进程使用超过限额的内存，只是在系统内存不足时，会回收部分内存，使内存使用量向限定值靠拢。
 在以下命令中，容器对内存的使用量不会超过500M，这是硬性限制。当内存使用量大于200M而小于500M时，系统会尝试回收部分内存，使得内存使用量低于200M。
@@ -243,12 +243,12 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
 
 
 ###(4)--kernel-memory=""
-该接口限制了容器对内核内存的使用，对应的cgroup文件cgroup/memory/memory.kmem.limit_in_bytes
+该接口限制了容器对内核内存的使用，对应的cgroup文件是cgroup/memory/memory.kmem.limit_in_bytes。
 
     $ docker run -ti --kernel-memory 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
     52428800
 
-如下命令可以限定容器最多可以使用500M的内存。在500M内存中，内核内存最多可以使用50M。
+如下命令可以限定容器最多可以使用500M的内存。在500M内存中，内核内存最多可以占用50M。
 
     $ docker run -it -m 500M --kernel-memory 50M ubuntu:14.04 bash
     
@@ -257,12 +257,12 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
     $ docker run -it --kernel-memory 50M ubuntu:14.04 bash
 
 ###(5)-c, --cpu-shares=0
-对应的cgroup文件是cgroup/cpu/cpu.shares<br>
+对应的cgroup文件是cgroup/cpu/cpu.shares。
 
     $ docker run --rm --cpu-shares 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.shares"
     1600
 
-通过--cpu-shares可以设置容器使用CPU的权重，这个权重设置是针对cpu密集型的进程的。如果某个容器中的进程是空闲状态，那么其他容器就能够使用本该由空闲容器占用的cpu资源。也就是说，只有当两个或多个容器都试图占用整个cpu资源时，--cpu-shares设置才会有效。
+通过--cpu-shares可以设置容器使用CPU的权重，这个权重设置是针对CPU密集型的进程的。如果某个容器中的进程是空闲状态，那么其它容器就能够使用本该由空闲容器占用的CPU资源。也就是说，只有当两个或多个容器都试图占用整个CPU资源时，--cpu-shares设置才会有效。
 我们使用如下命令来创建两个容器，它们的权重分别为1024和512。
 
     $ docker run -ti --cpu-shares 1024 ubuntu:14.04 stress -c 2
@@ -286,19 +286,19 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
     25497 root      20   0    7312     96      0 R  33.3  0.0   0:56.67 stress
 
 ###(6)--cpu-period=""
-内核默认的linux 调度CFS（完全公平调度器）周期为100ms,我们通过--cpu-period来设置容器对CPU的使用周期，同时--cpu-period接口需要和--cpu-quota接口一起来使用。--cpu-quota接口设置了CPU的使用值。当--cpu-quota的值为0，容器对cpu的使用率为100%，CFS(完全公平调度器) 是内核默认使用的调度方式，为运行的进程分配CPU资源。对于多核CPU，根据需要调整--cpu-quota。
+内核默认的linux 调度CFS（完全公平调度器）周期为100ms,我们通过--cpu-period来设置容器对CPU的使用周期，同时--cpu-period接口需要和--cpu-quota接口一起来使用。--cpu-quota接口设置了CPU的使用值。CFS(完全公平调度器) 是内核默认使用的调度方式，为运行的进程分配CPU资源。对于多核CPU，根据需要调整--cpu-quota的值。
 
-对应的cgroup文件是cgroup/cpu/cpu.cfs_period_us。以下命令创建了一个容器，同时设置了该容器对cpu的使用时间为50000（单位为微秒），并验证了该接口对应的cgroup文件对应的值。
+对应的cgroup文件是cgroup/cpu/cpu.cfs_period_us。以下命令创建了一个容器，同时设置了该容器对CPU的使用时间为50000（单位为微秒），并验证了该接口对应的cgroup文件对应的值。
 
     $ docker run -ti --cpu-period 50000 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_period_us"
     50000
 
---cpu-period和--cpu-quota两个接口需要一起使用，以下容器设置了--cpu-period值为50000,--cpu-quota的值为25000。该容器在运行时可以获取50%的cpu资源。
+以下命令将--cpu-period的值设置为50000,--cpu-quota的值设置为25000。该容器在运行时可以获取50%的cpu资源。
 
     $ docker run -ti --cpu-period=50000 --cpu-quota=25000 ubuntu:14.04 stress -c 1
     stress: info: [1] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
 
-从log的最后一行中可以看出，该容器的cpu使用率为50.0%。
+从log的最后一行中可以看出，该容器的cpu使用率约为50.0%。
 
     top - 10:36:55 up 6 min,  0 users,  load average: 0.49, 0.21, 0.10
     Tasks:  68 total,   2 running,  66 sleeping,   0 stopped,   0 zombie
@@ -313,7 +313,7 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
 待补充，补充步骤并注明执行top命令后按数字键1
 对应的cgroup文件是cgroup/cpuset/cpuset.cpus
 
-在多核CPU的虚拟机中，启动一个容器，设置容器只使用cpu核1，并查看该接口对应的cgroup文件会被修改为1，log如下所示。
+在多核CPU的虚拟机中，启动一个容器，设置容器只使用CPU核1，并查看该接口对应的cgroup文件会被修改为1，log如下所示。
 
     $ docker run -ti --cpuset-cpus 1 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpuset/cpuset.cpus"
     1
