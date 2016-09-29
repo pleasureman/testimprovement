@@ -449,8 +449,7 @@ under_oom：取值为0或1，当值为1的时候，OOM已经出现在容器中�
     $ docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'x=a; while true; do x=$x$x$x$x; done'
 
 ###(17)--memory-swappiness=""
-待补充
-对应的cgroup文件是cgroup/memory/memory.swappiness
+该接口可以设定容器使用交换分区的趋势，取值范围为0至100的整数（包含0和100）。0表示容器不使用交换分区，100表示容器尽可能多的使用交换分区。对应的cgroup文件是cgroup/memory/memory.swappiness。
 
     $ docker run --memory-swappiness=100 ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
     100
