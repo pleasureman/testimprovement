@@ -1,4 +1,4 @@
-#docker资源管理探秘--docker背后的内核cgroup机制
+#docker资源管理探秘-docker背后的内核cgroup机制
 ##1.docker资源管理简介
 随着docker技术被越来越多的个人、企业所接受，其用途也越来越广泛。docker资源管理包含对CPU、内存、IO等资源的限制，但大部分docker使用者在使用资源管理接口时往往只知其然而不知其所以然。本文将介绍docker资源管理背后的cgroup机制，并且列举每一个资源管理接口对应的cgroup接口，让docker使用者对资源管理知其然并且知其所以然。
 
@@ -76,7 +76,7 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
     $ docker run -it --memory 100M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes"
     104857600
 
-可以看到，当内存限定为100M时，对应的cgroup文件数值为104857600，该数值的单位为kB，即104857600kB等于100M。
+可以看到，当内存限定为100M时，对应的cgroup文件数值为104857600，该数值的单位为字节，即104857600字节等于100M。
 
 本机内存环境为：
 
