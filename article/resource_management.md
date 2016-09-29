@@ -89,13 +89,13 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
 
 我们使用stress工具来证明内存限定已经生效。stress是一个压力测试套，如下命令将要在容器内创建一个进程，在该进程中不断的执行占用内存(malloc)和释放内存(free)的操作。在理论上如果占用的内存少于限定值，容器会工作正常。注意，如果试图使用边界值，即试图在容器中使用stress工具占用100M内存，这个操作通常会失败，因为容器中还有其他进程在运行。
 
-    $ docker run -ti -m 100M ubuntu:memory stress --vm 1 --vm-bytes 50M
+    $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 50M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
 当在限定内存为100M的容器中，试图占用50M的内存时，容器工作正常。
 如下所示，当试图占用超过100M内存时，必然导致容器异常。
 
-    $ docker run -ti -m 100m ubuntu:memory stress --vm 1 --vm-bytes 101M
+    $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 101M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
     stress: FAIL: [1] (416) <-- worker 6 got signal 9
     stress: WARN: [1] (418) now reaping child worker processes
@@ -121,11 +121,11 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
 
 之后再次尝试占用大于限定的内存。
 
-    $ docker run -ti -m 100m ubuntu:14.04 stress --vm 1 --vm-bytes 101M
+    $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 101M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
 在加入交换分区后容器工作正常，这意味着有部分存储在内存中的信息被转移到了交换分区中了。
-注意，在实际容器使用场景中，如果我不不对容器使用内存量加以限制的话，可以能导致一个容器会耗尽整个主机内存，从而导致系统不稳定。所以在使用容器时务必对容器内存加以限制。
+注意，在实际容器使用场景中，如果不对容器使用内存量加以限制的话，可能导致一个容器会耗尽整个主机内存，从而导致系统不稳定。所以在使用容器时务必对容器内存加以限制。
 
 ###(2)--memory-swap=""
 可以限制容器使用交换分区和内存的总和，对应的cgroup文件是cgroup/memory/memory.memsw.limit_in_bytes。<br>
@@ -137,7 +137,7 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
     $ docker run -ti -m 300M --memory-swap 1G ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     1073741824
 
-可以看到，当memory-swap限定为1G时，对应的cgroup文件数值为1073741824，该数值的单位为kB，即1073741824kB等于1G。
+可以看到，当memory-swap限定为1G时，对应的cgroup文件数值为1073741824，该数值的单位为字节，即1073741824B等于1G。
 
 
 <table>
@@ -173,7 +173,7 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
           <strong>memory=L&lt;无穷大, memory-swap=S&lt;无穷大, L&lt;=S</strong>
       </td>
       <td>
-        (设定了memory和memory-swap的限定值) 容器的内存使用量不能超过L，而内存使用量和交换分区的使用量不能超过两倍的S。
+        (设定了memory和memory-swap的限定值) 容器的内存使用量不能超过L，而内存使用量和交换分区的使用量不能超过S。
       </td>
     </tr>
   </tbody>
