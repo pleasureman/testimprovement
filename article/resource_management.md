@@ -500,7 +500,10 @@ docker的资源管理依赖于linux内核cgroups机制。理解docker资源管�
 公司邮箱：sunyuan3@huawei.com<br>
 个人邮箱：yuan.sun82@gmail.com<br>
 
-薛婉菊：待补充<br>
+薛婉菊，中软国际科技服务有限公司软件测试工程师，4年软件行业经验。目前参与容器docker项目的测试工作，工作涉及到容器功能测试、性能测试、压力测试等内容。<br>
+研究方向：容器技术、docker、自动化测试<br>
+公司邮箱：xuewanju@chinasoftinc.com<br>
+个人邮箱：xuewanju123@163.com<br>
 
 ##参考资料：
 http://www.tuicool.com/articles/zIJrEjn<br>
