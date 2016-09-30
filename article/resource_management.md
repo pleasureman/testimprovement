@@ -267,25 +267,22 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
 通过--cpu-shares可以设置容器使用CPU的权重，这个权重设置是针对CPU密集型的进程的。如果某个容器中的进程是空闲状态，那么其它容器就能够使用本该由空闲容器占用的CPU资源。也就是说，只有当两个或多个容器都试图占用整个CPU资源时，--cpu-shares设置才会有效。
 我们使用如下命令来创建两个容器，它们的权重分别为1024和512。
 
-    $ docker run -ti --cpu-shares 1024 ubuntu:14.04 stress -c 2
-    stress: info: [1] dispatching hogs: 2 cpu, 0 io, 0 vm, 0 hdd
+    $ docker run -ti --cpu-shares 1024 ubuntu:14.04 stress -c 1
+    stress: info: [1] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
 
-    $ docker run -ti --cpu-shares 512 ubuntu:14.04 stress -c 2
-    stress: info: [1] dispatching hogs: 2 cpu, 0 io, 0 vm, 0 hdd
+    $ docker run -ti --cpu-shares 512 ubuntu:14.04 stress -c 1
+    stress: info: [1] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
 
-待补充：需要将 -c 2改为 -c 1
-从如下log可以看到，每个容器会产生两个相关的进程，第一个容器产生的两个进程PID分别为25534和25533。CPU占用率分别是66.7%和66.3%，第二个容器产生的两个进程PID分别为25496和25497，两个进程的CPU占用率均为33.3%。第一个容器产生的两个进程CPU的占用率和第二个容器产生的两个进程CPU的占用率约为2:1的关系，测试结果与预期结果相符。
+从如下top命令的log可以看到，第一个容器产生的进程PID为1418，CPU占用率为66.1%，第二个容器产生进程PID为1471，CPU占用率为32.9%。两个容器CPU占用率约为2:1的关系，测试结果与预期相符。
 
-    top - 07:46:43 up 2 days, 23:44,  1 user,  load average: 3.84, 1.95, 0.83
-    Tasks: 119 total,   5 running, 114 sleeping,   0 stopped,   0 zombie
-    %Cpu(s): 98.3 us,  0.8 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.8 si,  0.0 st
-    KiB Mem :  4050284 total,   500276 free,   480636 used,  3069372 buff/cache
-    KiB Swap:  8388604 total,  8246648 free,   141956 used.  3400212 avail Mem 
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND                                          
-    25534 root      20   0    7312     92      0 R  66.7  0.0   1:46.55 stress                                           
-    25533 root      20   0    7312     92      0 R  66.3  0.0   1:46.04 stress                                           
-    25496 root      20   0    7312     96      0 R  33.3  0.0   0:56.42 stress                                           
-    25497 root      20   0    7312     96      0 R  33.3  0.0   0:56.67 stress
+    top - 18:51:50 up 9 days,  2:07,  0 users,  load average: 0.62, 0.15, 0.05
+    Tasks:  84 total,   3 running,  81 sleeping,   0 stopped,   0 zombie
+    %Cpu(s): 90.4 us,  2.2 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  7.4 si,  0.0 st
+    KiB Mem :  2052280 total,    71468 free,   117284 used,  1863528 buff/cache
+    KiB Swap:        0 total,        0 free,        0 used.  1536284 avail Mem 
+    PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+    1418 root      20   0    7312    100      0 R 66.1  0.0   0:22.92 stress
+    1471 root      20   0    7312     96      0 R 32.9  0.0   0:04.97 stress
 
 ###(6)--cpu-period=""
 内核默认的linux 调度CFS（完全公平调度器）周期为100ms,我们通过--cpu-period来设置容器对CPU的使用周期，同时--cpu-period接口需要和--cpu-quota接口一起来使用。--cpu-quota接口设置了CPU的使用值。CFS(完全公平调度器) 是内核默认使用的调度方式，为运行的进程分配CPU资源。对于多核CPU，根据需要调整--cpu-quota的值。
