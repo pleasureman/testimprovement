@@ -309,8 +309,7 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
 
   
 ###(7)--cpuset-cpus=""
-待补充，补充步骤并注明执行top命令后按数字键1
-对应的cgroup文件是cgroup/cpuset/cpuset.cpus
+该接口对应的cgroup文件是cgroup/cpuset/cpuset.cpus。
 
 在多核CPU的虚拟机中，启动一个容器，设置容器只使用CPU核1，并查看该接口对应的cgroup文件会被修改为1，log如下所示。
 
@@ -422,13 +421,11 @@ Top命令的log如下所示。需要注意的是，输入top命令并按回车�
 
 限速操作：<br>
 
-    $ docker run -it --device /dev/sda:/dev/sda --device /dev/sdb:/dev/sdb --device-write-bps /dev/sda:1mb ubuntu:14.04 bash
-    root@bbf49f46f803:/# dd iflag=direct,nonblock if=/dev/sdb of=/dev/sda bs=5M count=1
-    1+0 records in
-    1+0 records out
-    5242880 bytes (5.2 MB) copied, 5.00427 s, 1.0 MB/s
-    
-待补充(薛婉菊)，需要使用if=/dev/urandom of=/dev/sda，不要使用sdb
+    $ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mb ubuntu:14.04 bash
+    root@18dc79b91cd4:/# dd oflag=direct,nonblock of=/dev/sda if=/dev/urandom bs=10K count=1000
+    1000+0 records in
+    1000+0 records out
+    10240000 bytes (10 MB) copied, 10.1987 s, 1.0 MB/s
 
 ###(14)--device-read-iops=""
 该接口设置了设备的IO读取速率，对应的cgroup文件是cgroup/blkio/blkio.throttle.read_iops_device。
