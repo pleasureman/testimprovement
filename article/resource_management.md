@@ -321,6 +321,8 @@ memory.swappiness：控制内核使用交换区的倾向。取值范围是0至10
 
     $ docker run -tid --name cpu2 --cpuset-cpus 1 ubuntu:14.04 stress -c 1
 
+Top命令的log如下所示。需要注意的是，输入top命令并按回车键后，再按数字键1，终端才能显示每个CPU的状态。
+
     $ top
     top - 11:31:47 up 5 days, 21:00,  0 users,  load average: 0.62, 0.82, 0.77
     Tasks: 104 total,   3 running, 101 sleeping,   0 stopped,   0 zombie
