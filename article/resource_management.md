@@ -341,7 +341,7 @@ Top命令的log如下所示。需要注意的是，输入top命令并按回车�
 从以上log得知，只有CPU核1的负载为100%，而其它CPU核处于空闲状态，结果与预期结果相符。
 
 ###(8)--cpuset-mems=""
-该接口对应的cgroup文件是cgroup/cpuset/cpuset.mems
+该接口对应的cgroup文件是cgroup/cpuset/cpuset.mems。
 
     $ docker run -ti --cpuset-mems=0 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
     0
@@ -355,9 +355,9 @@ Top命令的log如下所示。需要注意的是，输入top命令并按回车�
     $ docker run -it --cpuset-mems="0-2" ubuntu:14.04 bash
 
 ###(9)--cpu-quota=0
-对应的cgroup文件是cgroup/cpu/cpu.cfs_quota_us
+对应的cgroup文件是cgroup/cpu/cpu.cfs_quota_us。
 
-    $ docker run --rm --cpu-quota 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
+    $ docker run --cpu-quota 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
     1600
 
 --cpu-quota接口设置了CPU的使用值，通常情况下它需要和--cpu-period接口一起来使用。具体使用方法请参考--cpu-period选项。
@@ -381,7 +381,7 @@ Top命令的log如下所示。需要注意的是，输入top命令并按回车�
 通过--blkio-weight-device="设备名:权重"接口可以设置容器对特定块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。
 对应的cgroup文件为cgroup/blkio/blkio.weight_device。
 
-    $ docker run --rm --blkio-weight-device "/dev/sda:1000" ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
+    $ docker run --blkio-weight-device "/dev/sda:1000" ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
     8:0 1000
 
 以上log中的"8:0"表示sda的设备号，可以通过stat命令来获取某个设备的设备号。从以下log中可以查看到/dev/sda对应的主设备号为8，次设备号为0。
@@ -391,7 +391,7 @@ Top命令的log如下所示。需要注意的是，输入top命令并按回车�
 
 如果--blkio-weight-device接口和--blkio-weight接口一起使用，那么docker会使用--blkio-weight值作为默认的权重值，然后使用--blkio-weight-device值来设定指定设备的权重值，而早先设置的默认权重值将不在这个特定设备中生效。
 
-    $ docker run --rm --blkio-weight 300 --blkio-weight-device "/dev/sda:500" ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
+    $ docker run --blkio-weight 300 --blkio-weight-device "/dev/sda:500" ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
     8:0 500
 
 通过以上log可以看出，当--blkio-weight接口和--blkio-weight-device接口一起使用的时候，/dev/sda设备的权重值由--blkio-weight-device设定的值来决定。
