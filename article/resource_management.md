@@ -212,7 +212,7 @@ memory.swappiness：控制内核使用交换分区的倾向。取值范围是0�
     docker: Error response from daemon: Minimum memoryswap limit should be larger than memory limit, see usage..
     See 'docker run --help'.
 
-如下所示，当尝试占用的内存数量超过memory-swap值时，容器出现异常；当占用内存值大于memory限定值但小于memory-swap时，容器运行正常。
+如下所示，当尝试占用的内存数量超过memory-swap值时，容器出现异常。
 
     $ docker run -ti -m 100M --memory-swap 200M ubuntu:14.04 stress --vm 1 --vm-bytes 201M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
@@ -220,7 +220,10 @@ memory.swappiness：控制内核使用交换分区的倾向。取值范围是0�
     stress: WARN: [1] (418) now reaping child worker processes
     stress: FAIL: [1] (422) kill error: No such process
     stress: FAIL: [1] (452) failed run completed in 0s
-    [unicorn@unicorn ~]$ docker run -ti -m 100m --memory-swap 200m ubuntu:memory stress --vm 1 --vm-bytes 180M
+
+如下所示，当占用内存值大于memory限定值但小于memory-swap时，容器运行正常。
+
+    $ docker run -ti -m 100m --memory-swap 200m ubuntu:memory stress --vm 1 --vm-bytes 180M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
     
 ###(3)--memory-reservation=""
