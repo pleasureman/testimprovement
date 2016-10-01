@@ -7,7 +7,7 @@ Cgroups是control groups的缩写，是linux内核提供的一种可以限制、
 
 2.1 cpuset -- 这个子系统为 cgroup 中的任务分配独立 CPU（在多核系统）和内存节点。<br>
 主要接口：<br>
-cpuset.cpus：允许进程使用的cpu列表（例如：0-4,9）。<br>
+cpuset.cpus：允许进程使用的CPU列表（例如：0-4,9）。<br>
 cpuset.mems：允许进程使用的内存节点列表（例如：0-1）。<br>
 
 2.2 cpu -- 这个子系统使用调度程序提供对 CPU 的 cgroup 任务访问。<br>
