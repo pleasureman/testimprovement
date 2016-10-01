@@ -241,7 +241,7 @@ memory.swappiness：控制内核使用交换分区的倾向。取值范围是0�
 
     $ docker run -it -m 500M --memory-reservation 200M ubuntu:14.04 bash
     
-在如下命令中，容器使用的内存量不受限制，但容器消耗的内存量不会长时间超过1G，因为当容器使用量超过1G时，系统会尝试回收内存使内存使用量低于1G。
+在如下命令中，容器使用的内存量不受限制，但容器消耗的内存量不会长时间超过1G，因为当容器内存使用量超过1G时，系统会尝试回收内存使内存使用量低于1G。
 
     $ docker run -it --memory-reservation 1G ubuntu:14.04 bash
     
