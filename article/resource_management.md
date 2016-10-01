@@ -33,7 +33,7 @@ blkio.throttle.write_iops_device：设置每秒写块设备的IO次数的上限�
 
 2.6 freezer -- 这个子系统挂起或者恢复 cgroup 中的任务。
 
-2.7 memory -- 这个子系统用来限制cgroup所能使用的内存上限。<br>
+2.7 memory -- 这个子系统用来限制cgroup中的任务所能使用的内存上限。<br>
 主要接口：<br>
 memory.limit_in_bytes：设定内存上限，单位是字节，也可以使用k/K、m/M或者g/G表示要设置数值的单位。<br>
 memory.memsw.limit_in_bytes：设定内存加上交换分区的使用总量。通过设置这个值，可以防止进程把交换分区用光。<br>
