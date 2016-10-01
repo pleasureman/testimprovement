@@ -25,8 +25,8 @@ blkio.weight：设置权重值，取值范围是10至1000之间的整数（包�
 blkio.weight_device：对具体的设备设置权重值，这个值会覆盖上述的blkio.weight。<br>
 blkio.throttle.read_bps_device：对具体的设备，设置每秒读块设备的带宽上限。<br>
 blkio.throttle.write_bps_device：设置每秒写块设备的带宽上限。同样需要指定设备。<br>
-blkio.throttle.read_iops_device：设置每秒读块设备的IOPS上限。同样需要指定设备。<br>
-blkio.throttle.write_iops_device：设置每秒写块设备的IOPS上限。同样需要指定设备。<br>
+blkio.throttle.read_iops_device：设置每秒读块设备的IO次数的上限。同样需要指定设备。<br>
+blkio.throttle.write_iops_device：设置每秒写块设备的IO次数的上限。同样需要指定设备。<br>
 
 
 2.5 devices -- 这个子系统可允许或者拒绝 cgroup 中的任务访问设备。
