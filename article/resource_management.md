@@ -229,7 +229,7 @@ memory.swappiness：控制内核使用交换分区的倾向。取值范围是0�
 ###(3)--memory-reservation=""
 取值范围:大于等于0的整数<br>
 单位：b,k,m,g<br>
-对应的cgroup文件是cgroup/memory/memory.soft_limit_in_bytes
+对应的cgroup文件是cgroup/memory/memory.soft_limit_in_bytes。
 
     $ docker run -ti --memory-reservation 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.soft_limit_in_bytes"
     52428800
