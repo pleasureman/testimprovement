@@ -482,7 +482,7 @@ under_oom：取值为0或1，当值为1的时候，OOM已经出现在容器中�
     $ echo $?
     137
     
-通过上面的log可以看出,当容器的内存耗尽的时候，容器退出，退出码为137。因为容器试图使用超出限定的内存量，系统会触发OOM，容器会被杀掉，此时under_oom的值为1。我们可以通过系统中cgroup文件(/sys/fs/cgroup/memory/docker/${container_id}/memory.oom_control)查看under_oom的值（oom_kill_disable 1，under_oom 1）
+通过上面的log可以看出,当容器的内存耗尽的时候，容器退出，退出码为137。因为容器试图使用超出限定的内存量，系统会触发OOM，容器会被杀掉，此时under_oom的值为1。我们可以通过系统中cgroup文件(/sys/fs/cgroup/memory/docker/${container_id}/memory.oom_control)查看under_oom的值（oom_kill_disable 1，under_oom 1）。
 
 当--oom-kill-disable=true的时候，容器不会被杀掉，而是被系统挂起。
 
