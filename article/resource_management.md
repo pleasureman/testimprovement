@@ -208,7 +208,7 @@ memory.swappiness：控制内核使用交换分区的倾向。取值范围是0�
 
 当memory-swap限定值低于memory限定值时，系统提示"Minimum memoryswap limit should be larger than memory limit"错误。
 
-    $ docker run -it -m 300M --memory-swap 200M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat     /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
+    $ docker run -it -m 300M --memory-swap 200M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     docker: Error response from daemon: Minimum memoryswap limit should be larger than memory limit, see usage..
     See 'docker run --help'.
 
@@ -223,7 +223,7 @@ memory.swappiness：控制内核使用交换分区的倾向。取值范围是0�
 
 如下所示，当占用内存值大于memory限定值但小于memory-swap时，容器运行正常。
 
-    $ docker run -ti -m 100m --memory-swap 200m ubuntu:memory stress --vm 1 --vm-bytes 180M
+    $ docker run -ti -m 100M --memory-swap 200M ubuntu:memory stress --vm 1 --vm-bytes 180M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
     
 ###(3)--memory-reservation=""
@@ -323,9 +323,8 @@ memory.swappiness：控制内核使用交换分区的倾向。取值范围是0�
 
     $ docker run -ti --cpuset-cpus 1 ubuntu:14.04 stress -c 1
 
-Top命令的log如下所示。需要注意的是，输入top命令并按回车键后，再按数字键1，终端才能显示每个CPU的状态。
+查看CPU资源的top命令的log如下所示。需要注意的是，输入top命令并按回车键后，再按数字键1，终端才能显示每个CPU的状态。
 
-    $ top
     top - 11:31:47 up 5 days, 21:00,  0 users,  load average: 0.62, 0.82, 0.77
     Tasks: 104 total,   3 running, 101 sleeping,   0 stopped,   0 zombie
     %Cpu0  :  0.0 us,  0.0 sy,  0.0 ni, 99.6 id,  0.0 wa,  0.0 hi,  0.4 si,  0.0 st
@@ -455,7 +454,7 @@ Top命令的log如下所示。需要注意的是，输入top命令并按回车�
 可以通过"--device-write-iops /dev/sda:400"来限定sda的IO写速率(400次/秒)，log如下所示。
 
     $ docker run -ti --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 ubuntu:14.04
-    root@ef88a516d6ed:/# dd oflag=direct,nonblock of=/dev/sda if= /dev/urandom bs=1K count=1000
+    root@ef88a516d6ed:/# dd oflag=direct,nonblock of=/dev/sda if=/dev/urandom bs=1K count=1000
     1000+0 records in
     1000+0 records out
     1024000 bytes (1.0 MB) copied, 2.4584 s, 417 kB/s
