@@ -54,22 +54,15 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 | --cpuset-mems="" | cgroup/cpuset/cpuset.mems | 允许进程使用的内存节点列表（例如：0-1）。 |
 
 2.4 blkio -- 这个子系统为块设备设定输入/输出限制，比如物理设备（磁盘、固态硬盘、USB等）。<br>
-主要接口：<br>
-blkio.weight：设置权重值，取值范围是10至1000之间的整数（包含10和1000）。这跟cpu.shares类似，是比重分配，而不是绝对带宽的限制，因此只有当不同的cgroup在争用同一个块设备的带宽时，才会起作用。<br>
-blkio.weight_device：对具体的设备设置权重值，这个值会覆盖上述的blkio.weight。<br>
-blkio.throttle.read_bps_device：对具体的设备，设置每秒读块设备的带宽上限。<br>
-blkio.throttle.write_bps_device：设置每秒写块设备的带宽上限。同样需要指定设备。<br>
-blkio.throttle.read_iops_device：设置每秒读块设备的IO次数的上限。同样需要指定设备。<br>
-blkio.throttle.write_iops_device：设置每秒写块设备的IO次数的上限。同样需要指定设备。<br>
 
 | 格式 | 对应的cgroups接口 | 描述 |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| --blkio-weight="" | cgroup/blkio/blkio.weight | 设置权重值，取值范围是10至1000之间的整数（包含10和1000）。这跟cpu.shares类似，是比重分配，而不是绝对带宽的限制，因此只有当不同的cgroup在争用同一个块设备的带宽时，才会起作用。 |
+| --blkio-weight-device=""  | cgroup/blkio/blkio.weight_device | 对具体的设备设置权重值，这个值会覆盖上述的blkio.weight。 |
+| --device-read-bps="" | cgroup/blkio/blkio.throttle.read_bps_device | 对具体的设备，设置每秒读块设备的带宽上限。 |
+| --device-write-bps="" | cgroup/blkio/blkio.throttle.write_bps_device | 设置每秒写块设备的带宽上限。同样需要指定设备。 |
+| --device-read-iops="" | cgroup/blkio/blkio.throttle.read_iops_device | 设置每秒读块设备的IO次数的上限。同样需要指定设备。 |
+| --device-write-iops="" | cgroup/blkio/blkio.throttle.write_iops_device | 设置每秒写块设备的IO次数的上限。同样需要指定设备。 |
 
 ## 3.Docker资源管理接口详解及应用示例
 以下内容针对各资源管理接口做了详尽的说明。为了加深读者理解，部分接口附有测试用例。用例中的Docker版本为1.11.0。如果在你的镜像中stress命令不可用，你可以通过sudo apt-get install stress来安装stress工具。
