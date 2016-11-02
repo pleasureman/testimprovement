@@ -39,30 +39,19 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 | --memory-swappiness="" | cgroup/memory/memory.swappiness |控制内核使用交换分区的倾向。取值范围是0至100之间的整数（包含0和100）。值越小，越倾向使用物理内存。|
 
 2.2 cpu -- 这个子系统使用调度程序提供对 CPU 的 cgroup 任务访问。<br>
-主要接口：<br>
-cpu.shares: CPU比重分配<br>
-假设我们在cgroupfs的根目录下创建了两个cgroup（C1和C2），并且将cpu.shares分别配置为512和1024，那么当C1和C2争用CPU时，C2将会比C1得到多一倍的CPU占用率。要注意的是，只有当它们争用CPU时CPU share才会起作用，如果C2是空闲的，那么C1可以得到全部的CPU资源。<br>
-cpu.cfs_period_us和cpu.cfs_quota_us:CPU带宽限制<br>
-我们可以将period设置为1秒，将quota设置为0.5秒，那么cgroup中的进程在1秒内最多只能运行0.5秒，然后就会被强制睡眠，直到下一个1秒才能继续运行。<br>
 
 | 格式 | 对应的cgroups接口 | 描述 |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| -c, --cpu-shares="" | cgroup/cpu/cpu.shares | 负责CPU比重分配的接口。假设我们在cgroupfs的根目录下创建了两个cgroup（C1和C2），并且将cpu.shares分别配置为512和1024，那么当C1和C2争用CPU时，C2将会比C1得到多一倍的CPU占用率。要注意的是，只有当它们争用CPU时CPU share才会起作用，如果C2是空闲的，那么C1可以得到全部的CPU资源。 |
+| --cpu-period="" | cgroup/cpu/cpu.cfs_period_us | 负责CPU带宽限制，需要与cpu.cfs_quota_us搭配使用。我们可以将period设置为1秒，将quota设置为0.5秒，那么cgroup中的进程在1秒内最多只能运行0.5秒，然后就会被强制睡眠，直到下一个1秒才能继续运行。 |
+| --cpu-quota="" | cgroup/cpu/cpu.cfs_quota_us | 同上 |
 
 2.3 cpuset -- 这个子系统为 cgroup 中的任务分配独立 CPU（在多核系统）和内存节点。<br>
-主要接口：<br>
-cpuset.cpus：允许进程使用的CPU列表（例如：0-4,9）。<br>
-cpuset.mems：允许进程使用的内存节点列表（例如：0-1）。<br>
 
 | 格式 | 对应的cgroups接口 | 描述 |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-
-
+| --cpuset-cpus="" | cgroup/cpuset/cpuset.cpus | 允许进程使用的CPU列表（例如：0-4,9）。 |
+| --cpuset-mems="" | cgroup/cpuset/cpuset.mems | 允许进程使用的内存节点列表（例如：0-1）。 |
 
 2.4 blkio -- 这个子系统为块设备设定输入/输出限制，比如物理设备（磁盘、固态硬盘、USB等）。<br>
 主要接口：<br>
@@ -78,7 +67,9 @@ blkio.throttle.write_iops_device：设置每秒写块设备的IO次数的上限�
 |  |  |  |
 |  |  |  |
 |  |  |  |
-
+|  |  |  |
+|  |  |  |
+|  |  |  |
 
 ## 3.Docker资源管理接口详解及应用示例
 以下内容针对各资源管理接口做了详尽的说明。为了加深读者理解，部分接口附有测试用例。用例中的Docker版本为1.11.0。如果在你的镜像中stress命令不可用，你可以通过sudo apt-get install stress来安装stress工具。
