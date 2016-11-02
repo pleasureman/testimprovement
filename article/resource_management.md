@@ -43,7 +43,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
 | cgroup/cpu/cpu.shares | 负责CPU比重分配的接口。假设我们在cgroupfs的根目录下创建了两个cgroup（C1和C2），并且将cpu.shares分别配置为512和1024，那么当C1和C2争用CPU时，C2将会比C1得到多一倍的CPU占用率。要注意的是，只有当它们争用CPU时CPU share才会起作用，如果C2是空闲的，那么C1可以得到全部的CPU资源。 | -c, --cpu-shares="" |
 | cgroup/cpu/cpu.cfs_period_us | 负责CPU带宽限制，需要与cpu.cfs_quota_us搭配使用。我们可以将period设置为1秒，将quota设置为0.5秒，那么cgroup中的进程在1秒内最多只能运行0.5秒，然后就会被强制睡眠，直到下一个1秒才能继续运行。 | --cpu-period="" |
-| cgroup/cpu/cpu.cfs_quota_us | 同上 | --cpu-quota="" |
+| cgroup/cpu/cpu.cfs_quota_us | 负责CPU带宽限制，需要与cpu.cfs_period_us搭配使用。 | --cpu-quota="" |
 
 2.3 cpuset -- 这个子系统为 cgroup 中的任务分配独立 CPU（在多核系统）和内存节点。<br>
 
