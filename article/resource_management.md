@@ -29,40 +29,40 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 
 2.1 memory -- 这个子系统用来限制cgroup中的任务所能使用的内存上限。<br>
 
-| 格式 | 对应的cgroups接口 | 描述 |
+| 子系统常用cgroups接口 | 描述 | 对应的docker接口 |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| -m, --memory="" | cgroup/memory/memory.limit_in_bytes |设定内存上限，单位是字节，也可以使用k/K、m/M或者g/G表示要设置数值的单位。|
-| --memory-swap="" | cgroup/memory/memory.memsw.limit_in_bytes |设定内存加上交换分区的使用总量。通过设置这个值，可以防止进程把交换分区用光。|
-| --memory-reservation="" | cgroup/memory/memory.soft_limit_in_bytes |设定内存限制，但这个限制并不会阻止进程使用超过限额的内存，只是在系统内存不足时，会优先回收超过限额的进程占用的内存，使之向限定值靠拢。|
-| --kernel-memory="" | cgroup/memory/memory.kmem.limit_in_bytes |设定内核内存上限。|
-| --oom-kill-disable="" | cgroup/memory/memory.oom_control |如果设置为0，那么在内存使用量超过上限时，系统不会杀死进程，而是阻塞进程直到有内存被释放可供使用时，另一方面，系统会向用户态发送事件通知，用户态的监控程序可以根据该事件来做相应的处理，例如提高内存上限等。|
-| --memory-swappiness="" | cgroup/memory/memory.swappiness |控制内核使用交换分区的倾向。取值范围是0至100之间的整数（包含0和100）。值越小，越倾向使用物理内存。|
+| cgroup/memory/memory.limit_in_bytes | 设定内存上限，单位是字节，也可以使用k/K、m/M或者g/G表示要设置数值的单位。| -m, --memory="" |
+| cgroup/memory/memory.memsw.limit_in_bytes |设定内存加上交换分区的使用总量。通过设置这个值，可以防止进程把交换分区用光。| --memory-swap="" |
+| cgroup/memory/memory.soft_limit_in_bytes |设定内存限制，但这个限制并不会阻止进程使用超过限额的内存，只是在系统内存不足时，会优先回收超过限额的进程占用的内存，使之向限定值靠拢。| --memory-reservation="" |
+| cgroup/memory/memory.kmem.limit_in_bytes |设定内核内存上限。| --kernel-memory="" |
+| cgroup/memory/memory.oom_control |如果设置为0，那么在内存使用量超过上限时，系统不会杀死进程，而是阻塞进程直到有内存被释放可供使用时，另一方面，系统会向用户态发送事件通知，用户态的监控程序可以根据该事件来做相应的处理，例如提高内存上限等。| --oom-kill-disable="" |
+| cgroup/memory/memory.swappiness |控制内核使用交换分区的倾向。取值范围是0至100之间的整数（包含0和100）。值越小，越倾向使用物理内存。| --memory-swappiness="" |
 
 2.2 cpu -- 这个子系统使用调度程序提供对 CPU 的 cgroup 任务访问。<br>
 
-| 格式 | 对应的cgroups接口 | 描述 |
+| 子系统常用cgroups接口 | 描述 | 对应的docker接口 |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| -c, --cpu-shares="" | cgroup/cpu/cpu.shares | 负责CPU比重分配的接口。假设我们在cgroupfs的根目录下创建了两个cgroup（C1和C2），并且将cpu.shares分别配置为512和1024，那么当C1和C2争用CPU时，C2将会比C1得到多一倍的CPU占用率。要注意的是，只有当它们争用CPU时CPU share才会起作用，如果C2是空闲的，那么C1可以得到全部的CPU资源。 |
-| --cpu-period="" | cgroup/cpu/cpu.cfs_period_us | 负责CPU带宽限制，需要与cpu.cfs_quota_us搭配使用。我们可以将period设置为1秒，将quota设置为0.5秒，那么cgroup中的进程在1秒内最多只能运行0.5秒，然后就会被强制睡眠，直到下一个1秒才能继续运行。 |
-| --cpu-quota="" | cgroup/cpu/cpu.cfs_quota_us | 同上 |
+| cgroup/cpu/cpu.shares | 负责CPU比重分配的接口。假设我们在cgroupfs的根目录下创建了两个cgroup（C1和C2），并且将cpu.shares分别配置为512和1024，那么当C1和C2争用CPU时，C2将会比C1得到多一倍的CPU占用率。要注意的是，只有当它们争用CPU时CPU share才会起作用，如果C2是空闲的，那么C1可以得到全部的CPU资源。 | -c, --cpu-shares="" |
+| cgroup/cpu/cpu.cfs_period_us | 负责CPU带宽限制，需要与cpu.cfs_quota_us搭配使用。我们可以将period设置为1秒，将quota设置为0.5秒，那么cgroup中的进程在1秒内最多只能运行0.5秒，然后就会被强制睡眠，直到下一个1秒才能继续运行。 | --cpu-period="" |
+| cgroup/cpu/cpu.cfs_quota_us | 同上 | --cpu-quota="" |
 
 2.3 cpuset -- 这个子系统为 cgroup 中的任务分配独立 CPU（在多核系统）和内存节点。<br>
 
-| 格式 | 对应的cgroups接口 | 描述 |
+| 子系统常用cgroups接口 | 描述 | 对应的docker接口 |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| --cpuset-cpus="" | cgroup/cpuset/cpuset.cpus | 允许进程使用的CPU列表（例如：0-4,9）。 |
-| --cpuset-mems="" | cgroup/cpuset/cpuset.mems | 允许进程使用的内存节点列表（例如：0-1）。 |
+| cgroup/cpuset/cpuset.cpus | 允许进程使用的CPU列表（例如：0-4,9）。 | --cpuset-cpus="" |
+| cgroup/cpuset/cpuset.mems | 允许进程使用的内存节点列表（例如：0-1）。 | --cpuset-mems="" |
 
 2.4 blkio -- 这个子系统为块设备设定输入/输出限制，比如物理设备（磁盘、固态硬盘、USB等）。<br>
 
-| 格式 | 对应的cgroups接口 | 描述 |
+| 子系统常用cgroups接口 | 描述 | 对应的docker接口 |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| --blkio-weight="" | cgroup/blkio/blkio.weight | 设置权重值，取值范围是10至1000之间的整数（包含10和1000）。这跟cpu.shares类似，是比重分配，而不是绝对带宽的限制，因此只有当不同的cgroup在争用同一个块设备的带宽时，才会起作用。 |
-| --blkio-weight-device=""  | cgroup/blkio/blkio.weight_device | 对具体的设备设置权重值，这个值会覆盖上述的blkio.weight。 |
-| --device-read-bps="" | cgroup/blkio/blkio.throttle.read_bps_device | 对具体的设备，设置每秒读块设备的带宽上限。 |
-| --device-write-bps="" | cgroup/blkio/blkio.throttle.write_bps_device | 设置每秒写块设备的带宽上限。同样需要指定设备。 |
-| --device-read-iops="" | cgroup/blkio/blkio.throttle.read_iops_device | 设置每秒读块设备的IO次数的上限。同样需要指定设备。 |
-| --device-write-iops="" | cgroup/blkio/blkio.throttle.write_iops_device | 设置每秒写块设备的IO次数的上限。同样需要指定设备。 |
+| cgroup/blkio/blkio.weight | 设置权重值，取值范围是10至1000之间的整数（包含10和1000）。这跟cpu.shares类似，是比重分配，而不是绝对带宽的限制，因此只有当不同的cgroup在争用同一个块设备的带宽时，才会起作用。 | --blkio-weight="" |
+| cgroup/blkio/blkio.weight_device | 对具体的设备设置权重值，这个值会覆盖上述的blkio.weight。 | --blkio-weight-device=""  |
+| cgroup/blkio/blkio.throttle.read_bps_device | 对具体的设备，设置每秒读块设备的带宽上限。 | --device-read-bps="" |
+| cgroup/blkio/blkio.throttle.write_bps_device | 设置每秒写块设备的带宽上限。同样需要指定设备。 | --device-write-bps="" |
+| cgroup/blkio/blkio.throttle.read_iops_device | 设置每秒读块设备的IO次数的上限。同样需要指定设备。 | --device-read-iops="" |
+| cgroup/blkio/blkio.throttle.write_iops_device | 设置每秒写块设备的IO次数的上限。同样需要指定设备。 | --device-write-iops="" |
 
 ## 3.Docker资源管理接口详解及应用示例
 以下内容针对各资源管理接口做了详尽的说明。为了加深读者理解，部分接口附有测试用例。用例中的Docker版本为1.11.0。如果在你的镜像中stress命令不可用，你可以通过sudo apt-get install stress来安装stress工具。
