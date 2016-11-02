@@ -9,20 +9,19 @@
 | `--memory-swap="<数字>[<单位>]"`             | 总内存使用限制 (物理内存 + 交换分区数字需要使用整数，对应的单位是`b`, `k`, `m`, `g`中的一个。 |
 | `--memory-reservation="<数字>[<单位>]"`      | 内存软限制。 数字需要使用正整数，对应的单位是`b`, `k`, `m`, `g`中的一个。 |
 | `--kernel-memory="<数字>[<单位>]"`           | 内核内存限制。 数字需要使用正整数，对应的单位是`b`, `k`, `m`, `g`中的一个。最小取值是4M。 |
+| `--oom-kill-disable=false`               | 内存耗尽时是否杀掉容器                              |
+| `--memory-swappiness=""`                 | 调节容器内存使用交换分区的选项，取值为0和100之间的整数(含0和100)。   |
 | `-c`, `--cpu-shares=0`                   | CPU份额 (相对权重)                             |
 | `--cpu-period=0`                         | 完全公平算法中的period值                          |
+| `--cpu-quota=0`                          | 完全公平算法中的quota值                           |
 | `--cpuset-cpus="<数字>"`                   | 限制容器使用的cpu核(0-3, 0,1)                    |
 | `--cpuset-mems=""`                       | 限制容器使用的内存节点，该限制仅仅在NUMA系统中生效。             |
-| `--cpu-quota=0`                          | 完全公平算法中的quota值                           |
 | `--blkio-weight=0`                       | 块设备IO相对权重，取值在10值1000之间的整数（包含10和1000）     |
 | `--blkio-weight-device="设备名称:权重值"`       | 指定的块设备的IO相对权重                            |
 | `--device-read-bps="<设备路径>:<数字>[<单位>]"`  | 限制对某个设备的读取速率 ，数字需要使用正整数，单位是`kb`, `mb`, or `gb`中的一个。 |
 | `--device-write-bps="<设备路径>:<数字>[<单位>]"` | 限制对某个设备的写速率 ，数字需要使用正整数，单位是`kb`, `mb`, or `gb`中的一个。 |
 | `--device-read-iops="<设备路径>:<数字>" `      | 限制对某个设备每秒IO的读取速率，数字需要使用正整数。              |
 | `--device-write-iops="<设备路径>:<数字>" `     | 限制对某个设备每秒IO的写速率，数字需要使用正整数。               |
-| `--oom-kill-disable=false`               | 内存耗尽时是否杀掉容器                              |
-| `--memory-swappiness=""`                 | 调节容器内存使用交换分区的选项，取值为0和100之间的整数(含0和100)。   |
-
 
 ## 2. Docker资源管理原理——Cgroups子系统介绍
 Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、记录、隔离进程组（process groups）所使用的物理资源（如：CPU、内存、IO等）的机制。最初由google的工程师提出，后来被整合进Linux内核。对资源的分配和管理是由各个cgroup子系统完成的。Cgroups有7个子系统，分别是cpuset、cpu、cpuacct、blkio、devices、freezer、memory。下面介绍与docker资源管理接口相关的4个子系统。
