@@ -67,7 +67,8 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 ## 3.Docker资源管理接口详解及应用示例
 以下内容针对各资源管理接口做了详尽的说明。为了加深读者理解，部分接口附有测试用例。用例中的Docker版本为1.11.0。如果在你的镜像中stress命令不可用，你可以通过sudo apt-get install stress来安装stress工具。
 
-###(1)-m, --memory=""
+###3.1 memory子系统
+####3.1.1 -m, --memory=""
 可以限制容器使用的内存量，对应的cgroup文件是cgroup/memory/memory.limit_in_bytes。<br>
 取值范围:大于等于4M<br>
 单位：b,k,m,g<br>
@@ -129,7 +130,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 在加入交换分区后容器工作正常，这意味着有部分存储在内存中的信息被转移到了交换分区中了。
 注意，在实际容器使用场景中，如果不对容器使用内存量加以限制的话，可能导致一个容器会耗尽整个主机内存，从而导致系统不稳定。所以在使用容器时务必对容器内存加以限制。
 
-###(2)--memory-swap=""
+####3.1.2 --memory-swap=""
 可以限制容器使用交换分区和内存的总和，对应的cgroup文件是cgroup/memory/memory.memsw.limit_in_bytes。<br>
 取值范围:大于内存限定值<br>
 单位：b,k,m,g<br>
@@ -226,7 +227,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
     $ docker run -ti -m 100M --memory-swap 200M ubuntu:memory stress --vm 1 --vm-bytes 180M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
-###(3)--memory-reservation=""
+####3.1.3 --memory-reservation=""
 取值范围:大于等于0的整数<br>
 单位：b,k,m,g<br>
 对应的cgroup文件是cgroup/memory/memory.soft_limit_in_bytes。
@@ -245,7 +246,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 
     $ docker run -it --memory-reservation 1G ubuntu:14.04 bash
 
-###(4)--kernel-memory=""
+####3.1.4 --kernel-memory=""
 该接口限制了容器对内核内存的使用，对应的cgroup文件是cgroup/memory/memory.kmem.limit_in_bytes。
 
     $ docker run -ti --kernel-memory 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
@@ -259,7 +260,40 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 
     $ docker run -it --kernel-memory 50M ubuntu:14.04 bash
 
-###(5)-c, --cpu-shares=0
+####3.1.5 --oom-kill-disable=false
+当out-of-memory (OOM)发生时，系统会默认杀掉容器进程，如果你不想让容器进程被杀掉，可以使用该接口。接口对应的cgroup文件是cgroup/memory/memory.oom_control。
+
+当容器试图使用超过限定大小的内存值时，就会触发OOM。此时会有两种情况，第一种情况是当接口--oom-kill-disable=false的时候，容器会被杀掉；第二种情况是当接口--oom-kill-disable=true的时候，容器会被挂起。
+
+以下命令设置了容器的的内存使用限制为20M，将--oom-kill-disable接口的值设置为true。查看该接口对应的cgroup文件，oom_kill_disable的值为1。
+
+    $  docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.oom_control'
+    oom_kill_disable 1
+    under_oom 0
+
+oom_kill_disable：取值为0或1，当值为1的时候表示当容器试图使用超出内存限制时（即20M），容器会挂起。
+under_oom：取值为0或1，当值为1的时候，OOM已经出现在容器中。
+
+通过x=a; while true; do x=$x$x$x$x; done命令来耗尽内存并强制触发OOM，log如下所示。
+
+    $ docker run -m 20m --oom-kill-disable=false ubuntu:14.04 bash -c 'x=a; while true; do x=$x$x$x$x; done'
+    $ echo $?
+    137
+
+通过上面的log可以看出,当容器的内存耗尽的时候，容器退出，退出码为137。因为容器试图使用超出限定的内存量，系统会触发OOM，容器会被杀掉，此时under_oom的值为1。我们可以通过系统中cgroup文件(/sys/fs/cgroup/memory/docker/${container_id}/memory.oom_control)查看under_oom的值（oom_kill_disable 1，under_oom 1）。
+
+当--oom-kill-disable=true的时候，容器不会被杀掉，而是被系统挂起。
+
+    $ docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'x=a; while true; do x=$x$x$x$x; done'
+
+####3.1.6 --memory-swappiness=""
+该接口可以设定容器使用交换分区的趋势，取值范围为0至100的整数（包含0和100）。0表示容器不使用交换分区，100表示容器尽可能多的使用交换分区。对应的cgroup文件是cgroup/memory/memory.swappiness。
+
+    $ docker run --memory-swappiness=100 ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
+    100
+
+###3.2 cpu子系统
+####3.2.1 -c, --cpu-shares=0
 对应的cgroup文件是cgroup/cpu/cpu.shares。
 
     $ docker run --rm --cpu-shares 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.shares"
@@ -285,7 +319,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
     1418 root      20   0    7312    100      0 R 66.1  0.0   0:22.92 stress
     1471 root      20   0    7312     96      0 R 32.9  0.0   0:04.97 stress
 
-###(6)--cpu-period=""
+####3.2.2 --cpu-period=""
 内核默认的Linux 调度CFS（完全公平调度器）周期为100ms,我们通过--cpu-period来设置容器对CPU的使用周期，同时--cpu-period接口需要和--cpu-quota接口一起来使用。--cpu-quota接口设置了CPU的使用值。CFS(完全公平调度器) 是内核默认使用的调度方式，为运行的进程分配CPU资源。对于多核CPU，根据需要调整--cpu-quota的值。
 
 对应的cgroup文件是cgroup/cpu/cpu.cfs_period_us。以下命令创建了一个容器，同时设置了该容器对CPU的使用时间为50000（单位为微秒），并验证了该接口对应的cgroup文件对应的值。
@@ -308,8 +342,16 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
     PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                                           
     770 root      20   0    7312     96      0 R 50.0  0.0   0:38.06 stress
 
+####3.2.3 --cpu-quota=0
+对应的cgroup文件是cgroup/cpu/cpu.cfs_quota_us。
 
-###(7)--cpuset-cpus=""
+    $ docker run --cpu-quota 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
+    1600
+
+--cpu-quota接口设置了CPU的使用值，通常情况下它需要和--cpu-period接口一起来使用。具体使用方法请参考--cpu-period选项。
+
+###3.3 cpuset子系统
+####3.3.1 --cpuset-cpus=""
 该接口对应的cgroup文件是cgroup/cpuset/cpuset.cpus。
 
 在多核CPU的虚拟机中，启动一个容器，设置容器只使用CPU核1，并查看该接口对应的cgroup文件会被修改为1，log如下所示。
@@ -337,7 +379,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 
 从以上log得知，只有CPU核1的负载为100%，而其它CPU核处于空闲状态，结果与预期结果相符。
 
-###(8)--cpuset-mems=""
+####3.3.2 --cpuset-mems=""
 该接口对应的cgroup文件是cgroup/cpuset/cpuset.mems。
 
     $ docker run -ti --cpuset-mems=0 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
@@ -351,15 +393,8 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 
     $ docker run -it --cpuset-mems="0-2" ubuntu:14.04 bash
 
-###(9)--cpu-quota=0
-对应的cgroup文件是cgroup/cpu/cpu.cfs_quota_us。
-
-    $ docker run --cpu-quota 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
-    1600
-
---cpu-quota接口设置了CPU的使用值，通常情况下它需要和--cpu-period接口一起来使用。具体使用方法请参考--cpu-period选项。
-
-###(10)--blkio-weight=0
+###3.4 blkio子系统
+####3.4.1 --blkio-weight=0
 通过--blkio-weight接口可以设置容器块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。默认情况下，所有容器都会得到相同的权重值(500)。对应的cgroup文件为cgroup/blkio/blkio.weight。以下命令设置了容器块设备IO权重为10，在log中可以看到对应的cgroup文件的值为10。
 
     $ docker run -ti --rm --blkio-weight 10 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight"
@@ -374,7 +409,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 
     $ time dd if=/mnt/zerofile of=test.out bs=1M count=1024 oflag=direct
 
-###(11)--blkio-weight-device=""
+####3.4.2 --blkio-weight-device=""
 通过--blkio-weight-device="设备名:权重"接口可以设置容器对特定块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。
 对应的cgroup文件为cgroup/blkio/blkio.weight_device。
 
@@ -393,7 +428,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 
 通过以上log可以看出，当--blkio-weight接口和--blkio-weight-device接口一起使用的时候，/dev/sda设备的权重值由--blkio-weight-device设定的值来决定。
 
-###(12)--device-read-bps=""
+####3.4.3 --device-read-bps=""
 该接口用来限制指定设备的读取速率，单位可以是kb、mb或者gb。对应的cgroup文件是cgroup/blkio/blkio.throttle.read_bps_device。
 
     $ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mb ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_bps_device"
@@ -409,7 +444,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
     1+0 records out
     5242880 bytes (5.2 MB) copied, 5.00464 s, 1.0 MB/s
 
-###(13)--device-write-bps=""
+####3.4.4 --device-write-bps=""
 该接口用来限制指定设备的写速率，单位可以是kb、mb或者gb。对应的cgroup文件是cgroup/blkio/blkio.throttle.write_bps_device。
 
     $ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_bps_device"
@@ -427,7 +462,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
     1000+0 records out
     10240000 bytes (10 MB) copied, 10.1987 s, 1.0 MB/s
 
-###(14)--device-read-iops=""
+####3.4.5 --device-read-iops=""
 该接口设置了设备的IO读取速率，对应的cgroup文件是cgroup/blkio/blkio.throttle.read_iops_device。
 
     $ docker run -it --device /dev/sda:/dev/sda --device-read-iops /dev/sda:400 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_iops_device"
@@ -443,7 +478,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 
 通过上面的log信息可以看出，容器每秒IO的读取次数为400，共需要读取1000次（log第二行：count=1000），测试结果显示执行时间为2.42874秒，约为2.5(1000/400)秒， 与预期结果相符。
 
-###(15)--device-write-iops=""
+####3.4.6 --device-write-iops=""
 该接口设置了设备的IO写速率，对应的cgroup文件是cgroup/blkio/blkio.throttle.write_iops_device。
 
     $ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_iops_device"
@@ -459,37 +494,6 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 
 通过上面的log信息可以看出，容器每秒IO的写入次数为400，共需要写1000次（log第二行：count=1000），测试结果显示执行时间为2.4584秒，约为2.5(1000/400)秒， 与预期结果相符。
 
-###(16)--oom-kill-disable=false
-当out-of-memory (OOM)发生时，系统会默认杀掉容器进程，如果你不想让容器进程被杀掉，可以使用该接口。接口对应的cgroup文件是cgroup/memory/memory.oom_control。
-
-当容器试图使用超过限定大小的内存值时，就会触发OOM。此时会有两种情况，第一种情况是当接口--oom-kill-disable=false的时候，容器会被杀掉；第二种情况是当接口--oom-kill-disable=true的时候，容器会被挂起。
-
-以下命令设置了容器的的内存使用限制为20M，将--oom-kill-disable接口的值设置为true。查看该接口对应的cgroup文件，oom_kill_disable的值为1。
-
-    $  docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.oom_control'
-    oom_kill_disable 1
-    under_oom 0
-
-oom_kill_disable：取值为0或1，当值为1的时候表示当容器试图使用超出内存限制时（即20M），容器会挂起。
-under_oom：取值为0或1，当值为1的时候，OOM已经出现在容器中。
-
-通过x=a; while true; do x=$x$x$x$x; done命令来耗尽内存并强制触发OOM，log如下所示。
-
-    $ docker run -m 20m --oom-kill-disable=false ubuntu:14.04 bash -c 'x=a; while true; do x=$x$x$x$x; done'
-    $ echo $?
-    137
-
-通过上面的log可以看出,当容器的内存耗尽的时候，容器退出，退出码为137。因为容器试图使用超出限定的内存量，系统会触发OOM，容器会被杀掉，此时under_oom的值为1。我们可以通过系统中cgroup文件(/sys/fs/cgroup/memory/docker/${container_id}/memory.oom_control)查看under_oom的值（oom_kill_disable 1，under_oom 1）。
-
-当--oom-kill-disable=true的时候，容器不会被杀掉，而是被系统挂起。
-
-    $ docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'x=a; while true; do x=$x$x$x$x; done'
-
-###(17)--memory-swappiness=""
-该接口可以设定容器使用交换分区的趋势，取值范围为0至100的整数（包含0和100）。0表示容器不使用交换分区，100表示容器尽可能多的使用交换分区。对应的cgroup文件是cgroup/memory/memory.swappiness。
-
-    $ docker run --memory-swappiness=100 ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
-    100
 
 ##4.总结
 Docker的资源管理依赖于Linux内核Cgroups机制。理解Docker资源管理的原理并不难，读者可以根据自己兴趣补充一些有针对性的测试。关于Cgroups的实现机制已经远超本文的范畴。感兴趣的读者可以自行查看[相关文章](http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation)和内核手册。
