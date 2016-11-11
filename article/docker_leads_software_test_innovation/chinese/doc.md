@@ -86,7 +86,7 @@ Build, Ship, and Run Any App, Anywhere.这是Docker公司高调宣称的口号�
 (2)将大粒度的执行时间较长的用例拆分成为若干个小用例。<br>
 (3)利用容器并发执行测试。<br>
 (4)使用Dockerfile梳理产品依赖包和编译软件的安装。<br>
-编译系统测试是用户态的测试，非常适合于使用Docker进行加速。如果需要针对某一个linux发行版进行测试，可以通过Docker快速部署的特点，将所有的资源快速利用起来，从而达到测试加速的目的。<br>
+编译系统测试是用户态的测试，非常适合使用Docker进行加速。如果需要针对某一个linux发行版进行测试，可以通过Docker快速部署的特点，将所有的资源快速利用起来，从而达到加速测试执行的目的。<br>
 
 ###8.2.linux外围包测试
 ![Packagetest1](images/6.png "Packagetest1_png")
