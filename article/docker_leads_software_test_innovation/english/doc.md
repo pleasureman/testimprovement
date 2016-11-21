@@ -1,5 +1,6 @@
 #Docker leads software test innovation
 随着Docker技术被越来越多的人所认可，其应用的范围也越来越广泛。本文将从测试类型、Devops、自动化测试、测试场景、测试实践等方面介绍Docker对软件测试技术的影响。我假设读者在看这篇文章时已经对Docker和其所依赖的核心技术有了一定的了解。如果读者还不了解，可以先阅读[《深入浅出Docker（一）：Docker核心技术预览》](http://www.infoq.com/cn/articles/docker-core-technology-preview)这篇文章。
+
 While Docker is accepted by more and more people, it is applied `more and more` widely. This paper from the types of testing, Devops, test automation, test scenarios, test practice and other aspects of the effect of Docker on software testing technology. I assume that readers read this article have to Docker and its dependent the core technology has a certain understanding. If you don't know, can read the "layman Docker (a):Docker core technology preview > this article.
 
 ##1.传统软件开发流程的痛点
