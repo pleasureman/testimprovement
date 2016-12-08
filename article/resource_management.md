@@ -1,3 +1,7 @@
+该文章已被infoq收录，未经许可不得转载。
+
+http://www.infoq.com/cn/articles/docker-resource-management-cgroups
+
 #Docker资源管理探秘-Docker背后的内核Cgroups机制
 
 随着Docker技术被越来越多的个人、企业所接受，其用途也越来越广泛。Docker资源管理包含对CPU、内存、IO等资源的限制，但大部分Docker使用者在使用资源管理接口时往往只知其然而不知其所以然。本文将介绍Docker资源管理背后的Cgroups机制，并且列举每一个资源管理接口对应的Cgroups接口，让Docker使用者对资源管理知其然并且知其所以然。
