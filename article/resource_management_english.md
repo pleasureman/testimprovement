@@ -64,7 +64,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 | cgroup/blkio/blkio.throttle.read_iops_device | 设置每秒读块设备的IO次数的上限。同样需要指定设备。 | --device-read-iops="" |
 | cgroup/blkio/blkio.throttle.write_iops_device | 设置每秒写块设备的IO次数的上限。同样需要指定设备。 | --device-write-iops="" |
 
-## 3.Docker资源管理接口详解及应用示例
+## 3.Details of Docker resource management and application examples
 In this section, we would elaborate all of resource management interfaces. For deepening understanding, test cases are added for some of them. Docker version is 1.11.0. If stress command is unavailable in docker image, you can install it by executing "sudo apt-get install stress".
 ###3.1 memory subsystem
 ####3.1.1 -m, --memory=""
@@ -72,24 +72,25 @@ The option is to limit memory usage. It is relevant to cgroup/memory/memory.limi
 range: reater than or equal to 4M<br>
 unit：b,k,m,g<br>
 
-在默认情况下，容器可以占用无限量的内存，直至主机内存资源耗尽。
-运行如下命令来确认容器内存的资源管理对应的cgroup文件。
+In default, a container can use unlimited memory until the memory of its host is exhausted.
+Make sure its relevant cgroup file by executing the following command.
 
     $ docker run -it --memory 100M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes"
     104857600
 
 可以看到，当内存限定为100M时，对应的cgroup文件数值为104857600，该数值的单位为字节，即104857600字节等于100M。
+When the memory usage is limited to 100M, the cgroup file is 104857600. The unit is Byte. It means that 104857600 Bytes are equal to 100M.
 
-本机内存环境为：
+The memory of its host is as follow.
 
     $ free
               total        used        free      shared  buff/cache   available
     Mem:        4050284      254668     3007564      180484      788052     3560532
     Swap:             0           0           0
 
-值得注意的是本机目前没有配置交换分区(swap)。
+Note no swap in the host.
 
-我们使用stress工具来证明内存限定已经生效。stress是一个压力工具，如下命令将要在容器内创建一个进程，在该进程中不断的执行占用内存(malloc)和释放内存(free)的操作。在理论上如果占用的内存少于限定值，容器会工作正常。注意，如果试图使用边界值，即试图在容器中使用stress工具占用100M内存，这个操作通常会失败，因为容器中还有其他进程在运行。
+Use stress tool to verfiy that memroy limitation takes effect. Stress is a stress tool. The following command would create a process, which calls malloc and free memory continuously, within a container. In theory, if memory usage is less than limitation, a container survive. Note that a container will be killed if you try using stress tool to malloc up to 100M memory because of other processes in the container.
 
     $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 50M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
