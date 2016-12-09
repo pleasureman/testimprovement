@@ -65,13 +65,12 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 | cgroup/blkio/blkio.throttle.write_iops_device | 设置每秒写块设备的IO次数的上限。同样需要指定设备。 | --device-write-iops="" |
 
 ## 3.Docker资源管理接口详解及应用示例
-以下内容针对各资源管理接口做了详尽的说明。为了加深读者理解，部分接口附有测试用例。用例中的Docker版本为1.11.0。如果在你的镜像中stress命令不可用，你可以通过sudo apt-get install stress来安装stress工具。
-
-###3.1 memory子系统
+In this section, we would elaborate all of resource management interfaces. For deepening understanding, test cases are added for some of them. Docker version is 1.11.0. If stress command is unavailable in docker image, you can install it by executing "sudo apt-get install stress".
+###3.1 memory subsystem
 ####3.1.1 -m, --memory=""
-可以限制容器使用的内存量，对应的cgroup文件是cgroup/memory/memory.limit_in_bytes。<br>
-取值范围:大于等于4M<br>
-单位：b,k,m,g<br>
+The option is to limit memory usage. It is relevant to cgroup/memory/memory.limit_in_bytes file.
+range: reater than or equal to 4M<br>
+unit：b,k,m,g<br>
 
 在默认情况下，容器可以占用无限量的内存，直至主机内存资源耗尽。
 运行如下命令来确认容器内存的资源管理对应的cgroup文件。
