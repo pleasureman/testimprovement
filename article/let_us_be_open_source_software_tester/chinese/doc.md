@@ -19,6 +19,11 @@ User namespace support completed 2013年2月18日<br>
 https://kernelnewbies.org/Linux_3.8<br>
 userns01:2015年5月21日<br>
 
+
+Cgroup namespace CLONE_NEWCGROUP 2016年5月15日<br>
+https://kernelnewbies.org/Linux_4.6<br>
+在ltp中无用例<br>
+
 ## 专业测试人员参与开源社区贡献的必要性
 从心理学的角度来看，开发者不愿意看到自己编写的代码存在缺陷。由于项目时间紧急，即使发现了自己代码存在缺陷，往往也不会告知测试，通常会默默的祈祷测试不要发现该缺陷。<br>
 补充专项测试（性能、长稳、安全、异常边界、安全）<br>
@@ -36,5 +41,11 @@ userns01:2015年5月21日<br>
 (5)补充专项测试方案
 
 (6)回答社区中的问题
+
+## 参考文章
+https://kernelnewbies.org/Linux_3.8
+https://kernelnewbies.org/Linux_4.6
+
+
 
 
