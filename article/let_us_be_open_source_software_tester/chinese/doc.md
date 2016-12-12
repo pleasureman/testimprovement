@@ -43,9 +43,9 @@ https://kernelnewbies.org/Linux_4.6<br>
 (6)回答社区中的问题
 
 ## 参考文章
-https://kernelnewbies.org/Linux_3.8
-https://kernelnewbies.org/Linux_4.6
-
+https://kernelnewbies.org/Linux_3.8<br>
+https://kernelnewbies.org/Linux_4.6<br>
+http://www.infoworld.com/article/2860074/open-source-software/become-an-open-source-software-tester.html<br>
 
 
 
