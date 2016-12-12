@@ -42,6 +42,12 @@ https://kernelnewbies.org/Linux_4.6<br>
 
 (6)回答社区中的问题
 
+## 总结
+
+
+## 作者简介
+孙远，资深工程师，就职于华为2012实验室中央软件院欧拉八部，硕士毕业，9年软件行业经验。目前在华为从事容器Docker项目的测试工作。工作涉及到功能测试、性能测试、压力测试、稳定性测试、安全测试、测试管理、工程能力构建等内容。参与编写了《Docker进阶与实战》的Docker测试章节。先前曾经就职于美国风河系统公司，作为team lead从事风河Linux产品测试工作。活跃于Docker社区和内核测试ltp社区，目前有大量测试用例被开源社区接收。<br>
+研究方向：容器技术、Docker、Linux内核、软件测试、自动化测试、测试过程改进<br>
 ## 参考文章
 https://kernelnewbies.org/Linux_3.8<br>
 https://kernelnewbies.org/Linux_4.6<br>
