@@ -3,12 +3,12 @@
 以测试管理、缺陷管理、持续集成、功能测试、性能测试、测试框架、测试设计、安全测试作为分类来介绍开源测试工具的现状。<br>
 测试管理： TestLink, Testopia<br>
 缺陷管理：Redmine, Bugzilla, Mantis<br>
-持续集成：Jenkins<br>
+持续集成：Jenkins, Buildbot<br>
 功能测试：selenium, LTP (Linux Test Project)<br>
 性能测试：lmbench, sysbench, iperf, fio<br>
-测试框架：<br>
-测试设计：xmind<br>
-安全测试：Metasploit<br>
+测试框架：JUnit, Autotest<br>
+测试设计：xmind, StarUML, UML Designer<br>
+安全测试：Metasploit, Nessus, AppScan<br>
 ## 2.当前开源社区测试能力的短板
 以kernel和docker社区为例展示目前开源社区中测试能力的短板。<br>
 kernel:测试用例和文档添加不及时；往往功能代码合入内核主线一年以后开源社区仍然没有对应的测试用例。<br>
