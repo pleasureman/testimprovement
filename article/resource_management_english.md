@@ -304,15 +304,16 @@ This option is to set tendency of swap memory usage. The range is integers betwe
     $ docker run --memory-swappiness=100 ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
     100
 
-###3.2 cpu子系统
+###3.2 cpu subsystem
 ####3.2.1 -c, --cpu-shares=0
-对应的cgroup文件是cgroup/cpu/cpu.shares。
+It is relevant to the cgroup/cpu/cpu.shares file.
 
     $ docker run --rm --cpu-shares 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.shares"
     1600
 
-通过--cpu-shares可以设置容器使用CPU的权重，这个权重设置是针对CPU密集型的进程的。如果某个容器中的进程是空闲状态，那么其它容器就能够使用本该由空闲容器占用的CPU资源。也就是说，只有当两个或多个容器都试图占用整个CPU资源时，--cpu-shares设置才会有效。
-我们使用如下命令来创建两个容器，它们的权重分别为1024和512。
+This option is to set CPU relative weight, which is for CPU intensive processes. When tasks in one container are idle, other containers can use the left-over CPU time. The option can take effect only when 2 or more containers compete for CPU resource.
+
+The following example sets two container’s CPU shares to 1024 and 512.
 
     $ docker run -ti --cpu-shares 1024 ubuntu:14.04 stress -c 1
     stress: info: [1] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
@@ -320,7 +321,7 @@ This option is to set tendency of swap memory usage. The range is integers betwe
     $ docker run -ti --cpu-shares 512 ubuntu:14.04 stress -c 1
     stress: info: [1] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
 
-从如下top命令的log可以看到，第一个容器产生的进程PID为1418，CPU占用率为66.1%，第二个容器产生进程PID为1471，CPU占用率为32.9%。两个容器CPU占用率约为2:1的关系，测试结果与预期相符。
+See the below log of the top command. PID of the first container is 1418, whose CPU usage is 66.1%. PID of the second container is 1471, whose CPU usage is 32.9. The proporation is appromately 2:1. The result is as expected.
 
     top - 18:51:50 up 9 days,  2:07,  0 users,  load average: 0.62, 0.15, 0.05
     Tasks:  84 total,   3 running,  81 sleeping,   0 stopped,   0 zombie
