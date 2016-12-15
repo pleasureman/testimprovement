@@ -253,21 +253,21 @@ The following example limits the memory (-m) to 500M and sets the memory reserva
 
     $ docker run -it -m 500M --memory-reservation 200M ubuntu:14.04 bash
 
-The following example set memory reservation to 1G without a hard memory limit. The container can use as much memory as it needs. The memory reservation setting ensures the container doesn't consume too much memory for long time, because every memory reclaim shrinks the container's consumption to the reservation.
+The following example sets memory reservation to 1G without a hard memory limit. The container can use as much memory as it needs. The memory reservation setting ensures the container doesn't consume too much memory for long time, because every memory reclaim shrinks the container's consumption to the reservation.
 
     $ docker run -it --memory-reservation 1G ubuntu:14.04 bash
 
 ####3.1.4 --kernel-memory=""
-该接口限制了容器对内核内存的使用，对应的cgroup文件是cgroup/memory/memory.kmem.limit_in_bytes。
+This option ti to limit kernel memory.  It is relevant to cgroup/memory/memory.kmem.limit_in_bytes.
 
     $ docker run -ti --kernel-memory 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
     52428800
 
-如下命令可以限定容器最多可以使用500M的内存。在500M内存中，内核内存最多可以占用50M。
+The following example sets memory and kernel memory, so the processes in the container can use 500M memory in total, in this 500M memory, it can be 50M kernel memory tops.
 
     $ docker run -it -m 500M --kernel-memory 50M ubuntu:14.04 bash
 
-如下命令可以限定容器最多可以使用50M的内核内存，而用户空间的内存使用量不受限制。
+The following example sets kernel memory without -m, so the processes in the container can use as much memory as they want, but they can only use 50M kernel memory.
 
     $ docker run -it --kernel-memory 50M ubuntu:14.04 bash
 
