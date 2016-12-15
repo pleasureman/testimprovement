@@ -299,7 +299,7 @@ If --oom-kill-disable=true, the container wouldn't be killed. It is suspended.
     $ docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'x=a; while true; do x=$x$x$x$x; done'
 
 ####3.1.6 --memory-swappiness=""
-该接口可以设定容器使用交换分区的趋势，取值范围为0至100的整数（包含0和100）。0表示容器不使用交换分区，100表示容器尽可能多的使用交换分区。对应的cgroup文件是cgroup/memory/memory.swappiness。
+This option is to set tendency of swap memory usage. The range is integers between 0 and 100, including 0 and 100. A value of 0 turns off anonymous page swapping. A value of 100 sets all anonymous pages as swappable. It is relevant to cgroup/memory/memory.swappiness.
 
     $ docker run --memory-swappiness=100 ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
     100
