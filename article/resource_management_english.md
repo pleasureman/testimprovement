@@ -365,20 +365,20 @@ See the --cpu-period section for details.
     $ docker run --cpu-quota 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
     1600
 
-###3.3 cpuset子系统
+###3.3 cpuset subsystem
 ####3.3.1 --cpuset-cpus=""
-该接口对应的cgroup文件是cgroup/cpuset/cpuset.cpus。
+The option is relevant to the cgroup/cpuset/cpuset.cpus file.
 
-在多核CPU的虚拟机中，启动一个容器，设置容器只使用CPU核1，并查看该接口对应的cgroup文件会被修改为1，log如下所示。
+In the following example, the processes of the container only run on cpu core 1 in a multi-core VM. The value of the cgroup file is 1.
 
     $ docker run -ti --cpuset-cpus 1 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpuset/cpuset.cpus"
     1
 
-通过以下命令指定容器使用cpu核1，并通过stress命令加压。
+In the following example, the container only use on cpu core 1 and the stress tool is running.
 
     $ docker run -ti --cpuset-cpus 1 ubuntu:14.04 stress -c 1
 
-查看CPU资源的top命令的log如下所示。需要注意的是，输入top命令并按回车键后，再按数字键1，终端才能显示每个CPU的状态。
+In the below log, the status of each cpu is showed. Note that the console can show the status of each cpu only when press 1 button after run the top command.
 
     top - 11:31:47 up 5 days, 21:00,  0 users,  load average: 0.62, 0.82, 0.77
     Tasks: 104 total,   3 running, 101 sleeping,   0 stopped,   0 zombie
@@ -392,23 +392,23 @@ See the --cpu-period section for details.
     PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
     10266 root      20   0    7312     96      0 R 100.0  0.0   0:11.92 stress
 
-从以上log得知，只有CPU核1的负载为100%，而其它CPU核处于空闲状态，结果与预期结果相符。
+The usage percentage of CPU core 1. Other cpus are idle. The result is as expected.
 
 ####3.3.2 --cpuset-mems=""
-该接口对应的cgroup文件是cgroup/cpuset/cpuset.mems。
+The option is relevant to the cgroup/cpuset/cpuset.mems.
 
     $ docker run -ti --cpuset-mems=0 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
     0
 
-以下命令将限制容器进程使用内存节点1、3的内存。
+In the following example, the processes of the container only use memory nodes 1 and 3.
 
     $ docker run -it --cpuset-mems="1,3" ubuntu:14.04 bash
 
-以下命令将限制容器进程使用内存节点0、1、2的内存。
+In the following example, the processes of the container only use memory nodes 0, 1 and 2.
 
     $ docker run -it --cpuset-mems="0-2" ubuntu:14.04 bash
 
-###3.4 blkio子系统
+###3.4 blkio subsystem
 ####3.4.1 --blkio-weight=0
 通过--blkio-weight接口可以设置容器块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。默认情况下，所有容器都会得到相同的权重值(500)。对应的cgroup文件为cgroup/blkio/blkio.weight。以下命令设置了容器块设备IO权重为10，在log中可以看到对应的cgroup文件的值为10。
 
