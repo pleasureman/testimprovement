@@ -517,18 +517,15 @@ The container writes 1000 times(The second line of log: count=1000). Time spent 
 
 
 ## 4.Summary
-Docker的资源管理依赖于Linux内核Cgroups机制。理解Docker资源管理的原理并不难，读者可以根据自己兴趣补充一些有针对性的测试。关于Cgroups的实现机制已经远超本文的范畴。感兴趣的读者可以自行查看[相关文章](http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation)和内核手册。
-
+Resource management of docker is dependent on cgroup feature of linux kernel. It isn't diffcult for readers to understand resource management. If you are interested in it, you may supplement some test cases. The principle is beyond the scope of this article and you may refer to other aritcles about it and kernel documantation.
 ## Authors
 孙远，华为中央软件研究院资深工程师，硕士毕业，9年软件行业经验。目前在华为从事容器Docker项目的测试工作。工作涉及到功能测试、性能测试、压力测试、稳定性测试、安全测试、测试管理、工程能力构建等内容。参与编写了《Docker进阶与实战》的Docker测试章节。先前曾经就职于美国风河系统公司，作为team lead从事风河Linux产品测试工作。活跃于Docker社区和内核测试ltp社区，目前有大量测试用例被开源社区接收。<br>
 研究方向：容器技术、Docker、Linux内核、软件测试、自动化测试、测试过程改进<br>
-公司邮箱：sunyuan3@huawei.com<br>
-个人邮箱：yuan.sun82@gmail.com<br>
+Yuan Sun, senior software engineer, central software institue, HUAWEI. 9 years industry ground
+
 
 薛婉菊，中软国际科技服务有限公司软件测试工程师，4年软件行业经验。目前参与容器Docker项目的测试工作，工作涉及到容器功能测试、性能测试、压力测试等内容。<br>
 研究方向：容器技术、Docker、自动化测试<br>
-公司邮箱：xuewanju@chinasoftinc.com<br>
-个人邮箱：xuewanju123@163.com<br>
 
 ##reference：
 http://www.cnblogs.com/hustcat/p/3980244.html<br>
