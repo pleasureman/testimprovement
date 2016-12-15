@@ -1,5 +1,4 @@
-# Docker资源管理探秘-Docker背后的内核Cgroups机制
-# Resource management of Docker-Cgroups feature supproting Docker
+# Resource management of Docker - Cgroups feature supproting Docker
 
 随着Docker技术被越来越多的个人、企业所接受，其用途也越来越广泛。Docker资源管理包含对CPU、内存、IO等资源的限制，但大部分Docker使用者在使用资源管理接口时往往只知其然而不知其所以然。本文将介绍Docker资源管理背后的Cgroups机制，并且列举每一个资源管理接口对应的Cgroups接口，让Docker使用者对资源管理知其然并且知其所以然。
 
@@ -451,14 +450,16 @@ If you specify both the --blkio-weight and --blkio-weight-device, Docker uses th
 In the above example, --blkio-weight-device overrides the value of --blkio-weight for /dev/sda.
 
 ####3.4.3 --device-read-bps=""
-该接口用来限制指定设备的读取速率，单位可以是kb、mb或者gb。对应的cgroup文件是cgroup/blkio/blkio.throttle.read_bps_device。
+The option is to limit the read rate (bytes per second) from a device. It is relevant to the cgroup/blkio/blkio.throttle.read_bps_device file.
+
+unit: kb, mb, gb
 
     $ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mb ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_bps_device"
     8:0 1048576
 
-以上log中显示8:0 1000,8:0表示/dev/sda, 该接口对应的cgroup文件的值为1048576，是1MB所对应的字节数，即1024的平方。
+8:0 is the device id of /dev/sda. The value is 1048576, the Byte quantity of 1MB(the square of 1024).
 
-创建容器时通过--device-read-bps接口设置设备读取速度为1MB/s。从以下log中可以看出,读取速度被限定为1.0MB/s,与预期结果相符合。
+The following example restricts the read rate to 1MB/s. The result is as expected.
 
     $ docker run -it --device /dev/sda:/dev/sda --device-read-bps /dev/sda:1mB ubuntu:14.04 bash
     root@df1de679fae4:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=5M count=1
@@ -467,16 +468,14 @@ In the above example, --blkio-weight-device overrides the value of --blkio-weigh
     5242880 bytes (5.2 MB) copied, 5.00464 s, 1.0 MB/s
 
 ####3.4.4 --device-write-bps=""
-该接口用来限制指定设备的写速率，单位可以是kb、mb或者gb。对应的cgroup文件是cgroup/blkio/blkio.throttle.write_bps_device。
+The option is to limit the write rate (bytes per second) from a device. It is relevant to the cgroup/blkio/blkio.throttle.write_bps_device.
 
     $ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_bps_device"
     8:0 1048576
 
-以上log中显示8:0 1000,8:0表示/dev/sda, 该接口对应的cgroup文件的值为1048576，是1MB所对应的字节数，即1024的平方。
+8:0 is the device id of /dev/sda. The value is 1048576, the Byte quantity of 1MB(the square of 1024).
 
-创建容器时通过--device-write-bps接口设置设备写速度为1MB/s。从以下log中可以看出,读取速度被限定为1.0MB/s,与预期结果相符合。
-
-限速操作：<br>
+The following example restricts the write rate to 1MB/s. The result is as expected.
 
     $ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mb ubuntu:14.04 bash
     root@18dc79b91cd4:/# dd oflag=direct,nonblock of=/dev/sda if=/dev/urandom bs=10K count=1000
