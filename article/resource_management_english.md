@@ -94,8 +94,9 @@ Use stress tool to verfiy that memroy limitation takes effect. Stress is a stres
     $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 50M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
-当在限定内存为100M的容器中，试图占用50M的内存时，容器工作正常。
-如下所示，当试图占用超过100M内存时，必然导致容器异常。
+When 50MB of memory is allocated in a container whose memory is limited to 100MB, it works fine.
+
+When the allocated memory is more than 100MB, the below error occurs.
 
     $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 101M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
@@ -104,7 +105,7 @@ Use stress tool to verfiy that memroy limitation takes effect. Stress is a stres
     stress: FAIL: [1] (422) kill error: No such process
     stress: FAIL: [1] (452) failed run completed in 0s
 
-注意这种情况是在系统无交换分区(swap)的情况下出现的，如果我们添加了交换分区，情况又会怎样？首先通过如下命令来添加交换分区(swap)。
+Note the above result is showed in case of no swap. If swap is added, what happened? Now add swap in the follwing command.
 
     $ dd if=/dev/zero of=/tmp/mem.swap bs=1M count=8192
     8192+0 records in
@@ -121,13 +122,13 @@ Use stress tool to verfiy that memroy limitation takes effect. Stress is a stres
     Mem:           3955         262          28         176        3665        3463
     Swap:          8191           0        8191
 
-之后再次尝试占用大于限定的内存。
+Then allocate more memory than limit.
 
     $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 101M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
-在加入交换分区后容器工作正常，这意味着有部分存储在内存中的信息被转移到了交换分区中了。
-注意，在实际容器使用场景中，如果不对容器使用内存量加以限制的话，可能导致一个容器会耗尽整个主机内存，从而导致系统不稳定。所以在使用容器时务必对容器内存加以限制。
+After swap is available, the container works fine. It means part of data of memory is transfered to swap
+A container can exhaust memory of the host without memory restriction. This leads to unstablity of the host. So please limit memory as you use a container.
 
 ####3.1.2 --memory-swap=""
 可以限制容器使用交换分区和内存的总和，对应的cgroup文件是cgroup/memory/memory.memsw.limit_in_bytes。<br>
