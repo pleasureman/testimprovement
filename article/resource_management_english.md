@@ -189,38 +189,38 @@ From the above log, when memory-swap is limited to 1GB, the value of the cgroup 
   </tbody>
 </table>
 
-例子：
-以下命令没有对内存和交换分区进行限制，这意味着容器可以使用无限多的内存和交换分区。
+Examples:
+We set nothing about memory in the following command, this means the processes in the container can use as much memory and swap memory as they need.
 
     $ docker run -it ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes" 
     9223372036854771712
     9223372036854771712
 
-以下命令只限定了内存使用量300M，而没有限制交换分区使用量(-1意味着不做限制)。
+We set memory limit and disabled swap memory limit in the following command, this means the processes in the container can use 300M memory and as much swap memory as they need (if the host supports swap memory). "-1" means no limit is set.
 
     $ docker run -it -m 300M --memory-swap -1 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     314572800
     9223372036854771712
 
-以下命令仅仅限定了内存使用量，这意味着容器能够使用300M的内存和300M的交换分区。在默认情况下，总的内存限定值(内存+交换分区)被设置为了内存限定值的两倍。
+We set memory limit only in the following command, this means the processes in the container can use 300M memory and 300M swap memory. By default, the total virtual memory size (--memory-swap) will be set as double of memory. In this case, memory + swap would be 2*300M, so processes can use 300M swap memory as well.
 
     $ docker run -it -m 300M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     314572800
     629145600
 
-以下命令限定了内存和交换分区的使用量，容器可以使用300M的内存和700M的交换分区。
+We set both memory and swap memory in the following command, so the processes in the container can use 300M memory and 700M swap memory.
 
     $ docker run -it -m 300M --memory-swap 1G ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     314572800
     1073741824
 
-当memory-swap限定值低于memory限定值时，系统提示"Minimum memoryswap limit should be larger than memory limit"错误。
+When the value of memory-swap limit is less than the value of memory limit, the error "Minimum memoryswap limit should be larger than memory limit" occurs.
 
     $ docker run -it -m 300M --memory-swap 200M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     docker: Error response from daemon: Minimum memoryswap limit should be larger than memory limit, see usage..
     See 'docker run --help'.
 
-如下所示，当尝试占用的内存数量超过memory-swap值时，容器出现异常。
+The memory more than the value of memory-swap limit is allocated, the below error occurs.
 
     $ docker run -ti -m 100M --memory-swap 200M ubuntu:14.04 stress --vm 1 --vm-bytes 201M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
@@ -229,7 +229,7 @@ From the above log, when memory-swap is limited to 1GB, the value of the cgroup 
     stress: FAIL: [1] (422) kill error: No such process
     stress: FAIL: [1] (452) failed run completed in 0s
 
-如下所示，当占用内存值大于memory限定值但小于memory-swap时，容器运行正常。
+When the value of memory limit is less than the value of memory-swap limit, a container works fine. See the following log for details.
 
     $ docker run -ti -m 100M --memory-swap 200M ubuntu:memory stress --vm 1 --vm-bytes 180M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
