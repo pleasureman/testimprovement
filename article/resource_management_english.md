@@ -410,7 +410,7 @@ In the following example, the processes of the container only use memory nodes 0
 
 ###3.4 blkio subsystem
 ####3.4.1 --blkio-weight=0
-The option is set block device IO weight. By default, the value is 500. The option is relevant to the cgroup/blkio/blkio.weight file.
+The option is set block device IO weight. By default, the value is 500. It is relevant to the cgroup/blkio/blkio.weight file.
 
 Range: integers between 10 and 1000(including 10 and 1000)
 
@@ -429,23 +429,26 @@ If you run the following command to do block IO in the two containers at the sam
     $ time dd if=/mnt/zerofile of=test.out bs=1M count=1024 oflag=direct
 
 ####3.4.2 --blkio-weight-device=""
-通过--blkio-weight-device="设备名:权重"接口可以设置容器对特定块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。
-对应的cgroup文件为cgroup/blkio/blkio.weight_device。
+The --blkio-weight-device="DEVICE_NAME:WEIGHT" flag sets a specific device weight. 
+
+Range: integers between 10 and 1000(including 10 and 1000)
+
+It is relevant to the cgroup/blkio/blkio.weight_device.
 
     $ docker run --blkio-weight-device "/dev/sda:1000" ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
     8:0 1000
 
-以上log中的"8:0"表示sda的设备号，可以通过stat命令来获取某个设备的设备号。从以下log中可以查看到/dev/sda对应的主设备号为8，次设备号为0。
+""8:0" is the device id of /dev/sda. 8 is major device id and 0 is minor device id. To get it by the following stat command.
 
     $ stat -c %t:%T /dev/sda
     8:0
 
-如果--blkio-weight-device接口和--blkio-weight接口一起使用，那么Docker会使用--blkio-weight值作为默认的权重值，然后使用--blkio-weight-device值来设定指定设备的权重值，而早先设置的默认权重值将不在这个特定设备中生效。
+If you specify both the --blkio-weight and --blkio-weight-device, Docker uses the --blkio-weight as the default weight and uses --blkio-weight-device to override this default with a new value on a specific device. 
 
     $ docker run --blkio-weight 300 --blkio-weight-device "/dev/sda:500" ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
     8:0 500
 
-通过以上log可以看出，当--blkio-weight接口和--blkio-weight-device接口一起使用的时候，/dev/sda设备的权重值由--blkio-weight-device设定的值来决定。
+In the above example, --blkio-weight-device overrides the value of --blkio-weight for /dev/sda.
 
 ####3.4.3 --device-read-bps=""
 该接口用来限制指定设备的读取速率，单位可以是kb、mb或者gb。对应的cgroup文件是cgroup/blkio/blkio.throttle.read_bps_device。
