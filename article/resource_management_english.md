@@ -276,24 +276,25 @@ By default, kernel kills processes in a container if an out-of-memory(OOM) error
 
 When a container allocates memory more than the value of memory limit, kernle will trigger out-of-memory(OOM). If --oom-kill-disable=false, the container will be killed. If --oom-kill-disable=true, the container is suspended.
 
-以下命令设置了容器的的内存使用限制为20M，将--oom-kill-disable接口的值设置为true。查看该接口对应的cgroup文件，oom_kill_disable的值为1。
+The following example limits memory to 20MB and set --oom-kill-disable as true. The value of oom_kill_disable is 1.
 
     $  docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.oom_control'
     oom_kill_disable 1
     under_oom 0
 
-oom_kill_disable：取值为0或1，当值为1的时候表示当容器试图使用超出内存限制时（即20M），容器会挂起。
-under_oom：取值为0或1，当值为1的时候，OOM已经出现在容器中。
+oom_kill_disable: (0 or 1); 1 means that a container use memory more than the limit(20MB) and the container is suspended.
 
-通过x=a; while true; do x=$x$x$x$x; done命令来耗尽内存并强制触发OOM，log如下所示。
+under_oom: (0 or 1); 1 means that OOM occurs in a container.
+
+Use the "x=a; while true; do x=$x$x$x$x; done" command to exhaust memory and trigger OOM. The log is as follow.
 
     $ docker run -m 20m --oom-kill-disable=false ubuntu:14.04 bash -c 'x=a; while true; do x=$x$x$x$x; done'
     $ echo $?
     137
 
-通过上面的log可以看出,当容器的内存耗尽的时候，容器退出，退出码为137。因为容器试图使用超出限定的内存量，系统会触发OOM，容器会被杀掉，此时under_oom的值为1。我们可以通过系统中cgroup文件(/sys/fs/cgroup/memory/docker/${container_id}/memory.oom_control)查看under_oom的值（oom_kill_disable 1，under_oom 1）。
+The container exits with the return value of 137. When its memory usage exceeds the limit, OOM occurs and it is killed. We can see the value of  under_oom is 1 and value of oom_kill_disable is 1 by the cgroup file, /sys/fs/cgroup/memory/docker/${container_id}/memory.oom_control.
 
-当--oom-kill-disable=true的时候，容器不会被杀掉，而是被系统挂起。
+If --oom-kill-disable=true, the container wouldn't be killed. It is suspended.
 
     $ docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'x=a; while true; do x=$x$x$x$x; done'
 
