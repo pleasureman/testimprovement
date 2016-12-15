@@ -142,41 +142,47 @@ Use stress tool to verfiy that memroy limitation takes effect. Stress is a stres
 
 可以看到，当memory-swap限定为1G时，对应的cgroup文件数值为1073741824，该数值的单位为字节，即1073741824B等于1G。
 
-
 <table>
   <thead>
     <tr>
-      <th>条件</th>
-      <th>结果</th>
+      <th>Option</th>
+      <th>Result</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td class="no-wrap">
-          <strong>memory=无穷大, memory-swap=无穷大</strong> (默认条件下)
+          <strong>memory=inf, memory-swap=inf</strong> (default)
       </td>
       <td>
-        系统不限定容器对内存和交换分区的使用量，容器能够使用主机所能提供的所有内存。
-      </td>
-    </tr>
-    <tr>
-      <td class="no-wrap"><strong>memory=L&lt;无穷大, memory-swap=无穷大</strong></td>
-      <td>
-        (设定memory限定值同时将memory-swap设置为<code>-1</code>) 容器的内存使用量不能超过L，但是交换分区的使用量不受限制(前提是主机支持交换分区)。
+        There is no memory limit for the container. The container can use
+        as much memory as needed.
       </td>
     </tr>
     <tr>
-      <td class="no-wrap"><strong>memory=L&lt;无穷大, memory-swap=2*L</strong></td>
+      <td class="no-wrap"><strong>memory=L&lt;inf, memory-swap=inf</strong></td>
       <td>
-        (设定memory限定值而不设置memory-swap值) 容器的内存使用量不能超过L，而内存使用量和交换分区的使用量不能超过两倍的L。
+        (specify memory and set memory-swap as <code>-1</code>) The container is
+        not allowed to use more than L bytes of memory, but can use as much swap
+        as is needed (if the host supports swap memory).
+      </td>
+    </tr>
+    <tr>
+      <td class="no-wrap"><strong>memory=L&lt;inf, memory-swap=2*L</strong></td>
+      <td>
+        (specify memory without memory-swap) The container is not allowed to
+        use more than L bytes of memory, swap <i>plus</i> memory usage is double
+        of that.
       </td>
     </tr>
     <tr>
       <td class="no-wrap">
-          <strong>memory=L&lt;无穷大, memory-swap=S&lt;无穷大, L&lt;=S</strong>
+          <strong>memory=L&lt;inf, memory-swap=S&lt;inf, L&lt;=S</strong>
       </td>
       <td>
-        (设定了memory和memory-swap的限定值) 容器的内存使用量不能超过L，而内存使用量和交换分区的使用量不能超过S。
+        (specify both memory and memory-swap) The container is not allowed to
+        use more than L bytes of memory, swap <i>plus</i> memory usage is limited
+        by S.
       </td>
     </tr>
   </tbody>
