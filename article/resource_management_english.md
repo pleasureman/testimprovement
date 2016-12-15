@@ -78,8 +78,7 @@ Make sure its relevant cgroup file by executing the following command.
     $ docker run -it --memory 100M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes"
     104857600
 
-可以看到，当内存限定为100M时，对应的cgroup文件数值为104857600，该数值的单位为字节，即104857600字节等于100M。
-When the memory usage is limited to 100M, the cgroup file is 104857600. The unit is Byte. It means that 104857600 Bytes are equal to 100M.
+When the memory usage is limited to 100M, the value of the cgroup file is 104857600. The unit is Byte. It means that 104857600 Bytes are equal to 100M.
 
 The memory of its host is as follow.
 
