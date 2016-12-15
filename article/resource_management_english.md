@@ -272,9 +272,9 @@ The following example sets kernel memory without -m, so the processes in the con
     $ docker run -it --kernel-memory 50M ubuntu:14.04 bash
 
 ####3.1.5 --oom-kill-disable=false
-当out-of-memory (OOM)发生时，系统会默认杀掉容器进程，如果你不想让容器进程被杀掉，可以使用该接口。接口对应的cgroup文件是cgroup/memory/memory.oom_control。
+By default, kernel kills processes in a container if an out-of-memory(OOM) error occurs. To change this behaviour, use the --oom-kill-disable option. It is relevant to cgroup/memory/memory.oom_control.
 
-当容器试图使用超过限定大小的内存值时，就会触发OOM。此时会有两种情况，第一种情况是当接口--oom-kill-disable=false的时候，容器会被杀掉；第二种情况是当接口--oom-kill-disable=true的时候，容器会被挂起。
+When a container allocates memory more than the value of memory limit, kernle will trigger out-of-memory(OOM). If --oom-kill-disable=false, the container will be killed. If --oom-kill-disable=true, the container is suspended.
 
 以下命令设置了容器的的内存使用限制为20M，将--oom-kill-disable接口的值设置为true。查看该接口对应的cgroup文件，oom_kill_disable的值为1。
 
