@@ -65,8 +65,8 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 
 ## 3.Details of Docker resource management and application examples
 In this section, we would elaborate all of resource management interfaces. For deepening understanding, test cases are added for some of them. Docker version is 1.11.0. If stress command is unavailable in docker image, you can install it by executing "sudo apt-get install stress".
-###3.1 memory subsystem
-####3.1.1 -m, --memory=""
+### 3.1 memory subsystem
+#### 3.1.1 -m, --memory=""
 The option is to limit memory usage. It is relevant to cgroup/memory/memory.limit_in_bytes file.
 range: greater than or equal to 4M<br>
 unit：b,k,m,g<br>
@@ -129,7 +129,7 @@ Then allocate more memory than limit.
 After swap is available, the container works fine. It means part of data of memory is transfered to swap
 A container can exhaust memory of the host without memory restriction. This leads to unstablity of the host. So please limit memory as you use a container.
 
-####3.1.2 --memory-swap=""
+#### 3.1.2 --memory-swap=""
 The option is to limit the sum of memory and swap. It is relevant to cgroup/memory/memory.memsw.limit_in_bytes.
 
 range: greater than the value of memory limit<br>
@@ -233,7 +233,7 @@ When the value of memory limit is less than the value of memory-swap limit, a co
     $ docker run -ti -m 100M --memory-swap 200M ubuntu:memory stress --vm 1 --vm-bytes 180M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
-####3.1.3 --memory-reservation=""
+#### 3.1.3 --memory-reservation=""
 range:positive integer<br>
 unit:b,k,m,g<br>
 
@@ -256,7 +256,7 @@ The following example sets memory reservation to 1G without a hard memory limit.
 
     $ docker run -it --memory-reservation 1G ubuntu:14.04 bash
 
-####3.1.4 --kernel-memory=""
+#### 3.1.4 --kernel-memory=""
 This option ti to limit kernel memory.  It is relevant to cgroup/memory/memory.kmem.limit_in_bytes.
 
     $ docker run -ti --kernel-memory 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
@@ -270,7 +270,7 @@ The following example sets kernel memory without -m, so the processes in the con
 
     $ docker run -it --kernel-memory 50M ubuntu:14.04 bash
 
-####3.1.5 --oom-kill-disable=false
+#### 3.1.5 --oom-kill-disable=false
 By default, kernel kills processes in a container if an out-of-memory(OOM) error occurs. To change this behaviour, use the --oom-kill-disable option. It is relevant to cgroup/memory/memory.oom_control.
 
 When a container allocates memory more than the value of memory limit, kernle will trigger out-of-memory(OOM). If --oom-kill-disable=false, the container will be killed. If --oom-kill-disable=true, the container is suspended.
@@ -303,8 +303,8 @@ This option is to set tendency of swap memory usage. The range is integers betwe
     $ docker run --memory-swappiness=100 ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.swappiness'
     100
 
-###3.2 cpu subsystem
-####3.2.1 -c, --cpu-shares=0
+### 3.2 cpu subsystem
+#### 3.2.1 -c, --cpu-shares=0
 It is relevant to the cgroup/cpu/cpu.shares file.
 
     $ docker run --rm --cpu-shares 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.shares"
@@ -331,7 +331,7 @@ See the below log of the top command. PID of the first container is 1418, whose 
     1418 root      20   0    7312    100      0 R 66.1  0.0   0:22.92 stress
     1471 root      20   0    7312     96      0 R 32.9  0.0   0:04.97 stress
 
-####3.2.2 --cpu-period=""
+#### 3.2.2 --cpu-period=""
 By default, the period of CFS(Completely Fair Scheduler) is 100ms in linux. We can use --cpu-period to set the period of CPUs to limit the container's CPU usage. And usually --cpu-period should work with --cpu-quota. --cpu-quota sets CPU period constraints. CFS is the default scheduler of kernel. It is to allocate CPU resources. --cpu-quota can also be set for multi-core cpu.
 
 It is relevant to the cgroup/cpu/cpu.cfs_period_us.
@@ -356,7 +356,7 @@ From the last line, we can see the cpu usage percentage is 50.0%. The result is 
     PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                                           
     770 root      20   0    7312     96      0 R 50.0  0.0   0:38.06 stress
 
-####3.2.3 --cpu-quota=0
+#### 3.2.3 --cpu-quota=0
 The option is to set CPU period constraints. 
 It is relevant to the cgroup/cpu/cpu.cfs_quota_us file. In general, it should work with --cpu-period.
 See the --cpu-period section for details.
@@ -364,8 +364,8 @@ See the --cpu-period section for details.
     $ docker run --cpu-quota 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
     1600
 
-###3.3 cpuset subsystem
-####3.3.1 --cpuset-cpus=""
+### 3.3 cpuset subsystem
+#### 3.3.1 --cpuset-cpus=""
 The option is relevant to the cgroup/cpuset/cpuset.cpus file.
 
 In the following example, the processes of the container only run on cpu core 1 in a multi-core VM. The value of the cgroup file is 1.
@@ -393,7 +393,7 @@ In the below log, the status of each cpu is showed. Note that the console can sh
 
 The usage percentage of CPU core 1. Other cpus are idle. The result is as expected.
 
-####3.3.2 --cpuset-mems=""
+#### 3.3.2 --cpuset-mems=""
 The option is relevant to the cgroup/cpuset/cpuset.mems.
 
     $ docker run -ti --cpuset-mems=0 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
@@ -407,8 +407,8 @@ In the following example, the processes of the container only use memory nodes 0
 
     $ docker run -it --cpuset-mems="0-2" ubuntu:14.04 bash
 
-###3.4 blkio subsystem
-####3.4.1 --blkio-weight=0
+### 3.4 blkio subsystem
+#### 3.4.1 --blkio-weight=0
 The option is set block device IO weight. By default, the value is 500. It is relevant to the cgroup/blkio/blkio.weight file.
 
 Range: integers between 10 and 1000(including 10 and 1000)
@@ -427,7 +427,7 @@ If you run the following command to do block IO in the two containers at the sam
 
     $ time dd if=/mnt/zerofile of=test.out bs=1M count=1024 oflag=direct
 
-####3.4.2 --blkio-weight-device=""
+#### 3.4.2 --blkio-weight-device=""
 The --blkio-weight-device="DEVICE_NAME:WEIGHT" flag sets a specific device weight. 
 
 Range: integers between 10 and 1000(including 10 and 1000)
@@ -449,7 +449,7 @@ If you specify both the --blkio-weight and --blkio-weight-device, Docker uses th
 
 In the above example, --blkio-weight-device overrides the value of --blkio-weight for /dev/sda.
 
-####3.4.3 --device-read-bps=""
+#### 3.4.3 --device-read-bps=""
 The option is to limit the read rate (bytes per second) from a device. It is relevant to the cgroup/blkio/blkio.throttle.read_bps_device file.
 
 unit: kb, mb, gb
@@ -467,7 +467,7 @@ The following example restricts the read rate to 1MB/s. The result is as expecte
     1+0 records out
     5242880 bytes (5.2 MB) copied, 5.00464 s, 1.0 MB/s
 
-####3.4.4 --device-write-bps=""
+#### 3.4.4 --device-write-bps=""
 The option is to limit the write rate (bytes per second) from a device. It is relevant to the cgroup/blkio/blkio.throttle.write_bps_device.
 
     $ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_bps_device"
@@ -483,13 +483,13 @@ The following example restricts the write rate to 1MB/s. The result is as expect
     1000+0 records out
     10240000 bytes (10 MB) copied, 10.1987 s, 1.0 MB/s
 
-####3.4.5 --device-read-iops=""
-该接口设置了设备的IO读取速率，对应的cgroup文件是cgroup/blkio/blkio.throttle.read_iops_device。
+#### 3.4.5 --device-read-iops=""
+The option is limit read rate (IO per second) from a device. It is relevant to the cgroup/blkio/blkio.throttle.read_iops_device file. 
 
     $ docker run -it --device /dev/sda:/dev/sda --device-read-iops /dev/sda:400 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_iops_device"
     8:0 400
 
-可以通过"--device-read-iops /dev/sda:400"来限定sda的IO读取速率(400次/秒)，log如下所示。
+The following example restricts the read rate to 400 IO per second.
 
     $ docker run -ti --device /dev/sda:/dev/sda  --device-read-iops	/dev/sda:400 ubuntu:14.04
     root@71910742c445:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=1k count=1000
@@ -497,15 +497,15 @@ The following example restricts the write rate to 1MB/s. The result is as expect
     1000+0 records out
     1024000 bytes (1.0 MB) copied, 2.42874 s, 422 kB/s
 
-通过上面的log信息可以看出，容器每秒IO的读取次数为400，共需要读取1000次（log第二行：count=1000），测试结果显示执行时间为2.42874秒，约为2.5(1000/400)秒， 与预期结果相符。
+The container reads 1000 times(The second line of log: count=1000). Time spent is 2.42874 seconds, appromate 2.5(1000/400) seconds. It is as expected.
 
-####3.4.6 --device-write-iops=""
-该接口设置了设备的IO写速率，对应的cgroup文件是cgroup/blkio/blkio.throttle.write_iops_device。
+#### 3.4.6 --device-write-iops=""
+The option is to limit write rate (IO per second) from a device. It is relevant to the cgroup/blkio/blkio.throttle.write_iops_device file. 
 
     $ docker run -it --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_iops_device"
     8:0 400
 
-可以通过"--device-write-iops /dev/sda:400"来限定sda的IO写速率(400次/秒)，log如下所示。
+The following example restricts the write rate to 400 IO per second.
 
     $ docker run -ti --device /dev/sda:/dev/sda --device-write-iops /dev/sda:400 ubuntu:14.04
     root@ef88a516d6ed:/# dd oflag=direct,nonblock of=/dev/sda if=/dev/urandom bs=1K count=1000
@@ -513,10 +513,10 @@ The following example restricts the write rate to 1MB/s. The result is as expect
     1000+0 records out
     1024000 bytes (1.0 MB) copied, 2.4584 s, 417 kB/s
 
-通过上面的log信息可以看出，容器每秒IO的写入次数为400，共需要写1000次（log第二行：count=1000），测试结果显示执行时间为2.4584秒，约为2.5(1000/400)秒， 与预期结果相符。
+The container writes 1000 times(The second line of log: count=1000). Time spent is 2.4584 seconds, appromate 2.5(1000/400) seconds. It is as expected.
 
 
-##4.总结
+## 4.Summary
 Docker的资源管理依赖于Linux内核Cgroups机制。理解Docker资源管理的原理并不难，读者可以根据自己兴趣补充一些有针对性的测试。关于Cgroups的实现机制已经远超本文的范畴。感兴趣的读者可以自行查看[相关文章](http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation)和内核手册。
 
 ## Authors
