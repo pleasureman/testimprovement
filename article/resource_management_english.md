@@ -131,16 +131,17 @@ After swap is available, the container works fine. It means part of data of memo
 A container can exhaust memory of the host without memory restriction. This leads to unstablity of the host. So please limit memory as you use a container.
 
 ####3.1.2 --memory-swap=""
-可以限制容器使用交换分区和内存的总和，对应的cgroup文件是cgroup/memory/memory.memsw.limit_in_bytes。<br>
-取值范围:大于内存限定值<br>
-单位：b,k,m,g<br>
+The option is to limit the sum of memory and swap. It is relevant to cgroup/memory/memory.memsw.limit_in_bytes.
 
-运行如下命令来确认容器交换分区的资源管理对应的cgroup文件。
+range: greater than the value of memory limit<br>
+unit：b,k,m,g<br>
+
+Get the value of the relevant cgroup file by executing the following command.
 
     $ docker run -ti -m 300M --memory-swap 1G ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     1073741824
 
-可以看到，当memory-swap限定为1G时，对应的cgroup文件数值为1073741824，该数值的单位为字节，即1073741824B等于1G。
+From the above log, when memory-swap is limited to 1GB, the value of the cgroup file is 1073741824 and its unit is Byte. In short, 1073741824B is equal to 1GB.
 
 <table>
   <thead>
