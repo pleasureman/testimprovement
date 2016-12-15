@@ -235,21 +235,25 @@ When the value of memory limit is less than the value of memory-swap limit, a co
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
 ####3.1.3 --memory-reservation=""
-取值范围:大于等于0的整数<br>
-单位：b,k,m,g<br>
-对应的cgroup文件是cgroup/memory/memory.soft_limit_in_bytes。
+range:positive integer<br>
+unit:b,k,m,g<br>
+
+This option is relevant to cgroup/memory/memory.soft_limit_in_bytes.
 
     $ docker run -ti --memory-reservation 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.soft_limit_in_bytes"
     52428800
 
-通常情况下，容器能够使用的内存量仅仅由-m/--memory选项限定。如果设置了--memory-reservation选项，当内存使用量超过--memory-reservation选项所设定的值时，系统会强制容器执行回收内存的操作，使得容器内存消耗不会长时间超过--memory-reservation的限定值。
+Memory reservation is a kind of memory soft limit that allows for greater sharing of memory. Under normal circumstances, containers can use as much of the memory as needed and are constrained only by the hard limits set with the -m/--memory option.
 
-这个限制并不会阻止进程使用超过限额的内存，只是在系统内存不足时，会回收部分内存，使内存使用量向限定值靠拢。
-在以下命令中，容器对内存的使用量不会超过500M，这是硬性限制。当内存使用量大于200M而小于500M时，系统会尝试回收部分内存，使得内存使用量低于200M。
+When memory reservation is set, Docker detects memory contention or low memory and forces containers to restrict their consumption to a reservation limit.
+
+Memory reservation does not guarantee the limit won't be exceeded. Instead, the feature attempts to ensure that, when memory is heavily contended for, memory is allocated based on the reservation hints/setup.
+
+The following example limits the memory (-m) to 500M and sets the memory reservation to 200M. Under this configuration, when the container consumes memory more than 200M and less than 500M, the next system memory reclaim attempts to shrink container memory below 200M.
 
     $ docker run -it -m 500M --memory-reservation 200M ubuntu:14.04 bash
 
-在如下命令中，容器使用的内存量不受限制，但容器消耗的内存量不会长时间超过1G，因为当容器内存使用量超过1G时，系统会尝试回收内存使内存使用量低于1G。
+The following example set memory reservation to 1G without a hard memory limit. The container can use as much memory as it needs. The memory reservation setting ensures the container doesn't consume too much memory for long time, because every memory reclaim shrinks the container's consumption to the reservation.
 
     $ docker run -it --memory-reservation 1G ubuntu:14.04 bash
 
