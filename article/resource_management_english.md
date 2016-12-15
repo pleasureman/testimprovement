@@ -333,19 +333,21 @@ See the below log of the top command. PID of the first container is 1418, whose 
     1471 root      20   0    7312     96      0 R 32.9  0.0   0:04.97 stress
 
 ####3.2.2 --cpu-period=""
-内核默认的Linux 调度CFS（完全公平调度器）周期为100ms,我们通过--cpu-period来设置容器对CPU的使用周期，同时--cpu-period接口需要和--cpu-quota接口一起来使用。--cpu-quota接口设置了CPU的使用值。CFS(完全公平调度器) 是内核默认使用的调度方式，为运行的进程分配CPU资源。对于多核CPU，根据需要调整--cpu-quota的值。
+By default, the period of CFS(Completely Fair Scheduler) is 100ms in linux. We can use --cpu-period to set the period of CPUs to limit the container's CPU usage. And usually --cpu-period should work with --cpu-quota. --cpu-quota sets CPU period constraints. CFS is the default scheduler of kernel. It is to allocate CPU resources. --cpu-quota can also be set for multi-core cpu.
 
-对应的cgroup文件是cgroup/cpu/cpu.cfs_period_us。以下命令创建了一个容器，同时设置了该容器对CPU的使用时间为50000（单位为微秒），并验证了该接口对应的cgroup文件对应的值。
+It is relevant to the cgroup/cpu/cpu.cfs_period_us.
+
+The following example sets CPU period to 50000ms and verifys the value of the cgroup file.
 
     $ docker run -ti --cpu-period 50000 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_period_us"
     50000
 
-以下命令将--cpu-period的值设置为50000,--cpu-quota的值设置为25000。该容器在运行时可以获取50%的cpu资源。
+In the following example, the container can use 50% CPU resource.
 
     $ docker run -ti --cpu-period=50000 --cpu-quota=25000 ubuntu:14.04 stress -c 1
     stress: info: [1] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
 
-从log的最后一行中可以看出，该容器的cpu使用率约为50.0%。
+From the last line, we can see the cpu usage percentage is 50.0%. The result is as expected.
 
     top - 10:36:55 up 6 min,  0 users,  load average: 0.49, 0.21, 0.10
     Tasks:  68 total,   2 running,  66 sleeping,   0 stopped,   0 zombie
@@ -356,12 +358,12 @@ See the below log of the top command. PID of the first container is 1418, whose 
     770 root      20   0    7312     96      0 R 50.0  0.0   0:38.06 stress
 
 ####3.2.3 --cpu-quota=0
-对应的cgroup文件是cgroup/cpu/cpu.cfs_quota_us。
+The option is to set CPU period constraints. 
+It is relevant to the cgroup/cpu/cpu.cfs_quota_us file. In general, it should work with --cpu-period.
+See the --cpu-period section for details.
 
     $ docker run --cpu-quota 1600 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us"
     1600
-
---cpu-quota接口设置了CPU的使用值，通常情况下它需要和--cpu-period接口一起来使用。具体使用方法请参考--cpu-period选项。
 
 ###3.3 cpuset子系统
 ####3.3.1 --cpuset-cpus=""
