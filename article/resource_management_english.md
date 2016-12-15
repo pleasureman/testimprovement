@@ -69,7 +69,7 @@ In this section, we would elaborate all of resource management interfaces. For d
 ###3.1 memory subsystem
 ####3.1.1 -m, --memory=""
 The option is to limit memory usage. It is relevant to cgroup/memory/memory.limit_in_bytes file.
-range: reater than or equal to 4M<br>
+range: greater than or equal to 4M<br>
 unit：b,k,m,g<br>
 
 In default, a container can use unlimited memory until the memory of its host is exhausted.
@@ -410,17 +410,21 @@ In the following example, the processes of the container only use memory nodes 0
 
 ###3.4 blkio subsystem
 ####3.4.1 --blkio-weight=0
-通过--blkio-weight接口可以设置容器块设备IO的权重，有效值范围为10至1000的整数(包含10和1000)。默认情况下，所有容器都会得到相同的权重值(500)。对应的cgroup文件为cgroup/blkio/blkio.weight。以下命令设置了容器块设备IO权重为10，在log中可以看到对应的cgroup文件的值为10。
+The option is set block device IO weight. By default, the value is 500. The option is relevant to the cgroup/blkio/blkio.weight file.
+
+Range: integers between 10 and 1000(including 10 and 1000)
+
+The following example verify the value of the cgroup file.
 
     $ docker run -ti --rm --blkio-weight 10 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight"
     10
 
-通过以下两个命令来创建不同块设备IO权重值的容器。
+The following example creates two containers with different weight values.
 
     $ docker run -it --name c1 --blkio-weight 300 ubuntu:14.04 /bin/bash
     $ docker run -it --name c2 --blkio-weight 600 ubuntu:14.04 /bin/bash
 
-如果在两个容器中同时进行块设备操作（例如以下命令）的话，你会发现所花费的时间和容器所拥有的块设备IO权重成反比。
+If you run the following command to do block IO in the two containers at the same time. Time spent is inverse proportion of blkio weights of the two containers.
 
     $ time dd if=/mnt/zerofile of=test.out bs=1M count=1024 oflag=direct
 
@@ -513,7 +517,7 @@ In the following example, the processes of the container only use memory nodes 0
 ##4.总结
 Docker的资源管理依赖于Linux内核Cgroups机制。理解Docker资源管理的原理并不难，读者可以根据自己兴趣补充一些有针对性的测试。关于Cgroups的实现机制已经远超本文的范畴。感兴趣的读者可以自行查看[相关文章](http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation)和内核手册。
 
-##作者简介
+## Authors
 孙远，华为中央软件研究院资深工程师，硕士毕业，9年软件行业经验。目前在华为从事容器Docker项目的测试工作。工作涉及到功能测试、性能测试、压力测试、稳定性测试、安全测试、测试管理、工程能力构建等内容。参与编写了《Docker进阶与实战》的Docker测试章节。先前曾经就职于美国风河系统公司，作为team lead从事风河Linux产品测试工作。活跃于Docker社区和内核测试ltp社区，目前有大量测试用例被开源社区接收。<br>
 研究方向：容器技术、Docker、Linux内核、软件测试、自动化测试、测试过程改进<br>
 公司邮箱：sunyuan3@huawei.com<br>
