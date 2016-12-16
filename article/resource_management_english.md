@@ -518,15 +518,10 @@ The container writes 1000 times(The second line of log: count=1000). Time spent 
 ## 4.Summary
 Resource management of docker is dependent on cgroups feature of linux kernel. It isn't diffcult for readers to understand resource management. If you are interested in it, you may supplement some test cases. The principle of cgroups is beyond the scope of this article and you may refer to other aritcles about it and kernel documantation.
 ## Authors
-Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has more than 9 years experience in software testing. He led container testing team to complete test tasks of container components for HUAWEI public cloud and supported other teams to accelerate test execution with docker. He concentrated on function, performance, security, reliability and stress test for docker technology. He is a speaker on docker meetup, China test conference, China Open Source Conference . He has contributed some test cases for docker and ltp open source community. Previously, he was test leader in Wind River.
+Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has more than 9 years experience in software testing. He led container testing team to complete test tasks of container components for HUAWEI public cloud and supported other teams to accelerate test execution with docker. He concentrated on function, performance, security, reliability and stress tests for Docker technology. He is a speaker on docker meetup, China test conference, China Open Source Conference . He has contributed some test cases for docker and ltp open source community. Previously, he was test leader in Wind River.
 
-Wanju Xue, SOftware Testing Engineer, ChinaSoft International Technology Service Co., Ltd. She has more than 4 years experience in software testing. She is currently involved in container Docker testing work of the project, she concentrated on function,performance, stress test for docker technology.
-Research Field: Container Technology, Docker, Automated Testing
-
-
-
-薛婉菊，中软国际科技服务有限公司软件测试工程师，4年软件行业经验。目前参与容器Docker项目的测试工作，工作涉及到容器功能测试、性能测试、压力测试等内容。<br>
-研究方向：容器技术、Docker、自动化测试<br>
+Wanju Xue, Software Testing Engineer, ChinaSoft International Technology Service Co., Ltd. She has more than 4 years experience in software testing. She is currently involved in Docker testing. She concentrated on function, performance, stress tests for Docker technology.<br>
+Research Field: Container Technology, Docker, Automated Testing<br>
 
 ##reference：
 http://www.cnblogs.com/hustcat/p/3980244.html<br>
