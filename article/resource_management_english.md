@@ -64,7 +64,7 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 | cgroup/blkio/blkio.throttle.write_iops_device | 设置每秒写块设备的IO次数的上限。同样需要指定设备。 | --device-write-iops="" |
 
 ## 3.Details of Docker resource management and application examples
-In this section, we would elaborate all of resource management interfaces. For deepening understanding, test cases are added for some of them. Docker version is 1.11.0. If the stress command is unavailable in docker image, you can install it by executing "sudo apt-get install stress".
+In this section, we would elaborate all of resource management interfaces. For deepening understanding, test cases are added for some of them. Docker version is 1.11.0. If the stress command is unavailable in Docker image, you can install it by executing "sudo apt-get install stress".
 ### 3.1 memory subsystem
 #### 3.1.1 -m, --memory=""
 The option is to limit memory usage. It is relevant to cgroup/memory/memory.limit_in_bytes file.
@@ -88,7 +88,7 @@ The memory information of its host is as follow.
 
 Note no swap in the host.
 
-Use stress tool to verfiy that memroy limit takes effect. Stress is a stress tool. The following command would create a process, which calls malloc and free memory continuously, within a container. In theory, if memory usage is less than limit, a container works fine. Note that a container will be killed if you try using the stress tool to malloc up to 100M memory because of other processes in the container.
+Use the stress tool to verify that memory limit takes effect. Stress is a stress tool. The following command would create a process, which calls malloc and free memory continuously, within a container. In theory, if memory usage is less than limit, a container works fine. Note that a container will be killed if you try using the stress tool to malloc up to 100M memory because of other processes in the container.
 
     $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 50M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
@@ -104,7 +104,7 @@ When the allocated memory is more than 100MB, the below error occurs.
     stress: FAIL: [1] (422) kill error: No such process
     stress: FAIL: [1] (452) failed run completed in 0s
 
-Note the above result is showed in case of no swap memory. If swap memory is added, what happened? Add swap memory in the follwing command.
+Note the above result is showed in case of no swap memory. If swap memory is added, what happened? Add swap memory in the following command.
 
     $ dd if=/dev/zero of=/tmp/mem.swap bs=1M count=8192
     8192+0 records in
@@ -126,7 +126,7 @@ Then allocate more memory than limit.
     $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 101M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
-After swap memory is available, the container works fine. It means part of data of memory is transfered to swap memory. A container can exhaust memory of the host without memory restriction. This leads to unstablity of the host. So please limit memory as you use a container.
+After swap memory is available, the container works fine. It means part of data of memory is transferred to swap memory. A container can exhaust memory of the host without memory restriction. This leads to instability of the host. So please limit memory as you use a container.
 
 #### 3.1.2 --memory-swap=""
 The option is to limit the sum of memory and swap. It is relevant to cgroup/memory/memory.memsw.limit_in_bytes.
@@ -233,8 +233,8 @@ When the value of memory limit is less than the value of memory-swap limit, a co
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
 #### 3.1.3 --memory-reservation=""
-range:positive integer<br>
-unit:b,k,m,g<br>
+range: positive integer<br>
+unit: b,k,m,g<br>
 
 This option is relevant to cgroup/memory/memory.soft_limit_in_bytes.
 
@@ -319,7 +319,7 @@ The following example sets two container’s CPU shares to 1024 and 512.
     $ docker run -ti --cpu-shares 512 ubuntu:14.04 stress -c 1
     stress: info: [1] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
 
-See the below log of the top command. PID of the first container is 1418, whose CPU usage percentage is 66.1%. PID of the second container is 1471, whose CPU usage percentage is 32.9%. The proporation is appromately 2:1. The result is as expected.
+See the below log of the top command. PID of the first container is 1418, whose CPU usage percentage is 66.1%. PID of the second container is 1471, whose CPU usage percentage is 32.9%. The proportion is approximately 2:1. The result is as expected.
 
     top - 18:51:50 up 9 days,  2:07,  0 users,  load average: 0.62, 0.15, 0.05
     Tasks:  84 total,   3 running,  81 sleeping,   0 stopped,   0 zombie
@@ -335,7 +335,7 @@ By default, the period of CFS(Completely Fair Scheduler) is 100ms in linux. We c
 
 It is relevant to the cgroup/cpu/cpu.cfs_period_us.
 
-The following example sets CPU period to 50000ms and verifys the value of the cgroup file.
+The following example sets CPU period to 50000ms and verifies the value of the cgroup file.
 
     $ docker run -ti --cpu-period 50000 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpu/cpu.cfs_period_us"
     50000
@@ -412,7 +412,7 @@ The option is set block device IO weight. By default, the value is 500. It is re
 
 Range: integers between 10 and 1000(including 10 and 1000)
 
-The following example verify the value of the cgroup file.
+The following example verifies the value of the cgroup file.
 
     $ docker run -ti --rm --blkio-weight 10 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight"
     10
@@ -516,9 +516,10 @@ The container writes 1000 times(The second line of log: count=1000). Time spent 
 
 
 ## 4.Summary
-Resource management of docker is dependent on cgroups feature of linux kernel. It isn't diffcult for readers to understand resource management. If you are interested in it, you may supplement some test cases. The principle of cgroups is beyond the scope of this article and you may refer to other aritcles about it and kernel documantation.
+Resource management of Docker is dependent on cgroups feature of linux kernel. It isn't difficult for readers to understand resource management. If you are interested in it, you may supplement some test cases. The principle of cgroups is beyond the scope of this article and you may refer to other articles about it and kernel documentation.
+
 ## Authors
-Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has more than 9 years experience in software testing. He led container testing team to complete test tasks of container components for HUAWEI public cloud and supported other teams to accelerate test execution with docker. He concentrated on function, performance, security, reliability and stress tests for Docker technology. He is a speaker on docker meetup, China test conference, China Open Source Conference . He has contributed some test cases for docker and ltp open source community. Previously, he was test leader in Wind River.
+Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has more than 9 years experience in software testing. He led container testing team to complete test tasks of container components for HUAWEI public cloud and supported other teams to accelerate test execution with Docker. He concentrated on function, performance, security, reliability and stress tests for Docker technology. He is a speaker on Docker meetup, China test conference, China Open Source Conference. He has contributed some test cases for Docker and ltp open source community. Previously, he was test leader in Wind River.
 
 Wanju Xue, Software Testing Engineer, ChinaSoft International Technology Service Co., Ltd. She has more than 4 years experience in software testing. She is currently involved in Docker testing. She concentrated on function, performance, stress tests for Docker technology.<br>
 Research Field: Container Technology, Docker, Automated Testing<br>
