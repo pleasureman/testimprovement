@@ -64,22 +64,22 @@ Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、
 | cgroup/blkio/blkio.throttle.write_iops_device | 设置每秒写块设备的IO次数的上限。同样需要指定设备。 | --device-write-iops="" |
 
 ## 3.Details of Docker resource management and application examples
-In this section, we would elaborate all of resource management interfaces. For deepening understanding, test cases are added for some of them. Docker version is 1.11.0. If stress command is unavailable in docker image, you can install it by executing "sudo apt-get install stress".
+In this section, we would elaborate all of resource management interfaces. For deepening understanding, test cases are added for some of them. Docker version is 1.11.0. If the stress command is unavailable in docker image, you can install it by executing "sudo apt-get install stress".
 ### 3.1 memory subsystem
 #### 3.1.1 -m, --memory=""
 The option is to limit memory usage. It is relevant to cgroup/memory/memory.limit_in_bytes file.
 range: greater than or equal to 4M<br>
 unit：b,k,m,g<br>
 
-In default, a container can use unlimited memory until the memory of its host is exhausted.
-Make sure its relevant cgroup file by executing the following command.
+By default, a container can use unlimited memory until the memory of its host is exhausted.
+Verify the value of the relevant cgroup file by executing the following command.
 
     $ docker run -it --memory 100M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes"
     104857600
 
-When the memory usage is limited to 100M, the value of the cgroup file is 104857600. The unit is Byte. It means that 104857600 Bytes are equal to 100M.
+When the memory usage is limited to 100M, the value of the cgroup file is 104857600. The unit is Byte. It means that 104857600 Bytes are equal to 100MB.
 
-The memory of its host is as follow.
+The memory information of its host is as follow.
 
     $ free
               total        used        free      shared  buff/cache   available
@@ -88,7 +88,7 @@ The memory of its host is as follow.
 
 Note no swap in the host.
 
-Use stress tool to verfiy that memroy limitation takes effect. Stress is a stress tool. The following command would create a process, which calls malloc and free memory continuously, within a container. In theory, if memory usage is less than limitation, a container survive. Note that a container will be killed if you try using stress tool to malloc up to 100M memory because of other processes in the container.
+Use stress tool to verfiy that memroy limit takes effect. Stress is a stress tool. The following command would create a process, which calls malloc and free memory continuously, within a container. In theory, if memory usage is less than limit, a container works fine. Note that a container will be killed if you try using the stress tool to malloc up to 100M memory because of other processes in the container.
 
     $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 50M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
@@ -104,7 +104,7 @@ When the allocated memory is more than 100MB, the below error occurs.
     stress: FAIL: [1] (422) kill error: No such process
     stress: FAIL: [1] (452) failed run completed in 0s
 
-Note the above result is showed in case of no swap. If swap is added, what happened? Now add swap in the follwing command.
+Note the above result is showed in case of no swap memory. If swap memory is added, what happened? Add swap memory in the follwing command.
 
     $ dd if=/dev/zero of=/tmp/mem.swap bs=1M count=8192
     8192+0 records in
@@ -126,8 +126,7 @@ Then allocate more memory than limit.
     $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 101M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
-After swap is available, the container works fine. It means part of data of memory is transfered to swap
-A container can exhaust memory of the host without memory restriction. This leads to unstablity of the host. So please limit memory as you use a container.
+After swap memory is available, the container works fine. It means part of data of memory is transfered to swap memory. A container can exhaust memory of the host without memory restriction. This leads to unstablity of the host. So please limit memory as you use a container.
 
 #### 3.1.2 --memory-swap=""
 The option is to limit the sum of memory and swap. It is relevant to cgroup/memory/memory.memsw.limit_in_bytes.
@@ -135,12 +134,12 @@ The option is to limit the sum of memory and swap. It is relevant to cgroup/memo
 range: greater than the value of memory limit<br>
 unit：b,k,m,g<br>
 
-Get the value of the relevant cgroup file by executing the following command.
+Verify the value of the relevant cgroup file by executing the following command.
 
     $ docker run -ti -m 300M --memory-swap 1G ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     1073741824
 
-From the above log, when memory-swap is limited to 1GB, the value of the cgroup file is 1073741824 and its unit is Byte. In short, 1073741824B is equal to 1GB.
+When memory-swap is limited to 1GB, the value of the cgroup file is 1073741824 and its unit is Byte. In short, 1073741824B is equal to 1GB.
 
 <table>
   <thead>
@@ -201,7 +200,7 @@ We set memory limit and disabled swap memory limit in the following command, thi
     314572800
     9223372036854771712
 
-We set memory limit only in the following command, this means the processes in the container can use 300M memory and 300M swap memory. By default, the total virtual memory size (--memory-swap) will be set as double of memory. In this case, memory + swap would be 2*300M, so processes can use 300M swap memory as well.
+The following example sets memory limit only, this means the processes in the container can use 300M memory and 300M swap memory. By default, the total virtual memory size (--memory-swap) will be set as double of memory. In this case, memory + swap would be 2*300M, so processes can use 300M swap memory as well.
 
     $ docker run -it -m 300M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.limit_in_bytes && cat /sys/fs/cgroup/memory/memory.memsw.limit_in_bytes"
     314572800
@@ -257,7 +256,7 @@ The following example sets memory reservation to 1G without a hard memory limit.
     $ docker run -it --memory-reservation 1G ubuntu:14.04 bash
 
 #### 3.1.4 --kernel-memory=""
-This option ti to limit kernel memory.  It is relevant to cgroup/memory/memory.kmem.limit_in_bytes.
+This option is to limit kernel memory.  It is relevant to cgroup/memory/memory.kmem.limit_in_bytes.
 
     $ docker run -ti --kernel-memory 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
     52428800
@@ -273,11 +272,11 @@ The following example sets kernel memory without -m, so the processes in the con
 #### 3.1.5 --oom-kill-disable=false
 By default, kernel kills processes in a container if an out-of-memory(OOM) error occurs. To change this behaviour, use the --oom-kill-disable option. It is relevant to cgroup/memory/memory.oom_control.
 
-When a container allocates memory more than the value of memory limit, kernle will trigger out-of-memory(OOM). If --oom-kill-disable=false, the container will be killed. If --oom-kill-disable=true, the container is suspended.
+When a container allocates memory more than the value of memory limit, kernel will trigger out-of-memory(OOM). If --oom-kill-disable=false, the container will be killed. If --oom-kill-disable=true, the container is suspended.
 
-The following example limits memory to 20MB and set --oom-kill-disable as true. The value of oom_kill_disable is 1.
+The following example limits memory to 20MB and sets --oom-kill-disable as true. The value of oom_kill_disable is 1.
 
-    $  docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.oom_control'
+    $ docker run -m 20m --oom-kill-disable=true ubuntu:14.04 bash -c 'cat /sys/fs/cgroup/memory/memory.oom_control'
     oom_kill_disable 1
     under_oom 0
 
@@ -291,7 +290,7 @@ Use the "x=a; while true; do x=$x$x$x$x; done" command to exhaust memory and tri
     $ echo $?
     137
 
-The container exits with the return value of 137. When its memory usage exceeds the limit, OOM occurs and it is killed. We can see the value of  under_oom is 1 and value of oom_kill_disable is 1 by the cgroup file, /sys/fs/cgroup/memory/docker/${container_id}/memory.oom_control.
+The container exits with the return value of 137. When its memory usage exceeds the limit, OOM occurs and it is killed. We can see the value of under_oom is 1 and value of oom_kill_disable is 1 by the cgroup file, /sys/fs/cgroup/memory/docker/${container_id}/memory.oom_control.
 
 If --oom-kill-disable=true, the container wouldn't be killed. It is suspended.
 
@@ -320,7 +319,7 @@ The following example sets two container’s CPU shares to 1024 and 512.
     $ docker run -ti --cpu-shares 512 ubuntu:14.04 stress -c 1
     stress: info: [1] dispatching hogs: 1 cpu, 0 io, 0 vm, 0 hdd
 
-See the below log of the top command. PID of the first container is 1418, whose CPU usage is 66.1%. PID of the second container is 1471, whose CPU usage is 32.9. The proporation is appromately 2:1. The result is as expected.
+See the below log of the top command. PID of the first container is 1418, whose CPU usage percentage is 66.1%. PID of the second container is 1471, whose CPU usage percentage is 32.9%. The proporation is appromately 2:1. The result is as expected.
 
     top - 18:51:50 up 9 days,  2:07,  0 users,  load average: 0.62, 0.15, 0.05
     Tasks:  84 total,   3 running,  81 sleeping,   0 stopped,   0 zombie
@@ -391,7 +390,7 @@ In the below log, the status of each cpu is showed. Note that the console can sh
     PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
     10266 root      20   0    7312     96      0 R 100.0  0.0   0:11.92 stress
 
-The usage percentage of CPU core 1. Other cpus are idle. The result is as expected.
+Only the usage percentage of CPU core 1 is 100%. Other cpus are idle. The result is as expected.
 
 #### 3.3.2 --cpuset-mems=""
 The option is relevant to the cgroup/cpuset/cpuset.mems.
@@ -428,7 +427,7 @@ If you run the following command to do block IO in the two containers at the sam
     $ time dd if=/mnt/zerofile of=test.out bs=1M count=1024 oflag=direct
 
 #### 3.4.2 --blkio-weight-device=""
-The --blkio-weight-device="DEVICE_NAME:WEIGHT" flag sets a specific device weight. 
+The --blkio-weight-device="DEVICE_NAME:WEIGHT" option sets a specific device weight. 
 
 Range: integers between 10 and 1000(including 10 and 1000)
 
@@ -484,7 +483,7 @@ The following example restricts the write rate to 1MB/s. The result is as expect
     10240000 bytes (10 MB) copied, 10.1987 s, 1.0 MB/s
 
 #### 3.4.5 --device-read-iops=""
-The option is limit read rate (IO per second) from a device. It is relevant to the cgroup/blkio/blkio.throttle.read_iops_device file. 
+The option is to limit read rate (IO per second) from a device. It is relevant to the cgroup/blkio/blkio.throttle.read_iops_device file. 
 
     $ docker run -it --device /dev/sda:/dev/sda --device-read-iops /dev/sda:400 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.read_iops_device"
     8:0 400
@@ -497,7 +496,7 @@ The following example restricts the read rate to 400 IO per second.
     1000+0 records out
     1024000 bytes (1.0 MB) copied, 2.42874 s, 422 kB/s
 
-The container reads 1000 times(The second line of log: count=1000). Time spent is 2.42874 seconds, appromate 2.5(1000/400) seconds. It is as expected.
+The container reads 1000 times(The second line of log: count=1000). Time spent is 2.42874 seconds, approximately 2.5(1000/400) seconds. It is as expected.
 
 #### 3.4.6 --device-write-iops=""
 The option is to limit write rate (IO per second) from a device. It is relevant to the cgroup/blkio/blkio.throttle.write_iops_device file. 
@@ -513,13 +512,17 @@ The following example restricts the write rate to 400 IO per second.
     1000+0 records out
     1024000 bytes (1.0 MB) copied, 2.4584 s, 417 kB/s
 
-The container writes 1000 times(The second line of log: count=1000). Time spent is 2.4584 seconds, appromate 2.5(1000/400) seconds. It is as expected.
+The container writes 1000 times(The second line of log: count=1000). Time spent is 2.4584 seconds, approximately 2.5(1000/400) seconds. It is as expected.
 
 
 ## 4.Summary
-Resource management of docker is dependent on cgroup feature of linux kernel. It isn't diffcult for readers to understand resource management. If you are interested in it, you may supplement some test cases. The principle is beyond the scope of this article and you may refer to other aritcles about it and kernel documantation.
+Resource management of docker is dependent on cgroups feature of linux kernel. It isn't diffcult for readers to understand resource management. If you are interested in it, you may supplement some test cases. The principle of cgroups is beyond the scope of this article and you may refer to other aritcles about it and kernel documantation.
 ## Authors
-Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has more than 9 years experience in software testing. He led container testing team to complete test tasks of container components for HUAWEI public cloud and supported other teams to accelerate test execution with docker. He concentrated on function, performance, security, reliability and stress test for docker technology. He is a speaker on docker meetup and China test conference. He contributes some test cases for docker and ltp open source community. Previously, he was test leader in Wind River.
+Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has more than 9 years experience in software testing. He led container testing team to complete test tasks of container components for HUAWEI public cloud and supported other teams to accelerate test execution with docker. He concentrated on function, performance, security, reliability and stress test for docker technology. He is a speaker on docker meetup, China test conference, China Open Source Conference . He has contributed some test cases for docker and ltp open source community. Previously, he was test leader in Wind River.
+
+Wanju Xue, SOftware Testing Engineer, ChinaSoft International Technology Service Co., Ltd. She has more than 4 years experience in software testing. She is currently involved in container Docker testing work of the project, she concentrated on function,performance, stress test for docker technology.
+Research Field: Container Technology, Docker, Automated Testing
+
 
 
 薛婉菊，中软国际科技服务有限公司软件测试工程师，4年软件行业经验。目前参与容器Docker项目的测试工作，工作涉及到容器功能测试、性能测试、压力测试等内容。<br>
