@@ -519,9 +519,7 @@ The container writes 1000 times(The second line of log: count=1000). Time spent 
 ## 4.Summary
 Resource management of docker is dependent on cgroup feature of linux kernel. It isn't diffcult for readers to understand resource management. If you are interested in it, you may supplement some test cases. The principle is beyond the scope of this article and you may refer to other aritcles about it and kernel documantation.
 ## Authors
-孙远，华为中央软件研究院资深工程师，硕士毕业，9年软件行业经验。目前在华为从事容器Docker项目的测试工作。工作涉及到功能测试、性能测试、压力测试、稳定性测试、安全测试、测试管理、工程能力构建等内容。参与编写了《Docker进阶与实战》的Docker测试章节。先前曾经就职于美国风河系统公司，作为team lead从事风河Linux产品测试工作。活跃于Docker社区和内核测试ltp社区，目前有大量测试用例被开源社区接收。<br>
-研究方向：容器技术、Docker、Linux内核、软件测试、自动化测试、测试过程改进<br>
-Yuan Sun, senior software engineer, central software institue, HUAWEI. 9 years industry ground
+Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has more than 9 years experience in software testing. He led container testing team to complete test tasks of container components for HUAWEI public cloud and supported other teams to accelerate test execution with docker. He concentrated on function, performance, security, reliability and stress test for docker technology. He is a speaker on docker meetup and China test conference. He contributes some test cases for docker and ltp open source community. Previously, he was test leader in Wind River.
 
 
 薛婉菊，中软国际科技服务有限公司软件测试工程师，4年软件行业经验。目前参与容器Docker项目的测试工作，工作涉及到容器功能测试、性能测试、压力测试等内容。<br>
