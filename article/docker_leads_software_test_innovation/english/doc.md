@@ -1,14 +1,13 @@
 #Docker leads software test innovation
 随着Docker技术被越来越多的人所认可，其应用的范围也越来越广泛。本文将从测试类型、Devops、自动化测试、测试场景、测试实践等方面介绍Docker对软件测试技术的影响。我假设读者在看这篇文章时已经对Docker和其所依赖的核心技术有了一定的了解。如果读者还不了解，可以先阅读[《深入浅出Docker（一）：Docker核心技术预览》](http://www.infoq.com/cn/articles/docker-core-technology-preview)这篇文章。
 
-While Docker is accepted by more and more people, it is applied `more and more` widely. This paper would introduce the effect of Docker on software testing technology from testing type, Devops, test automation, test scenarios, test practice and so on. I assume that readers have known Docker and its dependency on core technology of kernel. If you don't know, read [docker document](https://docs.docker.com/) in advance.
+While Docker is accepted by more and more people, it is applied `more and more` widely. This paper would introduce the effect of Docker on software testing technology from testing type, Devops, test automation, test scenarios, test practice and so on. I assume that readers have known Docker and its dependency on core technology of kernel. If you don't know much of it, read [docker document](https://docs.docker.com/) in advance.
 
 ##1.传统软件开发流程的痛点
 Pain points of traditional software development progress
 
 在Devops出现前的传统软件开发流程中，开发团队在完成功能代码编写后，会首先进行自测，之后将代码提交到Git仓库中。在每一次迭代转测试时，开发团队会首先构建转测试的二进制文件，之后由测试团队对版本进行验证，验证通过后会将版本提交给运维团队。之后再由运维团队将产品发布件部署到运维服务器中以提供给客户使用。<br>
-
-Before Devops, in traditional software development progress, developers do code and self test at first. Then the codes will be pushed into git repository. Develpers will build software code to create binary files before each test iteration. Tester will test and verify this iteration. After the verification is pass, it is released to operation team. Operator would deploy the release in servers for customers.
+In traditional software development progress before Devops, developers do code and self-test at first. Then the codes will be pushed into git repository. Develpers will build software code to create binary files before each test iteration. Tester will test and verify this iteration. After the verification is pass, it is released to operation team. Operators would deploy the release in servers for customers.
 
 在这个流程中会有如下痛点：
 
@@ -20,6 +19,7 @@ In this process, pain points are as follow:
 
 这导致了有些本该在开发阶段发现的软件缺陷可能会遗漏到测试或运维阶段才能发现。有时发布件在开发环境中运行的很稳定，而在运维环境中刚刚运行就挂掉了。这时运维团队不得不找开发团队来救火，导致了整个团队工作效率下降。<br>
 
+In this situation, some bugs, which should have been found in development phase, can't be found till test phase or operation phase. Sometimes software works fine in development environment. However, it is down once it is deployed in operation phase. 
 
 (2)无法准确获取客户的软件环境。<br>
 我们往往不能直接复现客户报的软件缺陷，不得不去客户现场进行调试，滞后了解决问题的时间。<br>
