@@ -229,7 +229,7 @@ The memory more than the value of memory-swap limit is allocated, the below erro
 
 When the value of memory limit is less than the value of memory-swap limit, a container works fine. See the following log for details.
 
-    $ docker run -ti -m 100M --memory-swap 200M ubuntu:memory stress --vm 1 --vm-bytes 180M
+    $ docker run -ti -m 100M --memory-swap 200M ubuntu:14.04 stress --vm 1 --vm-bytes 180M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
 #### 3.1.3 --memory-reservation=""
