@@ -30,7 +30,12 @@ In this situation, some bugs, which should have been found in development phase,
 We often can't reproduce the defects costomers submit and have to debug on costomers' site.
 
 (3)开发者在提交代码前往往未做充分的测试。<br>
+
+(3) Developers tend to execute enough test cases before codes are pushed.
+
 开发自验工作取决于开发者的责任心，而没有一种机制来保证自验工作的进行。导致了很多低级的软件缺陷遗漏到测试和运维团队。<br>
+
+
 (4)开发团队无法复现测试团队报出的软件缺陷，导致两个团队出现相互推诿的现象。<br>
 (5)配置测试环境的时间较长，测试自动化成本高。<br>
 传统环境往往使用虚拟机，而其消耗资源高、部署速度慢，导致自动化的效率不高。<br>
