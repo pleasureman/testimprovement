@@ -19,10 +19,16 @@ In this process, pain points are as follow:
 
 这导致了有些本该在开发阶段发现的软件缺陷可能会遗漏到测试或运维阶段才能发现。有时发布件在开发环境中运行的很稳定，而在运维环境中刚刚运行就挂掉了。这时运维团队不得不找开发团队来救火，导致了整个团队工作效率下降。<br>
 
-In this situation, some bugs, which should have been found in development phase, can't be found till test phase or operation phase. Sometimes software works fine in development environment. However, it is down once it is deployed in operation phase. 
+In this situation, some bugs, which should have been found in development phase, can't be found till test phase or operation phase. Sometimes software works fine in development environment. However, it is down once it is deployed in operation phase. At this time, the operation team had to resort to development team, leading to a decline in the efficiency of the entire team.
 
 (2)无法准确获取客户的软件环境。<br>
+
+(2)Can't accurately obtain the software environment of customers.
+ 
 我们往往不能直接复现客户报的软件缺陷，不得不去客户现场进行调试，滞后了解决问题的时间。<br>
+
+We often can't reproduce the defects costomers submit and have to debug on costomers' site.
+
 (3)开发者在提交代码前往往未做充分的测试。<br>
 开发自验工作取决于开发者的责任心，而没有一种机制来保证自验工作的进行。导致了很多低级的软件缺陷遗漏到测试和运维团队。<br>
 (4)开发团队无法复现测试团队报出的软件缺陷，导致两个团队出现相互推诿的现象。<br>
