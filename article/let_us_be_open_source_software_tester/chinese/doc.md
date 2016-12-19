@@ -64,7 +64,7 @@ https://kernelnewbies.org/Linux_3.8<br>
 https://kernelnewbies.org/Linux_4.6<br>
 http://www.infoworld.com/article/2860074/open-source-software/become-an-open-source-software-tester.html<br>
 
-感谢廖清伟和Infoq编辑xx对本文的审校。
+感谢廖清伟和Infoq编辑对本文的审校。
 
 
 
