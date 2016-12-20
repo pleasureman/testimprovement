@@ -36,8 +36,14 @@ Ltp测试套中包含了最全面的内核功能测试用例集。该测试套�
     A.在容器内执行内核测试时会有部分用例执行失败。例如，[pidns32测试用例]https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/containers/pidns/pidns32.c)是测试namespace的最大嵌套深度，启动容器时已经默认的嵌套了一层namespace，当在容器中执行用例时其还会尝试最大嵌套，这就导致了测试用例执行不通过。对于此类用例，我们需要对其进行容器化适配，设定在容器内可嵌套的层数要比主机上少一层。
     B.某些内核测试项是排他的，需要单独运行，这部分测试需要进行额外的操作处理，比如一些中断操作、寄存器操作。
     C.内核性能测试的执行不适用容器化，否则会有失真。
-(2)在容器内搭建内核测试环境。内核测试环境 场景多样，在容器内搭建内核测试环境，可以屏蔽平台的差异性，并且能够达到一次搭建多次复用的效果。
-3.	使用docker构建内核集成测试场景。内核测试的集成测试场景构建困难，很大一部分是因为难以将内核的各个权能和限制进行隔离，而容器恰好能解决这一问题。Docker对cpu、内存、io提供一系列的资源管理接口，可以直接对应cgroups接口对容器内部进行资源管理；docker的—cap-add接口让用户不再需要一次次重编内核才能为系统赋予不一样的权能，还有—security-opt、--userns等等，使用docker可以轻松搭建内核namespace、cgroup、capability、seccomp、selinux等方面测试的集成测试场景，大大提高测试效率 。
+(2)可以在容器内搭建内核测试环境。Ltp测试套中的测试用例源码默认是被动态编译的，其运行需要一些动态链接库。而很多系统特别是嵌入式系统往往缺少这些动态链接库，导致部分内核测试用例无法执行。可将必要的动态库集成到Docker镜像中，这样既保证了测试用例可以顺利执行，又可以避免在主机中直接库文件导致环境污染。
+(3)使用Docker构建内核集成测试场景。因为内核是底层技术，很难找到一个能够包含多个特性的集成测试场景。
+
+    $ docker run --memory 20m --cap-add sys_admin --security-opt seccomp=unconfined --userns-remap default --oom-kill-disable=true ubuntu:14.04 bash
+
+通过以上Docker命令可以轻松搭建内核namespace、cgroup、capability、seccomp、selinux等方面测试的集成测试场景，大大提高测试效率 。
+
+Docker对cpu、内存、io提供一系列的资源管理接口，可以直接对应cgroups接口对容器内部进行资源管理；docker的—cap-add接口让用户不再需要一次次重编内核才能为系统赋予不一样的权能，还有—security-opt、--userns等等，
 
 ### 2.6.硬件驱动测试容器化
 Docker的设计初衷是来屏蔽各硬件平台差异的。因此利用Docker来改进硬件驱动测试的难度较大。庆幸的是Docker利用内核的device cgroup特性可以实现设备直通的功能，即可将主机中的设备映射到容器中进行测试。
