@@ -333,7 +333,7 @@ See the below log of the top command. PID of the first container is 1418, whose 
 #### 3.2.2 --cpu-period=""
 By default, the period of CFS(Completely Fair Scheduler) is 100ms in linux. We can use --cpu-period to set the period of CPUs to limit the container's CPU usage. And usually --cpu-period should work with --cpu-quota. --cpu-quota sets CPU period constraints. CFS is the default scheduler of kernel. It is to allocate CPU resources. --cpu-quota can also be set for multi-core cpu.
 
-It is relevant to the cgroup/cpu/cpu.cfs_period_us.
+It is relevant to the cgroup/cpu/cpu.cfs_period_us file.
 
 The following example sets CPU period to 50000ms and verifies the value of the cgroup file.
 
@@ -393,7 +393,7 @@ In the below log, the status of each cpu is shown. Note that the console can sho
 Only the usage percentage of CPU core 1 is 100%. Other cpus are idle. The result is as expected.
 
 #### 3.3.2 --cpuset-mems=""
-The option is relevant to the cgroup/cpuset/cpuset.mems.
+The option is relevant to the cgroup/cpuset/cpuset.mems file.
 
     $ docker run -ti --cpuset-mems=0 ubuntu:14.04 bash -c "cat /sys/fs/cgroup/cpuset/cpuset.mems"
     0
@@ -422,7 +422,7 @@ The following example creates two containers with different weight values.
     $ docker run -it --name c1 --blkio-weight 300 ubuntu:14.04 /bin/bash
     $ docker run -it --name c2 --blkio-weight 600 ubuntu:14.04 /bin/bash
 
-If you run the following command to do block IO in the two containers at the same time. Time spent is inverse proportion of blkio weights of the two containers.
+If you run the following command to do block IO in the two containers at the same time. Time spent is inverse proportion of the blkio weights of the two containers.
 
     $ time dd if=/mnt/zerofile of=test.out bs=1M count=1024 oflag=direct
 
@@ -431,12 +431,12 @@ The --blkio-weight-device="DEVICE_NAME:WEIGHT" option sets a specific device wei
 
 Range: integers between 10 and 1000(including 10 and 1000)
 
-It is relevant to the cgroup/blkio/blkio.weight_device.
+It is relevant to the cgroup/blkio/blkio.weight_device file.
 
     $ docker run --blkio-weight-device "/dev/sda:1000" ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.weight_device"
     8:0 1000
 
-""8:0" is the device id of /dev/sda. 8 is major device id and 0 is minor device id. To get it by the following stat command.
+"8:0" is the device id of /dev/sda. 8 is major device id and 0 is minor device id. To get it by the following stat command.
 
     $ stat -c %t:%T /dev/sda
     8:0
@@ -467,7 +467,7 @@ The following example restricts the read rate to 1MB/s. The result is as expecte
     5242880 bytes (5.2 MB) copied, 5.00464 s, 1.0 MB/s
 
 #### 3.4.4 --device-write-bps=""
-The option is to limit the write rate (bytes per second) from a device. It is relevant to the cgroup/blkio/blkio.throttle.write_bps_device.
+The option is to limit the write rate (bytes per second) from a device. It is relevant to the cgroup/blkio/blkio.throttle.write_bps_device file.
 
     $ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_bps_device"
     8:0 1048576
@@ -490,7 +490,7 @@ The option is to limit read rate (IO per second) from a device. It is relevant t
 
 The following example restricts the read rate to 400 IO per second.
 
-    $ docker run -ti --device /dev/sda:/dev/sda  --device-read-iops	/dev/sda:400 ubuntu:14.04
+    $ docker run -ti --device /dev/sda:/dev/sda  --device-read-iops /dev/sda:400 ubuntu:14.04
     root@71910742c445:/# dd iflag=direct,nonblock if=/dev/sda of=/dev/null bs=1k count=1000
     1000+0 records in
     1000+0 records out
@@ -517,7 +517,6 @@ The container writes 1000 times(The second line of log: count=1000). Time spent 
 
 ## 4.Summary
 Resource management of Docker is dependent on cgroups feature of linux kernel. It isn't difficult for readers to understand resource management. If you are interested in it, you may supplement some test cases. The principle of cgroups is beyond the scope of this article and you may refer to other articles about it and kernel documentation.
-
 ## Authors
 Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has more than 9 years experience in software testing. He led container testing team to complete test tasks of container components for HUAWEI public cloud and supported other teams to accelerate test execution with Docker. He concentrated on function, performance, security, reliability and stress tests for Docker technology. He is a speaker on Docker meetup, China test conference, China Open Source Conference. He has contributed some test cases for Docker and ltp open source community. Previously, he was test leader in Wind River.
 
