@@ -88,7 +88,7 @@ The memory information of its host is as follow.
 
 Note no swap in the host.
 
-Use the stress tool to verify that memory limit takes effect. Stress is a stress tool. The following command would create a process, which calls malloc and free memory continuously, within a container. In theory, if memory usage is less than limit, a container works fine. Note that a container will be killed if you try using the stress tool to malloc up to 100M memory because of other processes in the container.
+Use the stress tool to verify that memory limit takes effect. Stress is a stress tool. The following command would create a process, which calls malloc and free memory continuously, within a container. In theory, if memory usage is less than the limit, a container works fine. Note that a container will be killed if you try using the stress tool to malloc up to 100M memory because of other processes in the container.
 
     $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 50M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
@@ -104,7 +104,7 @@ When the allocated memory is more than 100MB, the below error occurs.
     stress: FAIL: [1] (422) kill error: No such process
     stress: FAIL: [1] (452) failed run completed in 0s
 
-Note the above result is showed in case of no swap memory. If swap memory is added, what happened? Add swap memory in the following command.
+Note the above result is shown in case of no swap memory. If swap memory is added, what happened? Add swap memory in the following command.
 
     $ dd if=/dev/zero of=/tmp/mem.swap bs=1M count=8192
     8192+0 records in
@@ -126,7 +126,7 @@ Then allocate more memory than limit.
     $ docker run -ti -m 100M ubuntu:14.04 stress --vm 1 --vm-bytes 101M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 
-After swap memory is available, the container works fine. It means part of data of memory is transferred to swap memory. A container can exhaust memory of the host without memory restriction. This leads to instability of the host. So please limit memory as you use a container.
+After swap memory is available, the container works fine. It means part of data of memory is transferred to swap memory. A container can exhaust the memory of the host without memory restriction. This leads to instability of the host. So please limit memory as you use a container.
 
 #### 3.1.2 --memory-swap=""
 The option is to limit the sum of memory and swap. It is relevant to cgroup/memory/memory.memsw.limit_in_bytes.
@@ -376,7 +376,7 @@ In the following example, the container only use on cpu core 1 and the stress to
 
     $ docker run -ti --cpuset-cpus 1 ubuntu:14.04 stress -c 1
 
-In the below log, the status of each cpu is showed. Note that the console can show the status of each cpu only when press 1 button after run the top command.
+In the below log, the status of each cpu is shown. Note that the console can show the status of each cpu only when press 1 button after run the top command.
 
     top - 11:31:47 up 5 days, 21:00,  0 users,  load average: 0.62, 0.82, 0.77
     Tasks: 104 total,   3 running, 101 sleeping,   0 stopped,   0 zombie
