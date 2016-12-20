@@ -218,7 +218,7 @@ When the value of memory-swap limit is less than the value of memory limit, the 
     docker: Error response from daemon: Minimum memoryswap limit should be larger than memory limit, see usage..
     See 'docker run --help'.
 
-The memory more than the value of memory-swap limit is allocated, the below error occurs.
+When the memory more than the value of memory-swap limit is allocated, the below error occurs.
 
     $ docker run -ti -m 100M --memory-swap 200M ubuntu:14.04 stress --vm 1 --vm-bytes 201M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
