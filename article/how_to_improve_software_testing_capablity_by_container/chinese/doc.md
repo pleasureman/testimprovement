@@ -27,7 +27,7 @@ Rtos: 特性应用(如netmap网络应用)、开源测试套
 
 测试工具容器化(selenium)&被测对象容器化(chrome,firefox),（一个开发板/手机同时跑多个android/Linux，提高物料利用率）
 
-微服务化
+微服务化的测试策略已经远超本文的范畴，感兴趣的读者可以阅读[《Testing Strategies in a Microservice Architecture》](http://martinfowler.com/articles/microservice-testing/)。
 
 与内核相关的应用进行内核特性解耦
 
