@@ -290,7 +290,7 @@ Use the "x=a; while true; do x=$x$x$x$x; done" command to exhaust memory and tri
     $ echo $?
     137
 
-The container exits with the return value of 137. When its memory usage exceeds the limit, OOM occurs and it is killed. We can see the value of under_oom is 1 and value of oom_kill_disable is 1 by the cgroup file, /sys/fs/cgroup/memory/docker/${container_id}/memory.oom_control.
+The container exits with the return value of 137. When its memory usage exceeds the limit, OOM occurs and it is killed. We can see the value of under_oom is 1 and the value of oom_kill_disable is 1 by the cgroup file, /sys/fs/cgroup/memory/docker/${container_id}/memory.oom_control.
 
 If --oom-kill-disable=true, the container wouldn't be killed. It is suspended.
 
