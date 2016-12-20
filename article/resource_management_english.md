@@ -261,7 +261,7 @@ This option is to limit kernel memory.  It is relevant to cgroup/memory/memory.k
     $ docker run -ti --kernel-memory 50M ubuntu:14.04 bash -c "cat /sys/fs/cgroup/memory/memory.kmem.limit_in_bytes"
     52428800
 
-The following example sets memory and kernel memory, so the processes in the container can use 500M memory in total, in this 500M memory, it can be 50M kernel memory tops.
+The following example sets memory and kernel memory, so the processes in the container can use 500M memory in total. In this 500M memory, it can be 50M kernel memory tops.
 
     $ docker run -it -m 500M --kernel-memory 50M ubuntu:14.04 bash
 
