@@ -280,7 +280,7 @@ The following example limits memory to 20MB and sets --oom-kill-disable as true.
     oom_kill_disable 1
     under_oom 0
 
-oom_kill_disable: (0 or 1); 1 means that a container use memory more than the limit(20MB) and the container is suspended.
+oom_kill_disable: (0 or 1); 1 means that, when a container use memory more than the limit(20MB), it is suspended.
 
 under_oom: (0 or 1); 1 means that OOM occurs in a container.
 
