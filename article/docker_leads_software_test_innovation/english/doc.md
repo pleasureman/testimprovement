@@ -1,75 +1,40 @@
-#Docker leads software test innovation
-随着Docker技术被越来越多的人所认可，其应用的范围也越来越广泛。本文将从测试类型、Devops、自动化测试、测试场景、测试实践等方面介绍Docker对软件测试技术的影响。我假设读者在看这篇文章时已经对Docker和其所依赖的核心技术有了一定的了解。如果读者还不了解，可以先阅读[《深入浅出Docker（一）：Docker核心技术预览》](http://www.infoq.com/cn/articles/docker-core-technology-preview)这篇文章。
-
+# Docker leads software test innovation
 While Docker is accepted by more and more people, it is applied `more and more` widely. This paper would introduce the effect of Docker on software testing technology from testing type, Devops, test automation, test scenarios, test practice and so on. I assume that readers have known Docker and its dependency on core technology of kernel. If you don't know much of it, read [docker document](https://docs.docker.com/) in advance.
 
-##1.传统软件开发流程的痛点
-Pain points of traditional software development progress
-
-在Devops出现前的传统软件开发流程中，开发团队在完成功能代码编写后，会首先进行自测，之后将代码提交到Git仓库中。在每一次迭代转测试时，开发团队会首先构建转测试的二进制文件，之后由测试团队对版本进行验证，验证通过后会将版本提交给运维团队。之后再由运维团队将产品发布件部署到运维服务器中以提供给客户使用。<br>
+## 1.Pain points of traditional software development progress
 In traditional software development progress before Devops, developers do code and self-test at first. Then the codes will be pushed into git repository. Develpers will build software code to create binary files before each test iteration. Tester will test and verify this iteration. After the verification is pass, it is released to operation team. Operators would deploy the release in servers for customers.
-
-在这个流程中会有如下痛点：
 
 In this process, pain points are as follow:
 
-(1)开发、测试和运维环境不统一。
-
 (1)Different environment among development, test, operation teams
-
-这导致了有些本该在开发阶段发现的软件缺陷可能会遗漏到测试或运维阶段才能发现。有时发布件在开发环境中运行的很稳定，而在运维环境中刚刚运行就挂掉了。这时运维团队不得不找开发团队来救火，导致了整个团队工作效率下降。<br>
 
 In this situation, some bugs, which should have been found in development phase, can't be found till test phase or operation phase. Sometimes software works fine in development environment. However, it is down once it is deployed in operation phase. At this time, the operation team had to resort to development team, leading to a decline in the efficiency of the entire team.
 
-(2)无法准确获取客户的软件环境。<br>
-
 (2)Can't accurately obtain the software environment of customers.
  
-我们往往不能直接复现客户报的软件缺陷，不得不去客户现场进行调试，滞后了解决问题的时间。<br>
-
 We often can't reproduce the defects costomers submit and have to debug on costomers' site.
-
-(3)开发者在提交代码前往往未做充分的测试。<br>
 
 (3) Developers don't tend to execute enough test cases before codes are pushed.
 
-开发自验工作取决于开发者的责任心，而没有一种机制来保证自验工作的进行。导致了很多低级的软件缺陷遗漏到测试和运维团队。<br>
-
 The self test task is dependent on developers' responsibility. Because there is no process to ensure that the self test task is complete. This leads to the fact that some low level software defects are left to test team and operation team.
 
-(4)开发团队无法复现测试团队报出的软件缺陷，导致两个团队出现相互推诿的现象。<br>
-
-Developers fail to reproduce the defects testers submit, which leads to buckpassing between the two teams.
-
-(5)配置测试环境的时间较长，测试自动化成本高。<br>
+(4)Developers fail to reproduce the defects testers submit, which leads to buckpassing between the two teams.
 
 (5)Have to spend too much time in setting up test environment; The cost of automation test is high.
 
-传统环境往往使用虚拟机，而其消耗资源高、部署速度慢，导致自动化的效率不高。<br>
-
 We often use VM to set up traditional engineering environment. VM's resource consumption is high and its development speed is slow. Automation efficiency is not high.
 
-##2.当前测试技术面临的挑战
-传统软件开发流程存在的痛点使得测试技术面临着众多的挑战，具体的挑战包括但不限于如下内容：<br>
-(1)配置一致的测试环境。<br>
+## 2. Current changlleges in test technoloy domain
+The above pain points make test technology face some changllege. They include, but are not limited to the following.<br>
 (1)set up consistent test environment<br>
-(2)快速部署软件。<br>
 (2)deploy software quickly<br>
-(3)并行执行测试，在并行的同时还需确保测试任务各自的环境不被污染。<br>
 (3)Execute test in parallel and ensure that test environment isn't contaminated.<br>
-(4)成功的复现软件缺陷。<br>
 (4)Reproduce software defects successfully.<br>
-(5)创建清洁的测试环境。<br>
 (5)Create clean test environment.<br>
-(6)正确配置测试工具。同一个工具需要适配到不同的linux发行版中。<br>
 (6)Set up test tools correctly. Need to set up a tool in different linux distributions.<br>
-(7)快速部署多个测试主机。<br>
 (7)Deploy some test hosts quickly.<br>
-(8)快速导入测试数据。<br>
 (8)Import test data quickly.<br>
-(9)快速清理测试环境。<br>
 (9)Clean up test environment quickly.<br>
-(10)快速保留、复制、恢复测试环境。<br>
 (10)Save, copy, and restore test environment quickly.<br>
 
 ##3.Docker对测试技术的革命性影响
