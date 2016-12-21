@@ -38,9 +38,13 @@ The above pain points make test technology face some changllege. They include, b
 (10)Save, copy, and restore test environment quickly.<br>
 
 ##3.Docker对测试技术的革命性影响
-测试技术面临的挑战一度成为了制约项目效率提升的瓶颈。然而，随着Docker容器技术的出现，早先很多棘手的挑战可以迎刃而解了。利用Docker生态中的工具可以有效的支撑软件测试活动的进行。具体体现在如下方面：<br>
-(1)更早的发现单元测试中的软件缺陷。<br>
-测试驱动开发是软件工程中一个具有里程碑意义的创新，即开发者在提交开发代码的同时也要提供对应的测试代码，在代码提交后系统会自动进行一轮自动化测试。通过Docker可以快速部署测试环境，可以有力的支撑自动化测试，从而确保在第一时间发现单元测试中的软件缺陷。<br>
+## 3.The revolutionary influence of Docker on test technology
+These changlleges used to be a bottleneck restricting efficiency enhancement. With the birth of Docker, some difficult challenges can be  smoothly solved. We can effectively support test tasks by use tools of Docker ecology. They are shown as follow.
+
+(1)Find software defects in unit test phase as early as possible.
+
+Test driven development is a milestone in innovation. It means that a developer need to push not only development codes but also corresponding testing codes at the same time. The system would trigger a round of automation test after the push. Test environment can be deployed by Docker, which supports automation test task and ensure that defects of unit test can be found at the first time.
+
 (2)为功能测试和集成测试提供清洁的测试环境。<br>
 很多公司由于成本问题，不得不在一个虚拟机中运行不同类型的测试任务。而这些任务在运行时往往会导致环境污染。通过Docker技术的隔离性，可以有效地解决测试环境的污染问题。<br>
 (3)让测试团队和客户丢掉冗长的配置文档。<br>
