@@ -78,9 +78,9 @@ DevOps一词的来自于Development和Operations的组合，突出重视软件�
 对于重复枯燥的手动测试任务，可以考虑将其进行自动化改造。自动化的成本在于自动化程序的编写和维护，而收益在于节省了手动执行用例的时间。简而言之，如果收益大于成本，测试任务就有价值自动化，否则受益的只是测试人员的自动化技能得到了提升。利用Docker的快速部署、环境共享等特性，可以大大减少自动化的成本，使很多原本没有价值自动化的测试任务变为了有价值自动化的任务，大大提升了项目效率。<br>
 那么如果自动化测试已经运行在了虚拟机中，是否有必要使用Docker技术将其进行改造？这个就要具体问题具体分析了。笔者并不赞同将所有测试任务一刀切的进行容器化改造。如果当前虚拟机已经满足测试需求，你就需要评估一下引入Docker进行改造所需的成本，其中包含学习Docker技术所需要的时间成本。反之，如果虚拟机无法满足当前的测试需求，可以考虑尽快引入Docker进行改造。<br>
 
-##6.Docker的约束
+## 6.Limitation of Docker
 Build, Ship, and Run Any App, Anywhere.这是Docker公司高调宣称的口号，即在任何平台都可以构建、部署、运行任何应用。然而，由于Docker自身的特点，其使用场景有一些约束：<br>
-(1)因为容器与主机共享内核，如果容器中应用需要不同的内核版本，就不得不更换主机内核。但如果主机内核变更后又会影响到其它容器的运行。变通的方法是将应用源码的编写与内核特性解耦。<br>
+(1)Host and container share kernel. If a container need different kernel version, kernel of host have to be changed.但如果主机内核变更后又会影响到其它容器的运行。变通的方法是将应用源码的编写与内核特性解耦。<br>
 (2)Docker使用时需要3.10或以上版本的内核，这是最低的限制。如果你需要使用更高级的Docker特性，如user namespace，那么还需要更高版本的内核。<br>
 (3)使用“--privileged”选项后可以在容器内加载或卸载内核模块，但这个操作会影响到主机和其它容器。<br>
 (4)无法模拟不同平台的运行环境，例如不能在x86系统中启动arm64的容器。<br>
@@ -98,9 +98,11 @@ Build, Ship, and Run Any App, Anywhere.这是Docker公司高调宣称的口号�
 ![Compilingtest2](images/5.png "Compilingtest2_png")
 
 之后我们尝试将环境制作成Docker镜像，同时进行了如下的改进：<br>
-(1)通过Docker的“-v”选项，将主机目录映射到容器中，实现多个容器共享测试代码。测试代码部署时间从2分钟减少到10秒。<br>
-(2)将大粒度的执行时间较长的用例拆分成为若干个小用例。<br>
-(3)利用容器并发执行测试。<br>
+(1)Map the directory of the host to that of the container by docker "-v" option, which shares test codes in multiple containers. Time spent is decreased from 2 minutes to 10 seconds.
+
+(2)Divide a big case, whose execution time is long, into some small cases.
+
+(3)Make use of containers to run test cases in parallel.
 (4)使用Dockerfile梳理产品依赖包和编译软件的安装。<br>
 编译系统测试是用户态的测试，非常适合使用Docker进行加速。如果需要针对某一个linux发行版进行测试，可以通过Docker快速部署的特点，将所有的资源快速利用起来，从而达到加速测试执行的目的。<br>
 
@@ -121,7 +123,7 @@ Build, Ship, and Run Any App, Anywhere.这是Docker公司高调宣称的口号�
 |Different compiling environment between developers and testers leads to different test result. |Create the same compiling environment by docker image or dockerfile. |
 |•Network package test(server and client) needs two VMs.|Two containers(server and client) in one VM can deal with network package test.|
 
-##9.通过Docker进行测试加速的原理
+## 9.How does Dockeraccelerate test execution?
 Docker本身并不会直接加速测试执行。在串行执行测试时，在容器中执行测试反而会带来约5%左右的性能衰减。但我们可以充分利用Docker快速部署、环境共享等特性，同时配合容器云来快速提供所需的测试资源，以应对测试任务的峰值。如果忽略环境部署时间，当每个测试用例粒度无限小并且提供的测试资源无限多时，测试执行所需的时间也就无限小。
 
 ##10.总结
