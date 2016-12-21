@@ -56,7 +56,7 @@ Testers often run tests with a lengthy document provided by developers. However,
 
 When a customer find a defect, software environment can be packaged by docker images to provide it for developers. Developers can obtain the software environment which is consistent with the customer.
 
-(5)通过Dockerfile可以梳理好测试镜像制作的流程。<br>
+(5)To deal with the steps of test images creation by Dockerfile.
 如果流程步骤需要微调时(如将安装gcc3.4改为安装gcc4.3)，可以将Dockerfile中对应的信息进行修改并重新创建新的镜像，不必手动重新配置运行环境。<br>
 (6)可以将成熟的测试套或测试工具通过镜像共享。<br>
 这样可以支持软件在不同linux发行版中成功的运行，软件提供商可以将主要精力放在完善功能上，不必投入过多时间将软件适配到不同的linux发行版中。<br>
