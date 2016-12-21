@@ -43,7 +43,7 @@ Developers fail to reproduce the defects testers submit, which leads to buckpass
 
 (5)配置测试环境的时间较长，测试自动化成本高。<br>
 
-(5)It takes a long time to configure test environment. The cost of automation is high.
+(5)Have to spend too much time in setting up test environment; The cost of automation test is high.
 
 传统环境往往使用虚拟机，而其消耗资源高、部署速度慢，导致自动化的效率不高。<br>
 
@@ -52,15 +52,25 @@ We often use VM to set up traditional engineering environment. VM's resource con
 ##2.当前测试技术面临的挑战
 传统软件开发流程存在的痛点使得测试技术面临着众多的挑战，具体的挑战包括但不限于如下内容：<br>
 (1)配置一致的测试环境。<br>
+(1)set up consistent test environment<br>
 (2)快速部署软件。<br>
+(2)deploy software quickly<br>
 (3)并行执行测试，在并行的同时还需确保测试任务各自的环境不被污染。<br>
+(3)Execute test in parallel and ensure that test environment isn't contaminated.<br>
 (4)成功的复现软件缺陷。<br>
+(4)Reproduce software defects successfully.<br>
 (5)创建清洁的测试环境。<br>
+(5)Create clean test environment.<br>
 (6)正确配置测试工具。同一个工具需要适配到不同的linux发行版中。<br>
+(6)Set up test tools correctly. Need to set up a tool in different linux distributions.<br>
 (7)快速部署多个测试主机。<br>
+(7)Deploy some test hosts quickly.<br>
 (8)快速导入测试数据。<br>
+(8)Import test data quickly.<br>
 (9)快速清理测试环境。<br>
+(9)Clean up test environment quickly.<br>
 (10)快速保留、复制、恢复测试环境。<br>
+(10)Save, copy, and restore test environment quickly.<br>
 
 ##3.Docker对测试技术的革命性影响
 测试技术面临的挑战一度成为了制约项目效率提升的瓶颈。然而，随着Docker容器技术的出现，早先很多棘手的挑战可以迎刃而解了。利用Docker生态中的工具可以有效的支撑软件测试活动的进行。具体体现在如下方面：<br>
