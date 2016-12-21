@@ -129,8 +129,6 @@ Docker本身并不会直接加速测试执行。在串行执行测试时，在�
 ##10.总结
 很多测试任务可以利用Docker进行改造，读者可以根据项目自身的特点，因地制宜的使用Docker进行测试能力的改造。如果想进一步了解容器云，可以参考[《网易云的实践之路：谈谈容器云的机会与挑战》](http://www.infoq.com/cn/articles/opportunities-and-challenges-for-container-clouds)这篇文章。
 
-##作者简介
-孙远，华为中央软件研究院资深工程师，硕士毕业，9年软件行业经验。目前在华为从事容器Docker项目的测试工作。工作涉及到功能测试、性能测试、压力测试、稳定性测试、安全测试、测试管理、工程能力构建等内容。参与编写了《Docker进阶与实战》的Docker测试章节。先前曾经就职于美国风河系统公司，作为team lead从事风河Linux产品测试工作。活跃于Docker社区和内核测试ltp社区，目前有大量测试用例被开源社区接收。<br>
-研究方向：容器技术、Docker、Linux内核、软件测试、自动化测试、测试过程改进<br>
-公司邮箱：sunyuan3@huawei.com<br>
-个人邮箱：yuan.sun82@gmail.com<br>
+## Authors
+Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has more than 9 years experience in software testing. He led container testing team to complete test tasks of container components for HUAWEI public cloud and supported other teams to accelerate test execution with Docker. He concentrated on function, performance, security, reliability and stress tests for Docker technology. He is a speaker on Docker meetup, China test conference, China Open Source Conference. He has contributed some test cases for Docker and ltp open source community. Previously, he was test leader in Wind River.
+
