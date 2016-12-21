@@ -37,7 +37,6 @@ The above pain points make test technology face some changllege. They include, b
 (9)Clean up test environment quickly.<br>
 (10)Save, copy, and restore test environment quickly.<br>
 
-##3.Docker对测试技术的革命性影响
 ## 3.The revolutionary influence of Docker on test technology
 These changlleges used to be a bottleneck restricting efficiency enhancement. With the birth of Docker, some difficult challenges can be  smoothly solved. We can effectively support test tasks by use tools of Docker ecology. They are shown as follow.
 
@@ -45,12 +44,18 @@ These changlleges used to be a bottleneck restricting efficiency enhancement. Wi
 
 Test driven development is a milestone in innovation. It means that a developer need to push not only development codes but also corresponding testing codes at the same time. The system would trigger a round of automation test after the push. Test environment can be deployed by Docker, which supports automation test task and ensure that defects of unit test can be found at the first time.
 
-(2)为功能测试和集成测试提供清洁的测试环境。<br>
-很多公司由于成本问题，不得不在一个虚拟机中运行不同类型的测试任务。而这些任务在运行时往往会导致环境污染。通过Docker技术的隔离性，可以有效地解决测试环境的污染问题。<br>
-(3)让测试团队和客户丢掉冗长的配置文档。<br>
-开发转测试时往往带有较长的环境部署文档，而在这些文档中往往存在部署过程跳步的问题，测试团队很难一次准确的将环境部署成功。而现在可以通过Docker镜像将配置环境的过程简化，测试团队省去了查阅文档的过程，只需要基于开发团队提供的Docker镜像就可以轻松的配置测试环境。<br>
-(4)便于复现客户报告的软件缺陷。<br>
-当客户使用软件发现缺陷时，可以将其所使用的环境打包成镜像提供给开发团队。开发团队通过镜像即可获取与客户一致的软件环境。<br>
+(2)To provide clean test environment for function test and integration test.
+
+For saving cost, different kinds of test tasks have to be executed in one VM in many companies. The execution of the test tasks often pollute test enviornment. Now it can be solved by isolution of Docker.
+
+(3)Testers or customers don't have to set up environment according to lengthy configuration document.
+
+Testers often run tests with a lengthy document provided by developers. However, some steps often be skipped in the documents. It is difficult for testers to set up test environment at once. Now testers can simplify the task of setting up environment by docker images and don't have to read the lengthy documents. It is easy to set up test environment by docker images provided by developers.
+
+(4) It is easy to reproduce defects submitted by customers.
+
+When a customer find a defect, software environment can be packaged by docker images to provide it for developers. Developers can obtain the software environment which is consistent with the customer.
+
 (5)通过Dockerfile可以梳理好测试镜像制作的流程。<br>
 如果流程步骤需要微调时(如将安装gcc3.4改为安装gcc4.3)，可以将Dockerfile中对应的信息进行修改并重新创建新的镜像，不必手动重新配置运行环境。<br>
 (6)可以将成熟的测试套或测试工具通过镜像共享。<br>
