@@ -57,15 +57,24 @@ Testers often run tests with a lengthy document provided by developers. However,
 When a customer find a defect, software environment can be packaged by docker images to provide it for developers. Developers can obtain the software environment which is consistent with the customer.
 
 (5)To deal with the steps of test images creation by Dockerfile.
-如果流程步骤需要微调时(如将安装gcc3.4改为安装gcc4.3)，可以将Dockerfile中对应的信息进行修改并重新创建新的镜像，不必手动重新配置运行环境。<br>
-(6)可以将成熟的测试套或测试工具通过镜像共享。<br>
-这样可以支持软件在不同linux发行版中成功的运行，软件提供商可以将主要精力放在完善功能上，不必投入过多时间将软件适配到不同的linux发行版中。<br>
-(7)利用Docker生态中的工具可以快速创建可伸缩的测试环境，大大减少了测试所消耗的时间。<br>
-可以在短时间内快速集中资源来完成一项测试任务，在任务完成后又可以快速的对资源进行回收，有利于提升资源使用效率。<br>
-(8)优越的性能指标。<br>
-通过优于虚拟机的性能，Docker可以提升测试效率。通过“-v”选项可以将主机的目录快速映射到容器中，可以实现测试文件的快速共享。通过“--rm”选项可以在测试完成后第一时间删除容器，以便释放系统资源。<br>
-(9)轻松的恢复测试环境（包括内存）-CRIU技术 Checkpoint Restore In Userspace<br>
-结合CRIU技术，可以实现容器运行状态的保存，这项技术也是容器热迁移的基础。<br>
+
+If some of the steps need to be adjusted(for example, install gcc4.3 instead of gcc3.4), a new docker image can be recreated after Dockerfile is modified. You don't have to reconfigure the environment manually.
+
+(6)To share test suites and test tools by docker images.
+
+In this way software can run in different linux distributions. Software providers can focus on the functions of the software without spending too much time in adjusting the software to different linux distributions.
+
+(7)Use the tools of Docker ecosystem to quickly create a scalable test environment,  greatly reducing time spent. 
+
+A test task can be complete for a short time by using thousands of containers. These container resources can be released quickly, increasing the efficiency of the resource usage.
+
+(8)Superior performance parameters
+
+Test efficiency can be increased by Docker better performance than VM. Map the directory of the host to that of the container by docker "-v" option, which quickly shares test files. No sooner test tasks are complete than containers be stopped and removed, and system resource is released by Docker “--rm” option.
+
+(9) It is easy to restore environment(including memory)-CRIU technology(Checkpoint Restore In Userspace)
+
+Docker with CRIU can save the running state of a container. CRIU is the basis of live migration of container.
 
 ##4.Devops与Docker
 DevOps一词的来自于Development和Operations的组合，突出重视软件开发人员和运维人员的沟通合作，通过自动化流程来使得软件构建、测试、发布更加快捷、频繁和可靠。<br>
