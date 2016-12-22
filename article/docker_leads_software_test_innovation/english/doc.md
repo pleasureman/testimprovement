@@ -91,9 +91,10 @@ In Devops time, the team breaks up the barriers among developers, testers, opera
 
 Post-devops time means that Devops and Docker work together. In the time, Docker is used to shield the difference among multiple platforms and Docker image is considered as a delivery  standard. The business software is running in Docker containers of development, test, operation environment, ensuring applications and their dependency of 3 environments are consistent. With the popularity of cloud, the application engine is available in many cloud platforms. If your application conform to the specification of the engine, the cloud platform can monitor the load of business automatically. The platform use rapid deployment, rapid expansion of resources, and other features to deal with business peak, effectively support business.
 
-##5.Docker与自动化测试
-对于重复枯燥的手动测试任务，可以考虑将其进行自动化改造。自动化的成本在于自动化程序的编写和维护，而收益在于节省了手动执行用例的时间。简而言之，如果收益大于成本，测试任务就有价值自动化，否则受益的只是测试人员的自动化技能得到了提升。利用Docker的快速部署、环境共享等特性，可以大大减少自动化的成本，使很多原本没有价值自动化的测试任务变为了有价值自动化的任务，大大提升了项目效率。<br>
-那么如果自动化测试已经运行在了虚拟机中，是否有必要使用Docker技术将其进行改造？这个就要具体问题具体分析了。笔者并不赞同将所有测试任务一刀切的进行容器化改造。如果当前虚拟机已经满足测试需求，你就需要评估一下引入Docker进行改造所需的成本，其中包含学习Docker技术所需要的时间成本。反之，如果虚拟机无法满足当前的测试需求，可以考虑尽快引入Docker进行改造。<br>
+## 5.Docker and automation testing
+We can replace repetitive boring manual test tasks with automation test scripts. The cost of automation is the preparation and maintenance of automation codes. The benefit from automation is time saving of test execution. In short, if the benefit is greater than the cost, it is worth automating. Or only benefit is the improvement of the automation test skill of testers. The cost of automation is greatly decreased by rapid deployment, sharing of environment and other features of Docker. Many test tasks, which used to be not worth automating, have been worth automating. The efficiency of project is greatly enhanced.
+
+Is it necessary to improve automation tests if they run in VMs? Answer depends on a case by case basis. I don’t agree that all test tasks should be improved by Docker. If VM has meet test requirements, you need to evaluate the cost of the improvement by docker. Time spent in studying Docker is considered as one of the cost. Whereas: if VM can’t meet the requirements, you can improve test tasks by Docker as soon as possible.
 
 ## 6.Limitation of Docker
 Build, Ship, and Run Any App, Anywhere.这是Docker公司高调宣称的口号，即在任何平台都可以构建、部署、运行任何应用。然而，由于Docker自身的特点，其使用场景有一些约束：<br>
