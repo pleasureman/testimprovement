@@ -76,17 +76,20 @@ Test efficiency can be increased by Docker better performance than VM. Map the d
 
 Docker with CRIU can save the running state of a container. CRIU is the basis of live migration of container.
 
-##4.Devops与Docker
-DevOps一词的来自于Development和Operations的组合，突出重视软件开发人员和运维人员的沟通合作，通过自动化流程来使得软件构建、测试、发布更加快捷、频繁和可靠。<br>
+## 4.Devops and Docker
+The word “Devops” comes from the combination of “Development” and “Operations”. It focus on the communication and cooperation between developers and operators. Devops uses automation processes to ensure that software build, test, release are more quick, frequent, reliable.
+
 ![Predevops](images/1.png "Predevops_png")
 
-在Devops出现之前，软件经过开发、测试后由运维团队将发布件部署到公司的基础设施上，并将服务提供给客户使用。然而，开发、测试、运维三个团队缺少有效协同工作的机制，导致部门墙严重。开发团队往往关注新功能开发和快速迭代，而运维团队关注的是发布件的稳定性，他们不希望版本频繁的更替。往往在这两个团队间会爆发激烈的斗争。<br>
+In pre-Devops time, operators deployed a release version in infrastructure of a company after the release was developed and tested. However, developers, testers, operators lack of effective cooperative mechanism, resulting in low cooperation efficiency. Developers often focus on the development of new functions and quick iterations, but operators focus on stability of software and don’t hope frequent iterations. They often argue with each other.
+
 ![Devops](images/2.png "Devops_png")
 
-在Devops出现之后，团队通过协作和自动化的方式打通了开发、测试、运维团队之间的壁垒。当有新的代码提交时，系统在第一时间会触发自动化测试，依次在开发自验环境、测试环境、运维环境中验证软件，确保可以第一时间发现软件缺陷。然而，当出现业务峰值时，传统的基础设施中的虚拟机就无法有效的应对了。<br>
+In Devops time, the team breaks up the barriers among developers, testers, operators by cooperation and automation. Once new codes are pushed, the system would trigger automation test in development environment, test environment, operation environment to ensure that defects are found as early as possible. However, when a business peak occurs, VM of traditional infrastructure can’t deal with.
+
 ![Devops](images/3.png "Postdevops_png")
 
-后Devops时代指的是Devops已经和Docker充分的融合在一起应用的时代。在这个时代中，可以使用Docker来屏蔽不同平台的差异，同时使用Docker镜像作为标准的交付件，可在开发、测试和运维环境中启动Docker容器来运行业务，来确保三套环境上的应用以及运行所依赖内容的一致性。随着云计算的普及，很多云平台提供了应用引擎，如果你的应用符合引擎的规范，云平台就可以自动检测业务负载量。当业务出现峰值时，平台可以利用的Docker容器技术的快速部署、资源快速扩展伸缩等特性来应对，从而有效的支撑了业务的正常运行。<br>
+Post-devops time means that Devops and Docker work together. In the time, Docker is used to shield the difference among multiple platforms and Docker image is considered as a delivery  standard. The business software is running in Docker containers of development, test, operation environment, ensuring applications and their dependency of 3 environments are consistent. With the popularity of cloud, the application engine is available in many cloud platforms. If your application conform to the specification of the engine, the cloud platform can monitor the load of business automatically. The platform use rapid deployment, rapid expansion of resources, and other features to deal with business peak, effectively support business.
 
 ##5.Docker与自动化测试
 对于重复枯燥的手动测试任务，可以考虑将其进行自动化改造。自动化的成本在于自动化程序的编写和维护，而收益在于节省了手动执行用例的时间。简而言之，如果收益大于成本，测试任务就有价值自动化，否则受益的只是测试人员的自动化技能得到了提升。利用Docker的快速部署、环境共享等特性，可以大大减少自动化的成本，使很多原本没有价值自动化的测试任务变为了有价值自动化的任务，大大提升了项目效率。<br>
