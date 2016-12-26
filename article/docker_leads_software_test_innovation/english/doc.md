@@ -122,7 +122,6 @@ We used to install linux distributions and execute tests in multiple physical co
 
 ![Compilingtest2](images/5.png "Compilingtest2_png")
 
-之后我们尝试将环境制作成Docker镜像，同时进行了如下的改进：<br>
 Then we create docker images based on test envirnment and improve test methods.
 
 (1)Map the directory of the host to that of the container by docker "-v" option, which shares test codes in multiple containers. Time spent is decreased from 2 minutes to 10 seconds.
@@ -138,10 +137,11 @@ Compiling test is in user mode and can be accelerated by Docker. For a test task
 ### 8.2.linux package test
 ![Packagetest1](images/6.png "Packagetest1_png")
 
-外围包包含动态链接库文件和常用的命令行工具，属于linux操作系统的中间层，其上运行着应用程序，其下由linux内核支撑。起初的外围包测试采用串行执行，效率不高。同时受到环境污染的影响，容易产生软件缺陷的误报。在改进方面，我们首先通过Dockerfile基于rootfs制作一个Docker镜像，然后通过Docker-compose工具实现测试用例的并发执行。<br>
+Linux packages include dynamic link libraries linux common command tools, which belong  middle layer of linux OS. Applications runs in tts above layer and it is supported by linux kernel below. We used to run package tests in serial and efficiency is low. Because of test environment contamination, it is easy to produce wrong reports of software defects. For improving it, we create a docker image by  Dockerfile based on rootfs and execute test cases in parallel.
+
 ![Packagetest2](images/7.png "Packagetest2_png")
 
-以下是改进前后的对比。<br>
+There is comparison between before and after improvements.
 
 | Test in VM:                                       | Test in containers:                                       |
 | ---------------------------------------- | ---------------------------------------- |
