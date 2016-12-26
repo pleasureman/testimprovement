@@ -155,7 +155,7 @@ There is comparison between before and after improvements.
 ## 9.How does Dockeraccelerate test execution?
 Docker can't accelerate test execution by itself. A test case are executed in a container with approximately 5% of performance penalty. However, we can make use of quick deployment, environment sharing and other features of Docker and test resource in container cloud to deal with business peak. If deployment time is ignored, when  each test case is infinitely small and test resources are infinitely enough, the time required for test execution is infinitely little.
 
-## 10.总结
+## 10.Summary
 Some test tasks can be improved by Docker. Readers can use Docker to improve test project capability according to local conditions.
 
 ## Authors
