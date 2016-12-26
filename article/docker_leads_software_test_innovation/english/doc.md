@@ -97,7 +97,8 @@ We can replace repetitive boring manual test tasks with automation test scripts.
 Is it necessary to improve automation tests if they run in VMs? Answer depends on a case by case basis. I don’t agree that all test tasks should be improved by Docker. If VM has meet test requirements, you need to evaluate the cost of the improvement by docker. Time spent in studying Docker is considered as one of the cost. Whereas: if VM can’t meet the requirements, you can improve test tasks by Docker as soon as possible.
 
 ## 6.Limitation of Docker
-Build, Ship, and Run Any App, Anywhere.这是Docker公司高调宣称的口号，即在任何平台都可以构建、部署、运行任何应用。然而，由于Docker自身的特点，其使用场景有一些约束：<br>
+Build, Ship, and Run Any App, Anywhere. The sentense is a propaganda published by Docker authority. However, due to the characters of Docker itself, its usage scenarios have some limits.
+
 (1)Host and container share kernel. If a container need different kernel version, kernel of host have to be changed.但如果主机内核变更后又会影响到其它容器的运行。变通的方法是将应用源码的编写与内核特性解耦。<br>
 (2)Docker使用时需要3.10或以上版本的内核，这是最低的限制。如果你需要使用更高级的Docker特性，如user namespace，那么还需要更高版本的内核。<br>
 (3)使用“--privileged”选项后可以在容器内加载或卸载内核模块，但这个操作会影响到主机和其它容器。<br>
