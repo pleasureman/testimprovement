@@ -118,19 +118,24 @@ Because the host and the container share kernel, for task tasks not strongly cor
 ### 8.1.code compiling test
 ![Compilingtest1](images/4.png "Compilingtest1_png")
 
-早期我们将linux发行版安装到物理机中进行测试。当需要重新进行全量测试时不得不手动还原测试环境。之后改用了虚拟机，虽然能够通过自动化的方式实现环境还原，但虚拟机的损耗较大，效率不高。<br>
+We used to install linux distributions and execute tests in multiple physical computers. We have to reset test environment manually when all of test tasks need be reran. Then we replace physical computers with VMs. Although VM environment can be reset automatically, resource comsumption of VM is high and the efficiency is low.
+
 ![Compilingtest2](images/5.png "Compilingtest2_png")
 
 之后我们尝试将环境制作成Docker镜像，同时进行了如下的改进：<br>
+Then we create docker images based on test envirnment and improve test methods.
+
 (1)Map the directory of the host to that of the container by docker "-v" option, which shares test codes in multiple containers. Time spent is decreased from 2 minutes to 10 seconds.
 
 (2)Divide a big case, whose execution time is long, into some small cases.
 
 (3)Make use of containers to run test cases in parallel.
-(4)使用Dockerfile梳理产品依赖包和编译软件的安装。<br>
-编译系统测试是用户态的测试，非常适合使用Docker进行加速。如果需要针对某一个linux发行版进行测试，可以通过Docker快速部署的特点，将所有的资源快速利用起来，从而达到加速测试执行的目的。<br>
 
-###8.2.linux外围包测试
+(4)Use Dockerfile to deal with the installation of dependency packages and compiling softwares.
+
+Compiling test is in user mode and can be accelerated by Docker. For a test task in a linux distribution, we can start thousands of containers for a short time to accelerate test execution.
+
+### 8.2.linux package test
 ![Packagetest1](images/6.png "Packagetest1_png")
 
 外围包包含动态链接库文件和常用的命令行工具，属于linux操作系统的中间层，其上运行着应用程序，其下由linux内核支撑。起初的外围包测试采用串行执行，效率不高。同时受到环境污染的影响，容易产生软件缺陷的误报。在改进方面，我们首先通过Dockerfile基于rootfs制作一个Docker镜像，然后通过Docker-compose工具实现测试用例的并发执行。<br>
@@ -138,7 +143,7 @@ Because the host and the container share kernel, for task tasks not strongly cor
 
 以下是改进前后的对比。<br>
 
-| 改进前                                       | 改进后                                       |
+| Test in VM:                                       | Test in containers:                                       |
 | ---------------------------------------- | ---------------------------------------- |
 |Only one test environment in one VM. The utilization of the host is not high. |Multiple test environment in one VM. The host resources can be used efficiently, which save too mouh cost specially when the price of the host is high.|
 |Run tests in serial. It is not easy to run tests in parallel because of test environment of pollution.|Run tests in parallel by Using Docker to isolate test tasks, which increase cpu utilization. |
