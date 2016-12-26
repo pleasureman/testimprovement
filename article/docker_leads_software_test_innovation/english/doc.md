@@ -147,10 +147,10 @@ There is comparison between before and after improvements.
 | ---------------------------------------- | ---------------------------------------- |
 |Only one test environment in one VM. The utilization of the host is not high. |Multiple test environment in one VM. The host resources can be used efficiently, which save too mouh cost specially when the price of the host is high.|
 |Run tests in serial. It is not easy to run tests in parallel because of test environment of pollution.|Run tests in parallel by Using Docker to isolate test tasks, which increase cpu utilization. |
-|The cleanup of test environment is dependent on a programmer’s skill.在每个测试用例中有一个cleanup函数，负责资源回收和环境恢复。如果程序员编程技巧不高的话，可能会造成资源回收不彻底，测试环境会受到污染。|The cleanup of test environment is done by dockercontainer.当执行完任务后，可以删除容器。即使不写cleanup函数，也可以实现资源的回收。|
-|The cleanup of test environment is done by dockercontainer.当连续执行多个测试时，有部分测试无法通过，而单独执行这些测试时又能够通过。这通常是由于测试环境污染造成的。 |Docker provides clean test environment for each package test.|
+|The cleanup of test environment is dependent on a programmer’s skill. In each test case, there is a cleanup function, which is for resource and environment recovery. If a program's skill is not high, not all resource can be recovered and test environment is contaiminated. |The cleanup of test environment is done by dockercontainer. Containers can be removed automatically after tasks are complete. Even if there is no cleanup function, resource can also be recovered.|
+|The cleanup of test environment is done by dockercontainer. When some cases are executed in sequence, parts of them are failed. However, the test is pass, only when it is executed separately. Test environment often lead to the problem. |Docker provides clean test environment for each package test.|
 |Different compiling environment between developers and testers leads to different test result. |Create the same compiling environment by docker image or dockerfile. |
-|•Network package test(server and client) needs two VMs.|Two containers(server and client) in one VM can deal with network package test.|
+|Network package test(server and client) needs two VMs.|Two containers(server and client) in one VM can deal with network package test.|
 
 ## 9.How does Dockeraccelerate test execution?
 Docker本身并不会直接加速测试执行。在串行执行测试时，在容器中执行测试反而会带来约5%左右的性能衰减。但我们可以充分利用Docker快速部署、环境共享等特性，同时配合容器云来快速提供所需的测试资源，以应对测试任务的峰值。如果忽略环境部署时间，当每个测试用例粒度无限小并且提供的测试资源无限多时，测试执行所需的时间也就无限小。
