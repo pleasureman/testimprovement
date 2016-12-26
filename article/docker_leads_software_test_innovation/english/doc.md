@@ -99,14 +99,19 @@ Is it necessary to improve automation tests if they run in VMs? Answer depends o
 ## 6.Limitation of Docker
 Build, Ship, and Run Any App, Anywhere. The sentense is a propaganda published by Docker authority. However, due to the characters of Docker itself, its usage scenarios have some limits.
 
-(1)Host and container share kernel. If a container need different kernel version, kernel of host have to be changed.但如果主机内核变更后又会影响到其它容器的运行。变通的方法是将应用源码的编写与内核特性解耦。<br>
-(2)Docker使用时需要3.10或以上版本的内核，这是最低的限制。如果你需要使用更高级的Docker特性，如user namespace，那么还需要更高版本的内核。<br>
-(3)使用“--privileged”选项后可以在容器内加载或卸载内核模块，但这个操作会影响到主机和其它容器。<br>
-(4)无法模拟不同平台的运行环境，例如不能在x86系统中启动arm64的容器。<br>
-(5)因为Docker采用了namespace的方案来实现隔离，而这种隔离属于软件隔离，安全性不高。不适合安全性高的测试任务。
-(6)因为目前没有time namespace技术，修改某个容器时间时就不得不影响到主机和其它容器。
+(1)Host and container share kernel. If a container need different kernel version, kernel of host have to be changed. If the kernel of the host is updated, other containers are impacted. The way to work around it to decouple application codes from kernel features.
 
-##7.适用于Docker的测试场景
+(2)Kernel version is at least 3.10 for Docker. If you want to use advanced features of Docker, such as user namespace, a higher kernel version is needed.
+
+(3)Kernel modules can be loaded or unload in a container if the container is started with the "--privileged" option. But the operation will impact on the host and other containers.
+
+(4)Can't mock the running environment of different archs. For example, a container of arm64 arch can't be started in a x86 platorm.
+
+(5)Docker use namespace feature to isolate containers. The namespace is a soft isolation technology and its security is low.
+
+(6)Becasue time namespace feature is accepted in kernel mainline, the time modificaton of the container has impacted on that of the host.
+
+## 7. Which scenario is applicable to Docker?
 由于容器与主机共享内核使用，凡是和内核无强相关的测试任务是适合引入Docker进行改造的，例如源码编译测试、软件安装测试、互联网应用测试、数据库测试等。而与内核强相关的测试任务是不适合使用Docker进行改造的，如内核网络模块测试、内核namespace特性测试等。
 
 ##8.Docker测试实践
