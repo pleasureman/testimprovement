@@ -153,10 +153,10 @@ There is comparison between before and after improvements.
 |Network package test(server and client) needs two VMs.|Two containers(server and client) in one VM can deal with network package test.|
 
 ## 9.How does Dockeraccelerate test execution?
-Docker本身并不会直接加速测试执行。在串行执行测试时，在容器中执行测试反而会带来约5%左右的性能衰减。但我们可以充分利用Docker快速部署、环境共享等特性，同时配合容器云来快速提供所需的测试资源，以应对测试任务的峰值。如果忽略环境部署时间，当每个测试用例粒度无限小并且提供的测试资源无限多时，测试执行所需的时间也就无限小。
+Docker can't accelerate test execution by itself. A test case are executed in a container with approximately 5% of performance penalty. However, we can make use of quick deployment, environment sharing and other features of Docker and test resource in container cloud to deal with business peak. If deployment time is ignored, when  each test case is infinitely small and test resources are infinitely enough, the time required for test execution is infinitely little.
 
-##10.总结
-很多测试任务可以利用Docker进行改造，读者可以根据项目自身的特点，因地制宜的使用Docker进行测试能力的改造。如果想进一步了解容器云，可以参考[《网易云的实践之路：谈谈容器云的机会与挑战》](http://www.infoq.com/cn/articles/opportunities-and-challenges-for-container-clouds)这篇文章。
+## 10.总结
+Some test tasks can be improved by Docker. Readers can use Docker to improve test project capability according to local conditions.
 
 ## Authors
 Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has more than 9 years experience in software testing. He led container testing team to complete test tasks of container components for HUAWEI public cloud and supported other teams to accelerate test execution with Docker. He concentrated on function, performance, security, reliability and stress tests for Docker technology. He is a speaker on Docker meetup, China test conference, China Open Source Conference. He has contributed some test cases for Docker and ltp open source community. Previously, he was test leader in Wind River.
