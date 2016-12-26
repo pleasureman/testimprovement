@@ -112,10 +112,10 @@ Build, Ship, and Run Any App, Anywhere. The sentense is a propaganda published b
 (6)Becasue time namespace feature is accepted in kernel mainline, the time modificaton of the container has impacted on that of the host.
 
 ## 7. Which scenario is applicable to Docker?
-由于容器与主机共享内核使用，凡是和内核无强相关的测试任务是适合引入Docker进行改造的，例如源码编译测试、软件安装测试、互联网应用测试、数据库测试等。而与内核强相关的测试任务是不适合使用Docker进行改造的，如内核网络模块测试、内核namespace特性测试等。
+Because the host and the container share kernel, for task tasks not strongly correlated with kernel, it is applicable to improve them by Docker. For example, source code compiling test, software installation test, web application test, database test etc. Test task strongly correlated with kernel can't be improved by Docker, such as network module test of kernel, kernel namespace test etc.
 
-##8.Docker测试实践
-###8.1.容器化编译系统测试
+## 8.Docker test pratices
+### 8.1.code compiling test
 ![Compilingtest1](images/4.png "Compilingtest1_png")
 
 早期我们将linux发行版安装到物理机中进行测试。当需要重新进行全量测试时不得不手动还原测试环境。之后改用了虚拟机，虽然能够通过自动化的方式实现环境还原，但虚拟机的损耗较大，效率不高。<br>
