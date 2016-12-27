@@ -77,7 +77,7 @@ Test efficiency can be increased by Docker better performance than VM. Map the d
 Docker with CRIU can save the running state of a container. CRIU is the basis of live migration of container.
 
 ## 4.Devops and Docker
-The word “Devops” comes from the combination of “Development” and “Operations”. It focuses on the communication and cooperation between developers and operators. Devops uses automation processes to ensure that software build, test, the release is more quick, frequent, reliable.
+The word “Devops” comes from the combination of “Development” and “Operations”. It focuses on the communication and cooperation between developers and operators. Devops uses automation processes to ensure that software build, test, the release is more quicker, frequent, reliable.
 
 ![Predevops](images/1.png "Predevops_png")
 
