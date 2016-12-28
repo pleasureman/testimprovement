@@ -49,19 +49,19 @@ Cgroups is the abbreviation of control groups, which is a linux feature that lim
 
 | cpuset cgroup interface | description | the corresponding docker interface |
 | ---------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------- |
-| cgroup/cpuset/cpuset.cpus | specifies the CPUs that tasks in this cgroup are permitted to access(0-4, 9, etc.). | --cpuset-cpus="" |
-| cgroup/cpuset/cpuset.mems | specifies the memory nodes that tasks in this cgroup are permitted to access(0-1, etc.) | --cpuset-mems="" |
+| cgroup/cpuset/cpuset.cpus | Specify the CPUs that tasks in this cgroup are permitted to access(0-4, 9, etc.). | --cpuset-cpus="" |
+| cgroup/cpuset/cpuset.mems | Specify the memory nodes that tasks in this cgroup are permitted to access(0-1, etc.) | --cpuset-mems="" |
 
 2.4 blkio -- This subsystem controls and monitors access to I/O on block devices, such as physical devices(disk, solid-state drives, USB, etc.).<br>
 
 | blkio cgroup interface | description | the corresponding docker interface |
 | ---------------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------- |
-| cgroup/blkio/blkio.weight | specifies the relative proportion(weight) of block I/O access, in the range from 10 to 1000(include 10 and 1000). It is similar to cpu.shares, is proportion allocation rather than absolute bandwidth constraint. So it only works when different cgroups are competing to use the bandwidth of the same block device.  | --blkio-weight="" |
-| cgroup/blkio/blkio.weight_device | specifies the relative proportion(weight) of I/O access on specific devices, and this value will override the blkio.weight parameter for specific devices. | --blkio-weight-device=""  |
-| cgroup/blkio/blkio.throttle.read_bps_device | specifies the upper bandwidth limit of read operations for specific devices. | --device-read-bps="" |
-| cgroup/blkio/blkio.throttle.write_bps_device | specifies the upper bandwidth limit of write operations for specific devices. | --device-write-bps="" |
-| cgroup/blkio/blkio.throttle.read_iops_device | specifies the upper limit on the I/O number of read operations for specific devices. | --device-read-iops="" |
-| cgroup/blkio/blkio.throttle.write_iops_device | specifies the upper limit on the I/O number of write operations for specific devices. | --device-write-iops="" |
+| cgroup/blkio/blkio.weight | Specify the relative proportion(weight) of block I/O access, in the range from 10 to 1000(include 10 and 1000). It is similar to cpu.shares, is proportion allocation rather than absolute bandwidth constraint. So it only works when different cgroups are competing to use the bandwidth of the same block device.  | --blkio-weight="" |
+| cgroup/blkio/blkio.weight_device | Specify the relative proportion(weight) of I/O access on specific devices, and this value will override the blkio.weight parameter for specific devices. | --blkio-weight-device=""  |
+| cgroup/blkio/blkio.throttle.read_bps_device | Specify the upper bandwidth limit of read operations for specific devices. | --device-read-bps="" |
+| cgroup/blkio/blkio.throttle.write_bps_device | Specify the upper bandwidth limit of write operations for specific devices. | --device-write-bps="" |
+| cgroup/blkio/blkio.throttle.read_iops_device | Specify the upper limit on the I/O number of read operations for specific devices. | --device-read-iops="" |
+| cgroup/blkio/blkio.throttle.write_iops_device | Specify the upper limit on the I/O number of write operations for specific devices. | --device-write-iops="" |
 
 ## 3.Details of Docker resource management and application examples
 In this section, we would elaborate all of resource management interfaces. For deepening understanding, test cases are added for some of them. Docker version is 1.11.0. If the stress command is unavailable in Docker image, you can install it by executing "sudo apt-get install stress".
