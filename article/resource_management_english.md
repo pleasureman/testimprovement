@@ -60,8 +60,8 @@ Cgroups is the abbreviation of control groups, which is a linux feature that lim
 | cgroup/blkio/blkio.weight_device | Specify the relative proportion(weight) of I/O access on specific devices, and this value will override the blkio.weight parameter for specific devices. | --blkio-weight-device=""  |
 | cgroup/blkio/blkio.throttle.read_bps_device | Specify the upper bandwidth limit of read operations for specific devices. | --device-read-bps="" |
 | cgroup/blkio/blkio.throttle.write_bps_device | Specify the upper bandwidth limit of write operations for specific devices. | --device-write-bps="" |
-| cgroup/blkio/blkio.throttle.read_iops_device | Specify the upper limit on the I/O number of read operations for specific devices. | --device-read-iops="" |
-| cgroup/blkio/blkio.throttle.write_iops_device | Specify the upper limit on the I/O number of write operations for specific devices. | --device-write-iops="" |
+| cgroup/blkio/blkio.throttle.read_iops_device | Specify the upper limit on the I/O number of read operations per second for specific devices. | --device-read-iops="" |
+| cgroup/blkio/blkio.throttle.write_iops_device | Specify the upper limit on the I/O number of write operations per second for specific devices. | --device-write-iops="" |
 
 ## 3.Details of Docker resource management and application examples
 In this section, we would elaborate all of resource management interfaces. For deepening understanding, test cases are added for some of them. Docker version is 1.11.0. If the stress command is unavailable in Docker image, you can install it by executing "sudo apt-get install stress".
