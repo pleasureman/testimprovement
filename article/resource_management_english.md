@@ -32,18 +32,18 @@ Cgroups is the abbreviation of control groups, which is a linux feature that lim
 | ---------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------- |
 | cgroup/memory/memory.limit_in_bytes | Set the maximum amount of user memory, in bytes. And it is possible to use suffixes to represent larger units -- k or K for kilobytes, m or M for megebytes, and g or G for gigabytes. | -m, --memory="" |
 | cgroup/memory/memory.memsw.limit_in_bytes | Set the maximum amount of memory and swap space, in bytes. You can prevent a run out of swap partition by setting this value. | --memory-swap="" |
-| cgroup/memory/memory.soft_limit_in_bytes | Set soft limit of memory usage. This limitation won't stop processes using excess memory. however, when the system detects memory contention or low memory, cgroups is forced to restrict its consumption to the soft limits. | --memory-reservation="" |
-| cgroup/memory/memory.kmem.limit_in_bytes | sets hard limit for kernel memory. | --kernel-memory="" |
-| cgroup/memory/memory.oom_control | contains a flag that enables or disables the Out of Memory killer for a cgroup. If disabled(0), tasks that attempt to consume excess memory will not be killed, but be paused until additional memory is freed. In addition, the system will prompt send event notification to user mode, the monitoring program in user mode is able to process it accordingly, such as raising the memory upper limit. | --oom-kill-disable="" |
-| cgroup/memory/memory.swappiness | sets the tendency of the kernel to use the swap partition. The value is between 0 and 100(include 0 and 100), and lower value increases the kernel's tendency to use physical memory. | --memory-swappiness="" |
+| cgroup/memory/memory.soft_limit_in_bytes | Set soft limit of memory usage. This limitation won't stop processes using excess memory. However, when the system detects memory contention or low memory, cgroups is forced to restrict its consumption to the soft limits. | --memory-reservation="" |
+| cgroup/memory/memory.kmem.limit_in_bytes | Set hard limit for kernel memory. | --kernel-memory="" |
+| cgroup/memory/memory.oom_control | Contain a flag that enables or disables the out of memory killer for a cgroup. If disabled(0), tasks that attempt to consume excess memory will not be killed, but be paused until additional memory is freed. In addition, the system will prompt send event notification to user mode, the monitoring program in user mode is able to process it accordingly, such as raising the memory upper limit. | --oom-kill-disable="" |
+| cgroup/memory/memory.swappiness | Set the tendency of the kernel to use the swap partition. The value is between 0 and 100(include 0 and 100), and lower value increases the kernel's tendency to use physical memory. | --memory-swappiness="" |
 
 2.2 cpu -- This subsystem uses the scheduler to provide access to cpu cgroup tasks. <br>
 
 | cpu cgroup interface | description | the corresponding docker interface |
 | ---------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------- |
-| cgroup/cpu/cpu.shares | specifies a relative share of CPU time avaliable to the tasks in a cgroup. Supposed that we have created two cgroups(C1 and C2) under the root directory of cgroupfs, and set the cpu.shares values to 512 and 1024 respectively. Then when C1 and C2 are vying for CPU, C2 will receive twice the CPU time of C1. It is noteworthy that cpu.shares only works when CPU is being competed, if C2 is idle, then C1 can receive the whole CPU time. | -c, --cpu-shares="" |
-| cgroup/cpu/cpu.cfs_period_us | specifies the CPU bandwidth limit, and should collocate with cpu.cfs_quota_us. We can set the period to 1s, and the quota to 0.5s, so that the task in the cgroup can work at most 0.5s within 1s, and then the task will be forced to sleep until the next 1s comes. | --cpu-period="" |
-| cgroup/cpu/cpu.cfs_quota_us | specifies the CPU bandwidth limit, and should collocate with cpu.cfs_period_us | --cpu-quota="" |
+| cgroup/cpu/cpu.shares | Specify a relative share of CPU time avaliable to the tasks in a cgroup. Supposed that we have created two cgroups(C1 and C2) under the root directory of cgroupfs, and set the cpu.shares values to 512 and 1024 respectively. Then when C1 and C2 are competing for CPU, C2 will receive twice the CPU time of C1. It is noteworthy that cpu.shares only works when CPU is being competed, if C2 is idle, then C1 can receive the whole CPU time. | -c, --cpu-shares="" |
+| cgroup/cpu/cpu.cfs_period_us | Specify the CPU bandwidth limit, and should collocate with cpu.cfs_quota_us. We can set the period to 1s, and the quota to 0.5s, so that the task in the cgroup can work at most 0.5s within 1s, and then the task will be forced to sleep until the next 1s comes. | --cpu-period="" |
+| cgroup/cpu/cpu.cfs_quota_us | Specify the CPU bandwidth limit, and should collocate with cpu.cfs_period_us | --cpu-quota="" |
 
 2.3 cpuset -- This subsystem assigns individual CPUs and memory modes to cgroups.<br>
 
