@@ -1,6 +1,6 @@
 # Resource management of Docker - Cgroups feature supporting Docker
 
-With Docker technology has been accepted by more and more individuals and enterprises, Docker is more widely applied in many aspects. Docker resource management includes the limitation of CPU, memory, IO and other resources, but for most of Docker users, they often just know how without knowing why when they are using Docker resource management interfaces. This article introduces the cgroups feature which supports Docker resource management, and lists Docker resource management interfaces and the corresponding cgroups interfaces, so that the readers can know why about Docker resource management.
+As Docker technology has been accepted by more and more individuals and enterprises, Docker is more widely applied in many aspects. Docker resource management includes the limitation of CPU, memory, IO and other resources, but most of Docker users often just know how without knowing why when they are using Docker resource management interfaces. This article introduces the cgroups feature which supports Docker resource management, and lists Docker resource management interfaces and the corresponding cgroups interfaces, so that the readers can know why about Docker resource management.
 
 ## 1. Overview of Docker resource management interfaces  
 | Option                     |  Description                                                                                                                                    |
@@ -23,16 +23,16 @@ With Docker technology has been accepted by more and more individuals and enterp
 | `--device-read-iops="" `   | Limit read rate (IO per second) from a device (format: `<device-path>:<number>`). Number is a positive integer.                                 |
 | `--device-write-iops="" `  | Limit write rate (IO per second) to a device (format: `<device-path>:<number>`). Number is a positive integer.                                  |
 
-## 2. Introduction of Docker resource management principle——Cgroups subsystems
+## 2. Introduction to Docker resource management principle——Cgroups subsystems
 Cgroups is the abbreviation of control groups, which is a linux feature that limits，accounts for, and isolates the physical resource usage (CPU, memory and disk I/O, etc.) of process groups. Engineers at Google started the work on this feature, and then cgroups functionality was merged into the linux kernel mainline. The allocation and management of resources are implemented by cgroups subsystems. There are seven cgroups systems, respectively are cpuset, cpu, cpuacct, blkio, devices, freezer, and memory. The following describes four cgroups subsystems which are related to Docker resource management interfaces.
 
 2.1 memory -- This subsystem is to set the limit of memory usage in a cgroup.<br>
 
 | memory cgroup interface | description | the corresponding docker interface |
 | ---------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------- |
-| cgroup/memory/memory.limit_in_bytes | sets the maximum amount of user memory, in bytes. And it is possible to use suffixes to represent larger units -- k or K for kilobytes, m or M for megebytes, and g or G for gigabytes. | -m, --memory="" |
-| cgroup/memory/memory.memsw.limit_in_bytes | sets the maximum amount of memory and swap space, in bytes. You can prevent a run out of swap partition by setting this value. | --memory-swap="" |
-| cgroup/memory/memory.soft_limit_in_bytes | sets soft limit of memory usage. This limitation won't stop processes using excess memory. however, when the system detects memory contention or low memory, cgroups is forced to restrict its consumption to the soft limits. | --memory-reservation="" |
+| cgroup/memory/memory.limit_in_bytes | Set the maximum amount of user memory, in bytes. And it is possible to use suffixes to represent larger units -- k or K for kilobytes, m or M for megebytes, and g or G for gigabytes. | -m, --memory="" |
+| cgroup/memory/memory.memsw.limit_in_bytes | Set the maximum amount of memory and swap space, in bytes. You can prevent a run out of swap partition by setting this value. | --memory-swap="" |
+| cgroup/memory/memory.soft_limit_in_bytes | Set soft limit of memory usage. This limitation won't stop processes using excess memory. however, when the system detects memory contention or low memory, cgroups is forced to restrict its consumption to the soft limits. | --memory-reservation="" |
 | cgroup/memory/memory.kmem.limit_in_bytes | sets hard limit for kernel memory. | --kernel-memory="" |
 | cgroup/memory/memory.oom_control | contains a flag that enables or disables the Out of Memory killer for a cgroup. If disabled(0), tasks that attempt to consume excess memory will not be killed, but be paused until additional memory is freed. In addition, the system will prompt send event notification to user mode, the monitoring program in user mode is able to process it accordingly, such as raising the memory upper limit. | --oom-kill-disable="" |
 | cgroup/memory/memory.swappiness | sets the tendency of the kernel to use the swap partition. The value is between 0 and 100(include 0 and 100), and lower value increases the kernel's tendency to use physical memory. | --memory-swappiness="" |
