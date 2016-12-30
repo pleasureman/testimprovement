@@ -523,6 +523,8 @@ Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has m
 Wanju Xue, Software Testing Engineer, ChinaSoft International Technology Service Co., Ltd. She has more than 4 years experience in software testing. She is currently involved in Docker testing. She concentrated on function, performance, stress tests for Docker technology.<br>
 Research Field: Container Technology, Docker, Automated Testing<br>
 
+Yan Wei, Software Testing Engineer, Central Software Institute, HUAWEI. She supported the test tasks of container components for HUAWEI public cloud. She concentrated on function, performance, security, reliability and stress tests for Docker technology. She developed solutions to execute stability test for Docker and won awards for her contributions. She has contributed some test cases for Docker community.
+
 ##reference：
 http://www.cnblogs.com/hustcat/p/3980244.html<br>
 http://www.lupaworld.com/article-250948-1.html<br>
