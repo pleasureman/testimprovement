@@ -72,6 +72,10 @@ Docker的设计初衷是来屏蔽各硬件平台差异的。因此利用Docker�
 
 当系统中因为误操作或者资源竞争导致加压或巡检进程异常退出时，系统不具备任何应急处理能力。
 
+![3](images/3.png "3_png")
+
+![4](images/4.png "4_png")
+
 基于以上痛点，我们对该项测试进行了容器化改造的实践。首先是背景加压容器化，将cpu、内存、io的测试套均打包成docker镜像，以cpu加压为例，可以运行下面的命令来对系统进行cpu加压：
 
     $ docker run -tid –m 3g --restart=always back_stress bash -c "bash cpu_stress/test_20.sh
