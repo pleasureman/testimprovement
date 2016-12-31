@@ -50,17 +50,17 @@ For saving cost, different kinds of test tasks have to be executed in one VM in 
 
 (3)Testers or customers don't have to set up environment according to lengthy configuration document.
 
-Testers often run tests with a lengthy document provided by developers. However, some steps often be skipped in the documents. It is difficult for testers to set up test environment at once. Now testers can simplify the task of setting up environment by docker images and don't have to read the lengthy documents. It is easy to set up test environment by docker images provided by developers.
+Testers often run tests with a lengthy document provided by developers. However, some steps often be skipped in the documents. It is difficult for testers to set up test environment at once. Now testers can simplify the task of setting up environment by Docker images and don't have to read the lengthy documents. It is easy to set up test environment by Docker images provided by developers.
 
 (4) It is easy to reproduce defects submitted by customers.
 
-When a customer finds a defect, software environment can be packaged by docker images and provide them to developers. Developers can obtain the software environment which is consistent with the customer.
+When a customer finds a defect, software environment can be packaged by Docker images and provide them to developers. Developers can obtain the software environment which is consistent with the customer.
 
 (5)To deal with the steps of test images creation by Dockerfile.
 
-If some of the steps need to be adjusted(for example, install gcc4.3 instead of gcc3.4), a new docker image can be recreated after Dockerfile is modified. You don't have to reconfigure the environment manually.
+If some of the steps need to be adjusted(for example, install gcc4.3 instead of gcc3.4), a new Docker image can be recreated after Dockerfile is modified. You don't have to reconfigure the environment manually.
 
-(6)To share test suites and test tools by docker images.
+(6)To share test suites and test tools by Docker images.
 
 In this way software can run in different linux distributions. Software providers can focus on the functions of the software without spending too much time in adjusting the software to different linux distributions.
 
@@ -70,7 +70,7 @@ A test task can be completed in a short time by using thousands of containers. T
 
 (8)Superior performance parameters
 
-Test efficiency can be increased by Docker better performance compared to VM. Map the directory of the host to that of the container by docker "-v" option, which quickly shares test files. No sooner are test tasks completed than containers would be stopped and removed, and system resource is released by Docker “--rm” option.
+Test efficiency can be increased by Docker better performance compared to VM. Map the directory of the host to that of the container by Docker "-v" option, which quickly shares test files. No sooner are test tasks completed than containers would be stopped and removed, and system resource is released by Docker “--rm” option.
 
 (9) It is easy to restore environment(including memory)-CRIU technology(Checkpoint Restore In Userspace)
 
@@ -94,7 +94,7 @@ Post-devops time means that Devops and Docker work together. In the time, Docker
 ## 5.Docker and automation testing
 We can replace repetitive boring manual test tasks with automation test scripts. The cost of automation is the preparation and maintenance of automation codes. The benefit from automation is time saving of test execution. In short, if the benefit is greater than the cost, it is worth automating. Or only benefit is the improvement of the automation test skill of testers. The cost of automation is greatly decreased by rapid deployment, sharing of environment and other features of Docker. Many test tasks, which used not to be worth automating, have been worth automating. The efficiency of project is greatly enhanced.
 
-Is it necessary to improve automation tests if they run in VMs? Answer depends on a case by case basis. I don’t agree that all test tasks should be improved by Docker. If VM has meet test requirements, you need to evaluate the cost of the improvement by docker. Time spent in studying Docker is considered as one of the costs. Whereas: if VM can’t meet the requirements, you can improve test tasks by Docker as soon as possible.
+Is it necessary to improve automation tests if they run in VMs? Answer depends on a case by case basis. I don’t agree that all test tasks should be improved by Docker. If VM has meet test requirements, you need to evaluate the cost of the improvement by Docker. Time spent in studying Docker is considered as one of the costs. Whereas: if VM can’t meet the requirements, you can improve test tasks by Docker as soon as possible.
 
 ## 6.Limitation of Docker
 Build, Ship, and Run Any App, Anywhere. The sentence is a propaganda published by Docker authority. However, due to the characters of Docker itself, its usage scenarios have some limits.
@@ -122,9 +122,9 @@ We used to install linux distributions and execute tests in multiple physical co
 
 ![Compilingtest2](images/5.png "Compilingtest2_png")
 
-Then we create docker images based on test environment and improve test methods.
+Then we create Docker images based on test environment and improve test methods.
 
-(1)Map the directory of the host to that of the container by docker "-v" option, which shares test codes in multiple containers. Time spent is decreased from 2 minutes to 10 seconds.
+(1)Map the directory of the host to that of the container by Docker "-v" option, which shares test codes in multiple containers. Time spent is decreased from 2 minutes to 10 seconds.
 
 (2)Divide a big case, whose execution time is long, into some small cases.
 
@@ -137,7 +137,7 @@ Compiling test is in user mode and can be accelerated by Docker. For a test task
 ### 8.2.linux package test
 ![Packagetest1](images/6.png "Packagetest1_png")
 
-Linux packages include dynamic link libraries, linux common command tools, which belong to middle layer of linux OS. Applications run in the above layer and they are supported by linux kernel below. We used to run package tests in serial and efficiency is low. Because of test environment contamination, it is easy to produce wrong reports of software defects. To improve it, we create a docker image by  Dockerfile based on rootfs and execute test cases in parallel.
+Linux packages include dynamic link libraries, linux common command tools, which belong to middle layer of linux OS. Applications run in the above layer and they are supported by linux kernel below. We used to run package tests in serial and efficiency is low. Because of test environment contamination, it is easy to produce wrong reports of software defects. To improve it, we create a Docker image by  Dockerfile based on rootfs and execute test cases in parallel.
 
 ![Packagetest2](images/7.png "Packagetest2_png")
 
@@ -147,9 +147,9 @@ There is comparison between before and after improvements.
 | ---------------------------------------- | ---------------------------------------- |
 |Only one test environment in one VM. The utilization of the host is not high. |Multiple test environments in one VM. The host resources can be used efficiently, which save too much cost especially when the price of the host is high.|
 |Run tests in serial. It is not easy to run tests in parallel because of test environment of pollution.|Run tests in parallel by using Docker to isolate test tasks, which increases cpu utilization. |
-|The cleanup of test environment is dependent on a programmer’s skill. In each test case, there is a cleanup function, which is for resource and environment recovery. If a program's skill is not high, not all resources can be recovered and test environment is contaminated. |The cleanup of test environment is done by the docker container. Containers can be removed automatically after tasks are completed. Even if there is no cleanup function, resource can also be recovered.|
+|The cleanup of test environment is dependent on a programmer’s skill. In each test case, there is a cleanup function, which is for resource and environment recovery. If a program's skill is not high, not all resources can be recovered and test environment is contaminated. |The cleanup of test environment is done by the Docker container. Containers can be removed automatically after tasks are completed. Even if there is no cleanup function, resource can also be recovered.|
 |Can't deal with the contamination of multiple package tests. When some cases are executed in sequence, parts of them are failed. However, the test is pass, only when it is executed separately. Test environment often lead to the problem. |Docker provides clean test environment for each package test.|
-|Different compiling environment between developers and testers leads to different test results. |Create the same compiling environment by docker image or dockerfile. |
+|Different compiling environment between developers and testers leads to different test results. |Create the same compiling environment by Docker image or Dockerfile. |
 |Network package test(server and client) needs two VMs.|Two containers(server and client) in one VM can deal with network package test.|
 
 ## 9.How does Docker accelerate test execution?
