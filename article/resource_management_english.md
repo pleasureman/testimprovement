@@ -1,6 +1,6 @@
 # Resource management of Docker - Cgroups feature supporting Docker
 
-As Docker technology has been accepted by more and more individuals and enterprises, Docker is more widely applied in many aspects. Docker resource management includes the limitation of CPU, memory, IO and other resources, but most of Docker users often just know how without knowing why when they are using Docker resource management interfaces. This article introduces the cgroups feature which supports Docker resource management, and lists Docker resource management interfaces and the corresponding cgroups interfaces, so that the readers can know why about Docker resource management.
+As Docker technology has been accepted by more and more individuals and enterprises, Docker is more widely applied in many aspects. Docker resource management includes the limitation of CPU, memory, IO and other resources, but most of Docker users often just know how without knowing why when they are using Docker resource management interfaces. This article introduces the cgroups feature which supports Docker resource management, and lists Docker resource management interfaces and the corresponding cgroups interfaces, so that the readers can know why.
 
 ## 1. Overview of Docker resource management interfaces  
 | Option                     |  Description                                                                                                                                    |
@@ -24,7 +24,7 @@ As Docker technology has been accepted by more and more individuals and enterpri
 | `--device-write-iops="" `  | Limit write rate (IO per second) to a device (format: `<device-path>:<number>`). Number is a positive integer.                                  |
 
 ## 2. Introduction to Docker resource management principle——Cgroups subsystems
-Cgroups is the abbreviation of control groups, which is a linux feature that limits，accounts for, and isolates the physical resource usage (CPU, memory and disk I/O, etc.) of process groups. Engineers at Google started the work on this feature, and then cgroups functionality was merged into the linux kernel mainline. The allocation and management of resources are implemented by cgroups subsystems. There are seven cgroups systems, respectively are cpuset, cpu, cpuacct, blkio, devices, freezer, and memory. The following describes four cgroups subsystems which are related to Docker resource management interfaces.
+Cgroups is the abbreviation of control groups, which is a linux feature that limits，accounts for, and isolates the physical resource usage (CPU, memory and disk I/O, etc.) of process groups. Engineers at Google started the work on this feature, and then cgroups functionality was merged into the linux kernel mainline. The allocation and management of resources are implemented by cgroups subsystems. There are seven cgroups subsystems, respectively are cpuset, cpu, cpuacct, blkio, devices, freezer, and memory. The following describes four cgroups subsystems which are related to Docker resource management interfaces.
 
 2.1 memory -- This subsystem is to set the limit of memory usage in a cgroup.<br>
 
@@ -218,7 +218,7 @@ When the value of memory-swap limit is less than the value of memory limit, the 
     docker: Error response from daemon: Minimum memoryswap limit should be larger than memory limit, see usage..
     See 'docker run --help'.
 
-When the memory more than the value of memory-swap limit is allocated, the below error occurs.
+When the memory which is more than the value of memory-swap limit is allocated, the below error occurs.
 
     $ docker run -ti -m 100M --memory-swap 200M ubuntu:14.04 stress --vm 1 --vm-bytes 201M
     stress: info: [1] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
@@ -272,7 +272,7 @@ The following example sets kernel memory without -m, so the processes in the con
 #### 3.1.5 --oom-kill-disable=false
 By default, kernel kills processes in a container if an out-of-memory(OOM) error occurs. To change this behaviour, use the --oom-kill-disable option. It is relevant to cgroup/memory/memory.oom_control.
 
-When a container allocates memory more than the value of memory limit, kernel will trigger out-of-memory(OOM). If --oom-kill-disable=false, the container will be killed. If --oom-kill-disable=true, the container is suspended.
+When a container allocates memory which is more than the value of memory limit, kernel will trigger out-of-memory(OOM). If --oom-kill-disable=false, the container will be killed. If --oom-kill-disable=true, the container is suspended.
 
 The following example limits memory to 20MB and sets --oom-kill-disable as true. The value of oom_kill_disable is 1.
 
@@ -376,7 +376,7 @@ In the following example, the container only use on cpu core 1 and the stress to
 
     $ docker run -ti --cpuset-cpus 1 ubuntu:14.04 stress -c 1
 
-In the below log, the status of each cpu is shown. Note that the console can show the status of each cpu only when press 1 button after run the top command.
+In the below log, the status of each cpu is shown. Note that the console can show the status of each cpu only when press 1 button after running the top command.
 
     top - 11:31:47 up 5 days, 21:00,  0 users,  load average: 0.62, 0.82, 0.77
     Tasks: 104 total,   3 running, 101 sleeping,   0 stopped,   0 zombie
@@ -408,7 +408,7 @@ In the following example, the processes of the container only use memory nodes 0
 
 ### 3.4 blkio subsystem
 #### 3.4.1 --blkio-weight=0
-The option is set block device IO weight. By default, the value is 500. It is relevant to the cgroup/blkio/blkio.weight file.
+The option is to set block device IO weight. By default, the value is 500. It is relevant to the cgroup/blkio/blkio.weight file.
 
 Range: integers between 10 and 1000(including 10 and 1000)
 
@@ -472,7 +472,7 @@ The option is to limit the write rate (bytes per second) from a device. It is re
     $ docker run -it --device /dev/sda:/dev/sda --device-write-bps /dev/sda:1mB ubuntu:14.04 bash -c "cat /sys/fs/cgroup/blkio/blkio.throttle.write_bps_device"
     8:0 1048576
 
-8:0 is the device id of /dev/sda. The value is 1048576, the Byte quantity of 1MB(the square of 1024).
+8:0 is the device id of /dev/sda. The value is 1048576(the square of 1024).
 
 The following example restricts the write rate to 1MB/s. The result is as expected.
 
@@ -516,9 +516,9 @@ The container writes 1000 times(The second line of log: count=1000). Time spent 
 
 
 ## 4.Summary
-Resource management of Docker is dependent on cgroups feature of linux kernel. It isn't difficult for readers to understand resource management. If you are interested in it, you may supplement some test cases. The principle of cgroups is beyond the scope of this article and you may refer to other articles about it and kernel documentation.
+Resource management of Docker is dependent on cgroups feature of linux kernel. It isn't difficult for readers to understand resource management. If you are interested in it, you may supplement some test cases. The principle of cgroups is beyond the scope of this article and you may refer to other articles and kernel documentation.
 ## Authors
-Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has more than 9 years experience in software testing. He led container testing team to complete test tasks of container components for HUAWEI public cloud and supported other teams to accelerate test execution with Docker. He concentrated on function, performance, security, reliability and stress tests for Docker technology. He is a speaker on Docker meetup, China test conference, China Open Source Conference. He has contributed some test cases for Docker and ltp open source community. Previously, he was test leader in Wind River.
+Yuan Sun, Senior Software Engineer, Central Software Institute, HUAWEI. He has more than 9 years experience in software testing. He led container testing team to complete test tasks of container components for HUAWEI public cloud and supported other teams to accelerate test execution with Docker. He concentrated on function, performance, security, reliability and stress tests for Docker technology. He is a speaker on Docker meetup, China test conference, China Open Source Conference. He has contributed some test cases for Docker and ltp open source community. Previously, he was a test leader in Wind River.
 
 Wanju Xue, Software Testing Engineer, ChinaSoft International Technology Service Co., Ltd. She has more than 4 years experience in software testing. She is currently involved in Docker testing. She concentrated on function, performance, stress tests for Docker technology.<br>
 Research Field: Container Technology, Docker, Automated Testing<br>
