@@ -17,3 +17,5 @@
 ##参考文章
 
 [TOP 10 TESTING TRENDS FOR 2017](http://www.logigear.com/magazine/top-10-testing-trends-for-2017/)
+
+[软件测试的新趋势](http://www.infoq.com/cn/articles/new-trends-of-software-testing)
