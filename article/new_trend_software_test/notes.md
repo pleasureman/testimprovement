@@ -14,3 +14,6 @@
 ##大数据
 ##自动化测试
 ##移动互联网测试
+##参考文章
+
+[TOP 10 TESTING TRENDS FOR 2017](http://www.logigear.com/magazine/top-10-testing-trends-for-2017/)
