@@ -1,5 +1,12 @@
 #软件测试新趋势
 ##安全测试(孙远负责)
+Security Testing needs a solution for IoT progress
+
+The biggest issue in IoT testing continues to be in security testing. IoT testing requires testers to possess additional technical knowledge beyond domain expertise. Testing the interactions between layers—application, middleware, data, etc. – will require some grey box testing approaches. IoT services/APIs are most likely to be virtualized and, in turn, it will help testing to be done effectively. Grow knowledge and skill testing on virtualized environments.
+
+Basic Application Security Testing Becomes Mainstream
+
+Lightweight security tools, particularly dynamic security testing tools, and security testing frameworks (while static analysis tools are used by developers) will gain more popularity (e.g., Nmap for port scanning, sqlmap for SQL injection; Zapr and Arachni for security scanning; ClamAV; bundler-audit, Node, or SafeNuGet for checking external dependencies for known vulnerabilities). Security testing frameworks (e.g., BDD security testing, ATF, OWASP, etc.) will provide a common way to specify and validate security scenarios.
 ##人工智能
 [解析：人工智能对于软件测试产业的影响](http://www.elecfans.com/rengongzhineng/473707.html)
 ##符号执行
@@ -15,6 +22,10 @@
 ##大数据
 ##自动化测试
 ##移动互联网测试(孙远负责)
+Testing Mobile Applications Continues to Advance
+
+Similar to Application testing in cloud service, Mobile testing is also moving to the cloud but it’s having its own hurdles. While mobile emulator and device clouds (though they can be expensive) help elevate the challenges of having the right mix of devices and configurations available in-house, having the right test environments continue to be problematic. For one, the rapid pace of technology changes and updates force the applications and testing to update even when there is no new feature introduced. Your test automation will also have to be updated accordingly. Furthermore, having the right tools and expertise to test the mix of mobile and variety IoT devices proves to be an on-going difficulty for testing. Functional testing and security testing will continue to be a challenge in testing multi-channel devices (mobile, wearable, social and traditional), and mesh and conversational systems. As mobile apps can be easily constructed using reusable APIs as well as apps can be easily created by citizen developers, there will be more testing demand.
+
 ##参考文章
 
 [TOP 10 TESTING TRENDS FOR 2017](http://www.logigear.com/magazine/top-10-testing-trends-for-2017/)
