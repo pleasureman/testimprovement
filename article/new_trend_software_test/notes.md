@@ -16,6 +16,9 @@ Lightweight security tools, particularly dynamic security testing tools, and sec
 ##微服务
 ##开源测试(1.开源测试工具 2.基于开源软件二次开发的测试)(孙远负责)
 ##容器化(孙远负责)
+Containers and Microservices Will Have a Huge Impact on Testing
+
+Containers will help reduce configuration and compatibility testing demand, and microservices will help break testing down into smaller units as test automation continues to Shift-Left* from the UI toward the services/API layer. With the benefits of shifting the testing to the services level, they also come with some new changes. For example, despite the benefits of containers and microservices, configuration/compatibility continues to be a laborious task due to the fact that we have to deal with the permutation of microservices versions currently deployed. When we do integration testing with other services, would we test against the versions of the other services that are currently in production, or against the latest versions of the other services that are not yet in production, or both? The challenges also come with figuring out how to improve reusability of test automation across the different language, technology used in the microservices.
 ##Devops
 ##敏捷、精益(测试前移)(孙远负责)
 ##客户化测试
