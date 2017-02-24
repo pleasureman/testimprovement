@@ -1,4 +1,5 @@
 #软件测试新趋势
+
 ##安全测试(孙远负责)
 Security Testing needs a solution for IoT progress
 
@@ -7,23 +8,31 @@ The biggest issue in IoT testing continues to be in security testing. IoT testin
 Basic Application Security Testing Becomes Mainstream
 
 Lightweight security tools, particularly dynamic security testing tools, and security testing frameworks (while static analysis tools are used by developers) will gain more popularity (e.g., Nmap for port scanning, sqlmap for SQL injection; Zapr and Arachni for security scanning; ClamAV; bundler-audit, Node, or SafeNuGet for checking external dependencies for known vulnerabilities). Security testing frameworks (e.g., BDD security testing, ATF, OWASP, etc.) will provide a common way to specify and validate security scenarios.
+
 ##人工智能
 [解析：人工智能对于软件测试产业的影响](http://www.elecfans.com/rengongzhineng/473707.html)
 ##符号执行
+
 ##精准测试(更完整的覆盖率)(孙远负责)
+
 ##云化测试
+
 ##物联网
-##微服务
+
 ##开源测试(1.开源测试工具 2.基于开源软件二次开发的测试)(孙远负责)
-##容器化(孙远负责)
+
+##容器化/Devops/微服务(孙远负责)
 Containers and Microservices Will Have a Huge Impact on Testing
 
 Containers will help reduce configuration and compatibility testing demand, and microservices will help break testing down into smaller units as test automation continues to Shift-Left* from the UI toward the services/API layer. With the benefits of shifting the testing to the services level, they also come with some new changes. For example, despite the benefits of containers and microservices, configuration/compatibility continues to be a laborious task due to the fact that we have to deal with the permutation of microservices versions currently deployed. When we do integration testing with other services, would we test against the versions of the other services that are currently in production, or against the latest versions of the other services that are not yet in production, or both? The challenges also come with figuring out how to improve reusability of test automation across the different language, technology used in the microservices.
-##Devops
 ##敏捷、精益(测试前移)(孙远负责)
+
 ##客户化测试
+
 ##大数据
+
 ##自动化测试
+
 ##移动互联网测试(孙远负责)
 Testing Mobile Applications Continues to Advance
 
