@@ -2,6 +2,7 @@
 “测试已死”的观点在业内仍然存在着争议，很多公司缩减了测试人员，开发测试比屡创新高。本文旨在通过介绍软件测试的新趋势和新技术 来展示软件测试行业面临的机遇与挑战，为软件测试工程师的职业规划提供参考。
 
 ##安全测试(孙远负责)
+从孟加拉国银行8100万美元被黑客成功盗取到雅虎数据泄露事故，网络安全事件已经被推到了风口浪尖。
 Security Testing needs a solution for IoT progress
 
 The biggest issue in IoT testing continues to be in security testing. IoT testing requires testers to possess additional technical knowledge beyond domain expertise. Testing the interactions between layers—application, middleware, data, etc. – will require some grey box testing approaches. IoT services/APIs are most likely to be virtualized and, in turn, it will help testing to be done effectively. Grow knowledge and skill testing on virtualized environments.
