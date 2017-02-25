@@ -64,6 +64,9 @@ Testing Mobile Applications Continues to Advance
 
 Similar to Application testing in cloud service, Mobile testing is also moving to the cloud but it’s having its own hurdles. While mobile emulator and device clouds (though they can be expensive) help elevate the challenges of having the right mix of devices and configurations available in-house, having the right test environments continue to be problematic. For one, the rapid pace of technology changes and updates force the applications and testing to update even when there is no new feature introduced. Your test automation will also have to be updated accordingly. Furthermore, having the right tools and expertise to test the mix of mobile and variety IoT devices proves to be an on-going difficulty for testing. Functional testing and security testing will continue to be a challenge in testing multi-channel devices (mobile, wearable, social and traditional), and mesh and conversational systems. As mobile apps can be easily constructed using reusable APIs as well as apps can be easily created by citizen developers, there will be more testing demand.
 
+## 总结
+当前很多公司已经将基本的功能测试任务交由开发团队负责，测试人员主要专注于自动化测试开发、安全测试、测试建模、精准测试等专项测试中。这部分测试任务能够很好的体现测试人员的价值。虽然“测试已死”的争论还在继续，但只要把握好软件测试发展的趋势并凭借自身的努力，相信测试人员是能够在行业中收到认可的。
+
 ## 作者简介
 孙远，华为中央软件院资深工程师，硕士毕业，9年软件行业经验。目前在华为从事容器Docker项目的测试工作。工作涉及到功能测试、性能测试、压力测试、稳定性测试、安全测试、测试管理、工程能力构建等内容。参与编写了《Docker进阶与实战》的Docker测试章节。先前曾经就职于美国风河系统公司，作为team lead从事风河Linux产品测试工作。活跃于Docker社区和内核测试ltp社区。
 
