@@ -8,16 +8,6 @@
 
 (找吴伟补充安全测试趋势)
 
-
-
-Security Testing needs a solution for IoT progress
-
-The biggest issue in IoT testing continues to be in security testing. IoT testing requires testers to possess additional technical knowledge beyond domain expertise. Testing the interactions between layers—application, middleware, data, etc. – will require some grey box testing approaches. IoT services/APIs are most likely to be virtualized and, in turn, it will help testing to be done effectively. Grow knowledge and skill testing on virtualized environments.
-
-Basic Application Security Testing Becomes Mainstream
-
-Lightweight security tools, particularly dynamic security testing tools, and security testing frameworks (while static analysis tools are used by developers) will gain more popularity (e.g., Nmap for port scanning, sqlmap for SQL injection; Zapr and Arachni for security scanning; ClamAV; bundler-audit, Node, or SafeNuGet for checking external dependencies for known vulnerabilities). Security testing frameworks (e.g., BDD security testing, ATF, OWASP, etc.) will provide a common way to specify and validate security scenarios.
-
 ## 人工智能(孟宪伟负责)
 [解析：人工智能对于软件测试产业的影响](http://www.elecfans.com/rengongzhineng/473707.html)
 
@@ -55,9 +45,8 @@ Lightweight security tools, particularly dynamic security testing tools, and sec
 当前很多开源社区中的测试并不到位，很多特性在发布之后长时间没有对应的文档和测试用例。以kernel社区的user namespace内核特性为例，其是在2013年2月18日随内核3.8版本正式发布的，然而直到2015年5月21日，社区才拥有第一个该特性的测试用例。二者时间间隔在两年以上。在这之间使用该内核版本的用户都无法获取到有效的开源测试用例来验证该特性，版本的质量保证令人堪忧。对于这部分特性，需要测试工程师根据业务需要自行补充测试。测试工程师同时还要注意构建社区影响力，以保证与自己平台相关的测试用例能够顺利的被社区接收，从而减少测试代码维护成本。
 
 ## 容器化/Devops/微服务(孙远负责)
-Containers and Microservices Will Have a Huge Impact on Testing
-
-Containers will help reduce configuration and compatibility testing demand, and microservices will help break testing down into smaller units as test automation continues to Shift-Left* from the UI toward the services/API layer. With the benefits of shifting the testing to the services level, they also come with some new changes. For example, despite the benefits of containers and microservices, configuration/compatibility continues to be a laborious task due to the fact that we have to deal with the permutation of microservices versions currently deployed. When we do integration testing with other services, would we test against the versions of the other services that are currently in production, or against the latest versions of the other services that are not yet in production, or both? The challenges also come with figuring out how to improve reusability of test automation across the different language, technology used in the microservices.
+容器为开发、测试、运维三个团队提供一致的环境，避免因为环境不统一产生的缺陷误报。同时使开发人员可以很容易的通过容器镜像复现测试人员和客户报来的缺陷。利用容器还可以避免环境污染和批量快速的启动多个测试环境并行测试来提高测试效率。
+微服务将软件细分为多个子模块，各模块间相对独立，便于测试进行迁移以便及早的发现缺陷。Devops通过成熟的自动化解决方案，同时配合容器、微服务技术，打通了开发、测试、运维团队的壁垒。
 
 
 ## 敏捷、精益(测试前移)(孙远负责)
