@@ -2,7 +2,9 @@
 “测试已死”的观点在业内仍然存在着争议，很多公司缩减了测试人员，开发测试比屡创新高。本文旨在通过介绍软件测试的新趋势和新技术来展示软件测试行业面临的机遇与挑战，为软件测试工程师的职业规划提供参考。
 
 ##安全测试(孙远负责)
-从孟加拉国银行8100万美元被黑客成功盗取到美国民主党邮件泄露，网络安全事件已经被推到了风口浪尖。
+从孟加拉国银行8100万美元被黑客成功盗取到美国民主党邮件泄露，网络安全事件已经被推到了风口浪尖。随着物联网逐步普及，智能家居、汽车电子等设备的网络化水平大幅提升。而物联网的安全却不容乐观，很多中小企业往往忽视安全防护。特别是开源软件软件广泛应用的环境下，为网络安全带来了新的挑战。开源软件的源代码公开，黑客可以通过阅读源代码更容易的分析出软件的安全漏洞。当开源社区中发布出cve漏洞时，需要厂商及时的合入补丁，否则将给黑客入侵敞开大门。
+
+新的编程语言的出现在提高了编码效率的同时，也为软件产品增添了安全挑战。Golang语言目前已经被广泛使用，但业界仍然没有针对该语言的扫描工具。
 Security Testing needs a solution for IoT progress
 
 The biggest issue in IoT testing continues to be in security testing. IoT testing requires testers to possess additional technical knowledge beyond domain expertise. Testing the interactions between layers—application, middleware, data, etc. – will require some grey box testing approaches. IoT services/APIs are most likely to be virtualized and, in turn, it will help testing to be done effectively. Grow knowledge and skill testing on virtualized environments.
