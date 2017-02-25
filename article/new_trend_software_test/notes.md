@@ -66,7 +66,9 @@ Similar to Application testing in cloud service, Mobile testing is also moving t
 
 ## 作者简介
 孙远，华为中央软件院资深工程师，硕士毕业，9年 软件行业经验。目前在华为从事容器Docker项目的测试工作。工作涉及到功能测试、性能测试、压力测试、稳定性测试、安全测试、测试管理、工程能力构建等内容。参与编写了《Docker进阶与实战》的Docker测试章节。先前曾经就职于美国风河系统公司，作为team lead从事风河Linux产品测试工作。活跃于Docker社 区和内核测试ltp社区。
+
 研究方向：容器技术、Docker、Linux内 核、软件测试、自动化测试、测试过程改进
+
 有代表性的作品：《docker进阶与实战》
 
 孟宪伟，华为中央软件院资深工程师，硕士毕业，软件行业10年以上从业经验。目前从事华为云计算产品虚拟化平台的测试以及相关测试工具的开发工作。加入华为前供职于IBM，Thomson Reuters以 及VMware等 多家公司，期间曾从事软件开发，项目管理，软件测试等各类工作。
