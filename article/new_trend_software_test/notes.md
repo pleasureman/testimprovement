@@ -18,9 +18,10 @@ Basic Application Security Testing Becomes Mainstream
 
 Lightweight security tools, particularly dynamic security testing tools, and security testing frameworks (while static analysis tools are used by developers) will gain more popularity (e.g., Nmap for port scanning, sqlmap for SQL injection; Zapr and Arachni for security scanning; ClamAV; bundler-audit, Node, or SafeNuGet for checking external dependencies for known vulnerabilities). Security testing frameworks (e.g., BDD security testing, ATF, OWASP, etc.) will provide a common way to specify and validate security scenarios.
 
-##人工智能
+##人工智能(孟宪伟负责)
 [解析：人工智能对于软件测试产业的影响](http://www.elecfans.com/rengongzhineng/473707.html)
-##符号执行
+
+##符号执行(孟宪伟负责)
 
 ##精准测试(更完整的覆盖率)(孙远负责)
 在当前敏捷测试的时代，版本发布日趋频繁，快速发布高质量的软件是很多企业的目标。对于急于发布的软件版本，全量运行所有的用例往往需要花费较长的时间，已经不能满足产品发布的节奏。如果避免过度测试并在时间、质量、成本中找到最佳的平衡？
@@ -29,9 +30,9 @@ Lightweight security tools, particularly dynamic security testing tools, and sec
 
 [精准测试白皮书](http://wenku.baidu.com/link?url=7EVjSJ4t1WKYSL-tEPv_QrtcFIasI5WZcXhHf4Zz7oD167zlaU5JpR-Kk-ioh8gX2DWgCFjfcSsNt-44UsFtTcGE7qk01dE3WfaE4XwEx5O)
 
-##云化测试
+##云化测试(孟宪伟负责)
 
-##物联网
+##物联网(孟宪伟负责)
 
 ##开源测试(1.开源测试工具 2.基于开源软件二次开发的测试)(孙远负责)
 
@@ -41,11 +42,11 @@ Containers and Microservices Will Have a Huge Impact on Testing
 Containers will help reduce configuration and compatibility testing demand, and microservices will help break testing down into smaller units as test automation continues to Shift-Left* from the UI toward the services/API layer. With the benefits of shifting the testing to the services level, they also come with some new changes. For example, despite the benefits of containers and microservices, configuration/compatibility continues to be a laborious task due to the fact that we have to deal with the permutation of microservices versions currently deployed. When we do integration testing with other services, would we test against the versions of the other services that are currently in production, or against the latest versions of the other services that are not yet in production, or both? The challenges also come with figuring out how to improve reusability of test automation across the different language, technology used in the microservices.
 ##敏捷、精益(测试前移)(孙远负责)
 
-##客户化测试
+##客户化测试(孟宪伟负责)
 
-##大数据
+##大数据(孟宪伟负责)
 
-##自动化测试
+##自动化测试(孟宪伟负责)
 
 ##移动互联网测试(孙远负责)
 Testing Mobile Applications Continues to Advance
