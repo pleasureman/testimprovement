@@ -56,12 +56,9 @@
 ## 自动化测试(孟宪伟负责)
 
 ## 移动互联网测试(孙远负责)
-随着智能移动设备的普及，移动平台呈现多样化趋势，而每个平台的版本升级速度非常快。移动应用种类繁多，从社交应用到游戏、教育、办公、旅行等类别。为满足用户需求，热门应用的迭代更新非常频繁。面对众多的移动设备硬件型号、多个手机平台版本、繁多的移动应用、每个应用对应的不同版本号，测试人员不得不制定新的测试策略和方案来应对业务的新趋势。而多种组合的测试向测试人员、测试工程能力、自动化测试提出了更高的要求。
+随着智能移动设备的普及，移动平台呈现多样化趋势，而每个平台的版本升级速度非常快。移动应用种类繁多，从社交应用到游戏、教育、办公、旅行等类别。为满足用户需求，热门应用的迭代更新非常频繁。面对众多的移动设备硬件型号、多个手机平台版本、繁多的移动应用、每个应用对应的不同版本号，测试人员不得不制定新的测试策略和方案来应对业务。即使应用没有新的特性引入，但自动化测试不得不根据新的平台进行适配工作。而多种组合的测试向测试人员、测试工程能力、自动化测试提出了更高的要求。
 
-目前已经出现了针对移动设备测试的自动化设备和SAAS平台。测试设备可以模拟出用户真实的终端操作的方式。在SAAS平台中，使用者可以将应用提交到平台中进行全量的自动化测试，来确保应用多个版本可以适配到不同的平台等条件下。
-Similar to Application testing in cloud service, Mobile testing is also moving to the cloud but it’s having its own hurdles. While mobile emulator and device clouds (though they can be expensive) help elevate the challenges of having the right mix of devices and configurations available in-house, having the right test environments continue to be problematic. For one, the rapid pace of technology changes and updates force the applications and testing to update even when there is no new feature introduced. Your test automation will also have to be updated accordingly. Furthermore, having the right tools and expertise to test the mix of mobile and variety IoT devices proves to be an on-going difficulty for testing. Functional testing and security testing will continue to be a challenge in testing multi-channel devices (mobile, wearable, social and traditional), and mesh and conversational systems. As mobile apps can be easily constructed using reusable APIs as well as apps can be easily created by citizen developers, there will be more testing demand.
-
-参考：听云/testin/oneapm
+目前已经出现了针对移动设备测试的自动化设备和SAAS平台。测试设备可以模拟出用户真实的终端操作的方式。在SAAS平台中，使用者可以将应用提交到平台中进行全量的自动化测试，来确保应用多个版本可以适配到不同的平台等条件下。此外，领域中的专项测试，如性能测试、功耗测试、安全测试、兼容性测试、跨地域跨时区测试、老化测试，也将产生很大的测试需求。
 
 ## 总结
 当前很多公司已经将基本的功能测试任务交由开发团队负责，测试人员主要专注于自动化测试开发、安全测试、测试建模、精准测试等专项测试中。这部分测试任务能够很好的体现测试人员的价值。虽然“测试已死”的争论还在继续，但只要把握好软件测试发展的趋势并凭借自身的努力，相信测试人员是能够在行业中受到认可的。
