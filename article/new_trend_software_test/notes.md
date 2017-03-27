@@ -56,8 +56,7 @@
 ## 自动化测试(孟宪伟负责)
 
 ## 移动互联网测试(孙远负责)
-Testing Mobile Applications Continues to Advance
-
+随着智能移动设备的普及，移动平台呈现多样化趋势，而每个平台的版本升级速度非常频繁。移动应用种类繁多，从社交应用到游戏、教育、旅行等类别。为满足用户需求，热门应用的迭代更新速度也非常频繁，
 Similar to Application testing in cloud service, Mobile testing is also moving to the cloud but it’s having its own hurdles. While mobile emulator and device clouds (though they can be expensive) help elevate the challenges of having the right mix of devices and configurations available in-house, having the right test environments continue to be problematic. For one, the rapid pace of technology changes and updates force the applications and testing to update even when there is no new feature introduced. Your test automation will also have to be updated accordingly. Furthermore, having the right tools and expertise to test the mix of mobile and variety IoT devices proves to be an on-going difficulty for testing. Functional testing and security testing will continue to be a challenge in testing multi-channel devices (mobile, wearable, social and traditional), and mesh and conversational systems. As mobile apps can be easily constructed using reusable APIs as well as apps can be easily created by citizen developers, there will be more testing demand.
 
 参考：听云/testin/oneapm
@@ -66,11 +65,9 @@ Similar to Application testing in cloud service, Mobile testing is also moving t
 当前很多公司已经将基本的功能测试任务交由开发团队负责，测试人员主要专注于自动化测试开发、安全测试、测试建模、精准测试等专项测试中。这部分测试任务能够很好的体现测试人员的价值。虽然“测试已死”的争论还在继续，但只要把握好软件测试发展的趋势并凭借自身的努力，相信测试人员是能够在行业中受到认可的。
 
 ## 作者简介
-孙远，华为中央软件院资深工程师，硕士毕业，9年软件行业经验。目前在华为从事容器Docker项目的测试工作。工作涉及到功能测试、性能测试、压力测试、稳定性测试、安全测试、测试管理、工程能力构建等内容。参与编写了《Docker进阶与实战》的Docker测试章节。先前曾经就职于美国风河系统公司，作为team lead从事风河Linux产品测试工作。活跃于Docker社区和内核测试ltp社区。
+孙远，华为中央软件院资深工程师，硕士毕业，目前在华为从事容器Docker项目的测试工作。工作涉及到功能测试、性能测试、压力测试、稳定性测试、安全测试、测试管理、工程能力构建等内容。参与编写了《Docker进阶与实战》的Docker测试章节。先前曾经就职于美国风河系统公司，作为team lead从事风河Linux产品测试工作。活跃于Docker社区和内核测试ltp社区。
 
 研究方向：容器技术、Docker、Linux内核、软件测试、自动化测试、测试过程改进
-
-有代表性的作品：《docker进阶与实战》
 
 孟宪伟，华为中央软件院资深工程师，硕士毕业，软件行业10年以上从业经验。目前从事华为云计算产品虚拟化平台的测试以及相关测试工具的开发工作。加入华为前供职于IBM，Thomson Reuters以及VMware等多家公司，期间曾从事软件开发，项目管理，软件测试等各类工作。
 
