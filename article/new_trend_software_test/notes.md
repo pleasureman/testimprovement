@@ -33,14 +33,14 @@ IoT是一个包含大量网络设备、传感器和计算基础设施的庞大�
 ## 开源测试(孙远负责)
 开源软件本着“不要重复造轮子”的原则，与商业软件相比，拥有使用成本低、可定制性高等特点。目前开源测试工具种类繁多，涵盖测试管理、缺陷管理、持续集成、功能测试、性能测试、测试框架、测试设计、安全测试等类别。下面列举了这些分类中一些典型的测试工具。而针对我们自身的业务需求，可以通过修改源代码来适配自己的业务，从而实现工具定制化。
 
-测试管理： TestLink, Testopia
-缺陷管理：Redmine, Bugzilla, Mantis
-持续集成：Jenkins, Buildbot
-功能测试：Selenium, LTP (Linux Test Project)
-性能测试：lmbench, Sysbench, Iperf, Fio
-测试框架：JUnit, Autotest
-测试设计：Xmind, StarUML, UML Designer
-安全测试：Metasploit, Nessus, AppScan
+测试管理： TestLink, Testopia<br>
+缺陷管理：Redmine, Bugzilla, Mantis<br>
+持续集成：Jenkins, Buildbot<br>
+功能测试：Selenium, LTP<br>
+性能测试：lmbench, Sysbench, Iperf, Fio<br>
+测试框架：JUnit, Autotest<br>
+测试设计：Xmind, StarUML, UML Designer<br>
+安全测试：Metasploit, Nessus, AppScan<br>
 
 为了减少研发成本，很多公司都制定了基于开源软件进行二次开发的策略。在重点测试自研特性的同时，面对大量的开源代码，测试工程师需要与开源社区互动，及时将发现的问题提交给社区并同步社区的问题单和cve补丁。
 
