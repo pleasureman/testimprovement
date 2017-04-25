@@ -65,6 +65,9 @@ IoT是一个包含大量网络设备、传感器和计算基础设施的庞大�
 
 目前敏捷测试已经受到了行业内的认可，相信会有更多的公司将会进行敏捷转型，敏捷教练的薪水也会水涨船高。
 ## 客户化测试(孙远负责)
+http://www.cnblogs.com/Ribbon/p/4819654.html
+
+http://www.ixueshu.com/document/80fe15dca63ea1e4.html
 
 ## 大数据(孙远负责)
 http://www.chinacloud.cn/upload/2014-03/14033108176966.pdf
