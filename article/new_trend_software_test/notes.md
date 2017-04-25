@@ -67,6 +67,9 @@ IoT是一个包含大量网络设备、传感器和计算基础设施的庞大�
 ## 客户化测试(孙远负责)
 
 ## 大数据(孙远负责)
+http://www.chinacloud.cn/upload/2014-03/14033108176966.pdf
+
+http://www.ixueshu.com/document/dd364b4337d81d31318947a18e7f9386.html
 
 ## 自动化测试(孙远负责)
 
