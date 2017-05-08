@@ -8,7 +8,8 @@
 8. 测试工具、源码编译容器化
 9. 应用层、中间层、内核、硬件驱动软件测试容器化
 
-中间层软件测试容器化：优化Dockerfile和镜像。
+中间层软件测试容器化：优化Dockerfile和镜像。<br>
+https://www.youtube.com/watch?v=pPsREQbf3PA
 
 10. 压力稳定性测试容器化
 11. Docker开源社区初探
