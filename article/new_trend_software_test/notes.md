@@ -73,6 +73,7 @@ http://www.cnblogs.com/Ribbon/p/4819654.html
 http://www.ixueshu.com/document/80fe15dca63ea1e4.html
 
 ## 大数据(孙远负责)
+当前全球信息数据量增长迅猛，据市场调研机构IDC预测，到2020年，全球数据总量将达到40ZB，相当于每人拥有一千张DVD光盘以上的信息量。
 http://www.chinacloud.cn/upload/2014-03/14033108176966.pdf
 
 http://www.ixueshu.com/document/dd364b4337d81d31318947a18e7f9386.html
