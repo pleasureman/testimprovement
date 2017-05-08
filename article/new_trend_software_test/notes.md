@@ -77,6 +77,7 @@ http://www.ixueshu.com/document/80fe15dca63ea1e4.html
 
 如此大量的数据为测试数据的备份和管理带来了挑战，测试人员需要确认数据完整性，保证数据质量。面对大量而动态变化的数据和有限的测试时间，需要制定出行之有效的测试策略，开发出适用的测试工具，并完善自动化测试。
 
+大数据挖掘的目的是找出数据与数据的关联关系，与传统软件相比，很多大数据场景中的输出是无法直接确定的，同时数据又具有多样性，需要测试人员具备更多的发散思维；面对爆炸式的数据服务，测试时需要搭建可扩展伸缩的测试平台模拟大量的测试客户端。
 
 The Big Data has three unique characteristics—Volume, Velocity, and Variety. Today’s big data applications are growing dramatically. We must process data ever more quickly so we can respond to events as they happen, and that data is arriving from an ever wider array of channels, sensors, and formats. Stefano Rizzo explains that the main challenges of testing big data by little agile teams, beside the apparent contradiction, are related to testing individual components vs. testing the big product, traceability, and organizing massive amounts of test data vs. minimal testing with spreadsheets, and testing the final products of development vs. test-driven development. After reviewing these challenges, Stefano  shares practices and tools to address both testing Big Data and managing the Testing of Big Data—the huge amount of data coming from massive and continuous testing practices.
 
