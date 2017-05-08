@@ -74,6 +74,15 @@ http://www.ixueshu.com/document/80fe15dca63ea1e4.html
 
 ## 大数据(孙远负责)
 当前全球信息数据量增长迅猛，据市场调研机构IDC预测，到2020年，全球数据总量将达到40ZB，相当于每人拥有一千张DVD光盘以上的信息量。
+
+如此大量的数据为测试数据的备份和管理带来了挑战，测试人员需要确认数据完整性，保证数据质量。面对大量而动态变化的数据和有限的测试时间，需要制定出行之有效的测试策略，开发出适用的测试工具，并完善自动化测试。
+
+
+The Big Data has three unique characteristics—Volume, Velocity, and Variety. Today’s big data applications are growing dramatically. We must process data ever more quickly so we can respond to events as they happen, and that data is arriving from an ever wider array of channels, sensors, and formats. Stefano Rizzo explains that the main challenges of testing big data by little agile teams, beside the apparent contradiction, are related to testing individual components vs. testing the big product, traceability, and organizing massive amounts of test data vs. minimal testing with spreadsheets, and testing the final products of development vs. test-driven development. After reviewing these challenges, Stefano  shares practices and tools to address both testing Big Data and managing the Testing of Big Data—the huge amount of data coming from massive and continuous testing practices.
+
+
+http://www.thepsi.com/trends-in-big-data-application-testing/
+
 http://www.chinacloud.cn/upload/2014-03/14033108176966.pdf
 
 http://www.ixueshu.com/document/dd364b4337d81d31318947a18e7f9386.html
