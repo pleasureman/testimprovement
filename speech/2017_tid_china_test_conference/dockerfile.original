@@ -1,0 +1,16 @@
+FROM ubuntu:latest
+
+MAINTAINER Yuan Sun sunyuan3@huawei.com
+
+WORKDIR /root
+
+RUN apt-get update
+RUN apt-get install -y gcc
+RUN apt-get install -y make
+RUN apt-get install -y vim git
+
+RUN git clone https://github.com/sunyuan3/netperf.git && cd netperf && ./configure && make && make install
+RUN rm -rf /root/netperf
+
+CMD ["/bin/sh", "-c", "/usr/local/bin/netserver"]
+

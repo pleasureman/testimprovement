@@ -1,0 +1,9 @@
+FROM ubuntu:14.04env
+MAINTAINER Yuan Sun sunyuan3@huawei.com
+WORKDIR /root
+RUN git clone https://github.com/sunyuan3/netperf.git \
+	&& cd netperf \
+	&& ./configure \
+	&& make && make install \
+	&& rm –rf /root/netperf
+CMD ["/bin/sh", "-c", "/usr/local/bin/netserver"]
