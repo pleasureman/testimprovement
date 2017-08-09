@@ -110,6 +110,8 @@ mock技术、新的自动化测试工具、新的自动化框架、自动化中�
 
 [TOP 10 TESTING TRENDS FOR 2017](http://www.logigear.com/magazine/top-10-testing-trends-for-2017/)
 
+AI测试:让软件测试变得聪明伶俐
+
 [软件测试的新趋势](http://www.infoq.com/cn/articles/new-trends-of-software-testing)
 
 [精准测试白皮书](http://wenku.baidu.com/link?url=7EVjSJ4t1WKYSL-tEPv_QrtcFIasI5WZcXhHf4Zz7oD167zlaU5JpR-Kk-ioh8gX2DWgCFjfcSsNt-44UsFtTcGE7qk01dE3WfaE4XwEx5O)
