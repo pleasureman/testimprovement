@@ -65,21 +65,9 @@ IoT是一个包含大量网络设备、传感器和计算基础设施的庞大�
 目前敏捷测试已经受到了行业内的认可，相信会有更多的公司将会进行敏捷转型，敏捷教练的薪水也会水涨船高。
 
 ## 大数据(孙远负责)
-当前全球信息数据量增长迅猛，据市场调研机构IDC预测，到2020年，全球数据总量将达到40ZB，相当于每人拥有一千张DVD光盘以上的信息量。
+当前全球信息数据量增长迅猛，据市场调研机构IDC预测，到2020年，全球数据总量将达到40ZB，相当于每人拥有一千张DVD光盘以上的信息量。如此大量的数据为测试数据的备份和管理带来了挑战，测试人员需要确认数据完整性，保证数据质量。面对大量而动态变化的数据和有限的测试时间，需要制定出行之有效的测试策略，开发出适用的测试工具，并完善自动化测试。
 
-如此大量的数据为测试数据的备份和管理带来了挑战，测试人员需要确认数据完整性，保证数据质量。面对大量而动态变化的数据和有限的测试时间，需要制定出行之有效的测试策略，开发出适用的测试工具，并完善自动化测试。
-
-大数据挖掘的目的是找出数据与数据的关联关系，与传统软件相比，很多大数据场景中的输出是无法直接确定的，同时数据又具有多样性，需要测试人员具备更多的发散思维；面对爆炸式的数据服务，测试时需要搭建可扩展伸缩的测试平台模拟大量的测试客户端。
-
-The Big Data has three unique characteristics—Volume, Velocity, and Variety. Today’s big data applications are growing dramatically. We must process data ever more quickly so we can respond to events as they happen, and that data is arriving from an ever wider array of channels, sensors, and formats. Stefano Rizzo explains that the main challenges of testing big data by little agile teams, beside the apparent contradiction, are related to testing individual components vs. testing the big product, traceability, and organizing massive amounts of test data vs. minimal testing with spreadsheets, and testing the final products of development vs. test-driven development. After reviewing these challenges, Stefano  shares practices and tools to address both testing Big Data and managing the Testing of Big Data—the huge amount of data coming from massive and continuous testing practices.
-
-
-http://www.thepsi.com/trends-in-big-data-application-testing/
-
-http://www.chinacloud.cn/upload/2014-03/14033108176966.pdf
-
-http://www.ixueshu.com/document/dd364b4337d81d31318947a18e7f9386.html
-
+随着大数据应用的快速增长，我们需要更快速的完成数据处理。大数据大数据挖掘的目的是找出数据与数据的关联关系，与传统软件相比，很多大数据场景中的输出是无法直接确定的，同时数据又具有多样性，需要测试人员具备更多的发散思维；面对爆炸式的数据服务，测试时需要搭建可扩展伸缩的测试平台模拟大量的测试客户端。而面对大数据中很多场景下程序输出的不确定性、大数据结构多样化、定位数据因果关系困难等问题为测试工程师带来了新的挑战。
 ## 自动化测试(孙远负责)
 http://www.360doc.com/content/14/1130/18/15257968_429371572.shtml
 
@@ -116,3 +104,11 @@ AI测试:让软件测试变得聪明伶俐
 http://www.infoq.com/cn/articles/testing-in-the-cloud-exploring-the-practice
 
 https://wenku.baidu.com/view/1f789e6a8762caaedc33d4d9.html
+
+大数据
+
+http://www.thepsi.com/trends-in-big-data-application-testing/
+
+http://www.chinacloud.cn/upload/2014-03/14033108176966.pdf
+
+http://www.ixueshu.com/document/dd364b4337d81d31318947a18e7f9386.html
